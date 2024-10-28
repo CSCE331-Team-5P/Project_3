@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function Home() {
+export default function Checkout() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-full md:max-w-prose p-4">
