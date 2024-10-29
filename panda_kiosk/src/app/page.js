@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <div 
       onClick={handleClick}
-      className="flex bg-red-600 items-center justify-center min-h-screen cursor-pointer"
+      className="flex bg-red-700 items-center justify-center min-h-screen cursor-pointer"
     >
       <div className="w-full md:max-w-prose p-4">
         <h1 className="text-9xl text-white font-extrabold my-8">Order & Pay Here</h1>
