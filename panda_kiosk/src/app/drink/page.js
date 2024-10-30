@@ -19,6 +19,8 @@ export default function Home() {
     // Navigate to the /menuItems page for specific categories
     if (["Bowl", "A la carte", "Plate", "Bigger Plate"].includes(category)) {
       router.push("/menuItems");
+    } else {
+      router.push("/checkout2");
     }
   };
 
@@ -264,7 +266,10 @@ export default function Home() {
 
         {/* Right side: Checkout button */}
         <div>
-          <button className="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 transition-colors duration-300">
+          <button 
+            className="bg-red-600 text-white px-6 py-2 rounded-full hover:bg-red-700 transition-colors duration-300"
+            onClick={() => handleCategoryClick("Checkout")}
+          >
             Checkout
           </button>
         </div>

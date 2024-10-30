@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 
-export default function Home() {
+export default function checkout2() {
   const [activeCategory, setActiveCategory] = useState("");
 
   // Function to handle click and set active category

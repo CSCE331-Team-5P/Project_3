@@ -6,7 +6,7 @@ export default function Home() {
 
   // Function to handle click and route to Checkout page
   const handleClick = () => {
-    router.push('/checkout');
+    router.push('/menuItems');
   };
 
   return (
