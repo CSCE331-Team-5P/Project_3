@@ -1,10 +1,12 @@
 "use client";
+
+//^ Import dependencies
 import { useRouter } from 'next/navigation';
 
 export default function Home() {
   const router = useRouter();
 
-  // Function to handle click and route to Checkout page
+  //^ Function to handle click and route to Checkout page
   const handleClick = () => {
     router.push('/menuItems');
   };

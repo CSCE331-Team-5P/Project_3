@@ -1,4 +1,5 @@
 import "./globals.css";
+// import { OrderProvider } from '@/context/OrderContext';
 
 export const metadata = {
   title: "Create Next App",
@@ -12,6 +13,7 @@ export default function RootLayout({ children }) {
         className={`antialiased`}
       >
         {children}
+        {/* <OrderProvider>{children}</OrderProvider> */}
       </body>
     </html>
   );
