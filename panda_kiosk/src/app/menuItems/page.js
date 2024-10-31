@@ -65,21 +65,21 @@ export default function Home() {
   };
 
   const sides = [
-    { id: 'chowMein', title: 'Chow Mein', imageUrl: '/chow-mein.jpg', calories: '600 calories' },
-    { id: 'friedRice', title: 'Fried Rice', imageUrl: '/fried-rice.jpg', calories: '620 calories' },
-    { id: 'steamedRice', title: 'White Steamed Rice', imageUrl: '/white-steamed-rice.jpg', calories: '520 calories' },
-    { id: 'superGreens', title: 'Super Greens', imageUrl: '/super-greens.jpg', calories: '130 calories' },
+    { id: 'chowMein', title: 'Chow Mein', imageUrl: '/ChowMein.jpg', calories: '600 calories' },
+    { id: 'friedRice', title: 'Fried Rice', imageUrl: '/FriedRice.jpg', calories: '620 calories' },
+    { id: 'steamedRice', title: 'White Steamed Rice', imageUrl: '/SteamedWhiteRice.jpg', calories: '520 calories' },
+    { id: 'superGreens', title: 'Super Greens', imageUrl: '/SuperGreens.jpg', calories: '130 calories' },
   ];
 
   const entrees = [
-    { id: 'blazingBourbonChicken', title: 'Hot Ones Blazing Bourbon Chicken', imageUrl: '/blazing-bourbon-chicken.jpg', calories: '400 calories' },
-    { id: 'orangeChicken', title: 'The Original Orange Chicken', imageUrl: '/orange-chicken.jpg', calories: '510 calories' },
-    { id: 'pepperSirloinSteak', title: 'Black Pepper Sirloin Steak', imageUrl: '/pepper-sirloin-steak.jpg', calories: '+$1.50 | 180 calories' },
-    { id: 'honeyWalnutShrimp', title: 'Honey Walnut Shrimp', imageUrl: '/honey-walnut-shrimp.jpg', calories: '+$1.50 | 430 calories' },
-    { id: 'grilledTeriyakiChicken', title: 'Grilled Teriyaki Chicken', imageUrl: '/grilled-teriyaki-chicken.jpg', calories: '275 calories' },
-    { id: 'kungPaoChicken', title: 'Kung Pao Chicken', imageUrl: '/kung-pao-chicken.jpg', calories: '320 calories' },
-    { id: 'honeySesameChicken', title: 'Honey Sesame Chicken Breast', imageUrl: '/honey-sesame-chicken.jpg', calories: '340 calories' },
-    { id: 'beijingBeef', title: 'Beijing Beef', imageUrl: '/beijing-beef.jpg', calories: '480 calories' }
+    { id: 'blazingBourbonChicken', title: 'Hot Ones Blazing Bourbon Chicken', imageUrl: '/BlazinBurbon.jpg', calories: '400 calories' },
+    { id: 'orangeChicken', title: 'The Original Orange Chicken', imageUrl: '/OrangeChicken.jpg', calories: '510 calories' },
+    { id: 'pepperSirloinSteak', title: 'Black Pepper Sirloin Steak', imageUrl: '/BlackPepperSteak.jpg', calories: '+$1.50 | 180 calories' },
+    { id: 'honeyWalnutShrimp', title: 'Honey Walnut Shrimp', imageUrl: '/HoneyWalnutShrimp.jpg', calories: '+$1.50 | 430 calories' },
+    { id: 'grilledTeriyakiChicken', title: 'Grilled Teriyaki Chicken', imageUrl: '/GrilledTeriyakiChicken.jpg', calories: '275 calories' },
+    { id: 'kungPaoChicken', title: 'Kung Pao Chicken', imageUrl: '/KungPaoChicken.jpg', calories: '320 calories' },
+    { id: 'honeySesameChicken', title: 'Honey Sesame Chicken Breast', imageUrl: '/HoneySesameChicken.jpg', calories: '340 calories' },
+    { id: 'beijingBeef', title: 'Beijing Beef', imageUrl: '/BeijingBeef.jpg', calories: '480 calories' }
   ];
   
 
