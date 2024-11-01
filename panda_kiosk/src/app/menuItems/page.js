@@ -10,17 +10,17 @@ import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
   useEffect(() => {
-    const checkDBConnection = async () => {
+    const fetchInventory = async () => {
       try {
         const response = await fetch("/api/connectDB");
         const data = await response.json();
-        console.log(data.message); // Logs the message from the server response
+        console.log("Inventory Data:", data); // Logs the fetched inventory data
       } catch (error) {
-        console.error("Failed to fetch database connection status:", error);
+        console.error("Failed to fetch inventory data:", error);
       }
     };
-
-    checkDBConnection();
+  
+    fetchInventory();
   }, []);
 
 
