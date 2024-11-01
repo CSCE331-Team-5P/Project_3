@@ -2,7 +2,7 @@
 
 
 import React, { useState } from 'react';
-import { useRouter } from "next/navigation"; //^ Correctly import useRouter from next/navigation
+import { useRouter, usePathname } from "next/navigation"; //^ Correctly import useRouter from next/navigation
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import TakeoutDiningRoundedIcon from '@mui/icons-material/TakeoutDiningRounded';
 import RamenDiningRoundedIcon from '@mui/icons-material/RamenDiningRounded';
@@ -10,9 +10,11 @@ import DinnerDiningRoundedIcon from '@mui/icons-material/DinnerDiningRounded';
 import LocalDrinkRoundedIcon from '@mui/icons-material/LocalDrinkRounded';
 import IcecreamRoundedIcon from '@mui/icons-material/IcecreamRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
+import { SettingsAccessibility } from '@mui/icons-material';
 
 const Navbar = () => {
     const router = useRouter(); //^ Initialize the router for navigation
+    const pathname = usePathname(); 
 
     //^ State variables to manage what meal item are selected
     const [activeCategory, setActiveCategory] = useState("");
@@ -46,7 +48,7 @@ const Navbar = () => {
                 <li onClick={() => handleCategoryClick(item.text)}
                     key={index} 
                     className={`flex flex-col items-center cursor-pointer hover:bg-red-600 rounded-lg p-2 transition-colors 
-                                ${activeCategory === item.text ? "font-bold underline" : ""} hover:text-yellow-300`}
+                                ${activeCategory === item.text ? "font-bold underline text-yellow-300" : ""} hover:text-yellow-300`}
                 >
                     <span className={`mb-1`}>{item.icon}</span>
                     <span className={`text-sm`}>{item.text}</span>
