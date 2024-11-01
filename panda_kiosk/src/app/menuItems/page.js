@@ -95,7 +95,7 @@ export default function Home() {
       {/* Navbar at top of screen */}
       <Navbar />
 
-      <div className="h-[80vh]">
+      <div className="flex-2 pb-16">
         <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
         {/* Sides Section Div with horizontal scroll showing 3 items */}
         <Gallery 
@@ -120,11 +120,13 @@ export default function Home() {
       </div>
 
       {/* Footer / Checkout Div */}
-      <KioskFooter 
-        sideQuantities={sideQuantities}
-        entreeQuantities={entreeQuantities}
-        drinkQuantities={drinkQuantities}
-      />
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
+        <KioskFooter 
+          sideQuantities={sideQuantities}
+          entreeQuantities={entreeQuantities}
+          drinkQuantities={drinkQuantities}
+        />
+      </div>
 
     </div>
   );
