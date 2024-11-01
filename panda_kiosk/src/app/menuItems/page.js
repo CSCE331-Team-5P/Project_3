@@ -1,7 +1,7 @@
 "use client"; //^ Ensures this component is treated as a client component
 
 //^ Import dependencies
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 
 //^ Import components
 import Navbar from "@/components/Navbar";
@@ -9,6 +9,22 @@ import Gallery from "@/components/Gallery";
 import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
+  useEffect(() => {
+    const checkDBConnection = async () => {
+      try {
+        const response = await fetch("/api/connectDB");
+        const data = await response.json();
+        console.log(data.message); // Logs the message from the server response
+      } catch (error) {
+        console.error("Failed to fetch database connection status:", error);
+      }
+    };
+
+    checkDBConnection();
+  }, []);
+
+
+
   //^ State variables to manage the quantity of each side
   const [sideQuantities, setSideQuantities] = useState({
     friedRice: 0,
@@ -89,7 +105,7 @@ export default function Home() {
       {/* Navbar at top of screen */}
       <Navbar />
 
-      <div className="h-[80vh]">
+      <div className="flex-1 pb-20">
         <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
         {/* Sides Section Div with horizontal scroll showing 3 items */}
         <Gallery 
