@@ -2,6 +2,8 @@
 
 //^ Import dependencies
 import { useState, useEffect, useRef } from "react";
+// import { useGlobalState, GlobalStateProvider } from "@/components/GlobalStateProvider";
+import { useGlobalState, GlobalStateProvider } from "@/app/GlobalStateProvider";
 
 //^ Import components
 import Navbar from "@/components/Navbar";
@@ -9,6 +11,9 @@ import Gallery from "@/components/Gallery";
 import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
+  // const { mealOptions } = useGlobalState();
+  // const { maxEntrees, maxSides, mealType } = mealOptions;
+
   useEffect(() => {
     const fetchInventory = async () => {
       try {
@@ -100,42 +105,44 @@ export default function Home() {
   
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <GlobalStateProvider>
+      <div className="min-h-screen flex flex-col">
 
-      {/* Navbar at top of screen */}
-      <Navbar />
+        {/* Navbar at top of screen */}
+        <Navbar />
 
-      <div className="flex-1 pb-20">
-        <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
-        {/* Sides Section Div with horizontal scroll showing 3 items */}
-        <Gallery 
-          items={sides}
-          sideQuantities={sideQuantities}
-          incrementQuantity={(id) => incrementQuantity(id)}
-          decrementQuantity={(id) => decrementQuantity(id)}
-          scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
-          containerRef={sidesContainerRef}
+        <div className="flex-1 pb-20">
+          <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
+          {/* Sides Section Div with horizontal scroll showing 3 items */}
+          <Gallery 
+            items={sides}
+            sideQuantities={sideQuantities}
+            incrementQuantity={(id) => incrementQuantity(id)}
+            decrementQuantity={(id) => decrementQuantity(id)}
+            scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
+            containerRef={sidesContainerRef}
+            />
+
+          <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
+          {/* Entree Section Div with horizontal scroll showing 3 items */}
+          <Gallery
+            items={entrees}
+            sideQuantities={entreeQuantities}
+            incrementQuantity={(id) => incrementQuantity(id)}
+            decrementQuantity={(id) => decrementQuantity(id)}
+            scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
+            containerRef={entreesContainerRef}
           />
+        </div>
 
-        <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
-        {/* Entree Section Div with horizontal scroll showing 3 items */}
-        <Gallery
-          items={entrees}
-          sideQuantities={entreeQuantities}
-          incrementQuantity={(id) => incrementQuantity(id)}
-          decrementQuantity={(id) => decrementQuantity(id)}
-          scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
-          containerRef={entreesContainerRef}
+        {/* Footer / Checkout Div */}
+        <KioskFooter 
+          sideQuantities={sideQuantities}
+          entreeQuantities={entreeQuantities}
+          drinkQuantities={drinkQuantities}
         />
+
       </div>
-
-      {/* Footer / Checkout Div */}
-      <KioskFooter 
-        sideQuantities={sideQuantities}
-        entreeQuantities={entreeQuantities}
-        drinkQuantities={drinkQuantities}
-      />
-
-    </div>
+    </GlobalStateProvider>
   );
 }

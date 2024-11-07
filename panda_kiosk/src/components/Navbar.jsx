@@ -2,7 +2,8 @@
 
 
 import React, { useState } from 'react';
-import { useRouter, usePathname } from "next/navigation"; //^ Correctly import useRouter from next/navigation
+import { useRouter, usePathname } from "next/navigation"; 
+import { useGlobalState } from "@/app/GlobalStateProvider";
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import TakeoutDiningRoundedIcon from '@mui/icons-material/TakeoutDiningRounded';
 import RamenDiningRoundedIcon from '@mui/icons-material/RamenDiningRounded';
@@ -14,7 +15,10 @@ import { SettingsAccessibility } from '@mui/icons-material';
 
 const Navbar = () => {
     const router = useRouter(); //^ Initialize the router for navigation
-    const pathname = usePathname(); 
+    // const pathname = usePathname(); 
+
+
+    const {updateMealOptions} = useGlobalState();
 
     //^ State variables to manage what meal item are selected
     const [activeCategory, setActiveCategory] = useState("");
@@ -22,6 +26,8 @@ const Navbar = () => {
     //^ Function to handle category click and set active category
     const handleCategoryClick = (category) => {
         setActiveCategory(category);
+        updateMealOptions(category);
+        
         if (category === "Drink") {
             router.push("/drink"); //^ Navigate to the drink page
         } else if (category === "Dessert") {
