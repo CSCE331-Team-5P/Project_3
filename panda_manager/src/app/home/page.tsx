@@ -11,10 +11,10 @@ export default function Home() {
 
 
   return (
-    <div>
+    <div className="p-12">
       <Navbar />
-      <h1 className="px-12 text-3xl font-semibold"> Welcome Manager! </h1>
-      <div className="flex flex-row p-12 space-x-10">
+      <h1 className="text-3xl font-semibold pb-12"> Welcome Manager! </h1>
+      <div className="flex flex-row space-x-10 pb-12">
         <DashboardCard 
           title="Total Revenue"
           value={42231.89}
@@ -41,7 +41,7 @@ export default function Home() {
           icon={Activity}
         />
       </div>
-      <div className="flex flex-row p-12 space-x-10">
+      <div className="flex flex-row space-x-10">
         <DashboardChart />
         <SalesList />
       </div>

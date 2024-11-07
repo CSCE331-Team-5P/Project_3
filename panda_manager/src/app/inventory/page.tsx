@@ -8,13 +8,11 @@ export default function Inventory() {
 
 
     return (
-        <div>
+        <div className="p-12">
             <Navbar />
-            <h1 className="text-4xl font-medium mx-12 my-8"> Franchise Inventory </h1>
-            <h2 className="text-lg font-normal mx-12"> Insert Inventory Item </h2>
-            <div className="px-12 pt-4 pb-12">
-                <InventoryTable />
-            </div>
+            <h1 className="text-4xl font-medium pb-6"> Franchise Inventory </h1>
+            <h2 className="text-lg font-normal pb-4"> Insert Inventory Item </h2>
+            <InventoryTable />
         </div>
     )
 }

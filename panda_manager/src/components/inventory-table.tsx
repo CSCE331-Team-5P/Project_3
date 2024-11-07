@@ -249,17 +249,7 @@ export function InventoryTable() {
 
     return (
         <div className="space-y-4">
-            <div className="mb-20 grid grid-cols-4 gap-4">
-                <div>
-                    <Label htmlFor="id">Item ID</Label>
-                    <Input
-                        id="id"
-                        name="id"
-                        value={newItem.id}
-                        onChange={handleInputChange}
-                        placeholder="Enter item ID"
-                    />
-                </div>
+            <div className="mb-12 grid grid-cols-3 gap-4">
                 <div>
                     <Label htmlFor="name">Item Name</Label>
                     <Input
@@ -321,6 +311,7 @@ export function InventoryTable() {
                         placeholder="Enter quantity"
                     />
                 </div>
+                <div></div>
                 <Button
                     className="bg-red-700 hover:bg-red-400 mt-6"
                     onClick={addItem}

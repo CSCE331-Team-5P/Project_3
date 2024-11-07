@@ -27,8 +27,8 @@ const handleNavigation = (path: string) => {
 };
 
 return (
-    <div className="flex w-full p-4">
-        <div className="flex flex-row w-full m-8">
+    <div className="flex w-full pb-12">
+        <div className="flex flex-row w-full">
             <div className="flex flex-row items-center space-x-20">
             <h1
                 onClick={() => handleNavigation('/home')}
