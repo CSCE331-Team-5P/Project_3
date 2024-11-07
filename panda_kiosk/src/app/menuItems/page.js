@@ -119,7 +119,7 @@ export default function Home() {
       </div>
 
       {/* Footer / Checkout Div */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg">
+      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg h-25">
         <KioskFooter 
           sideQuantities={sideQuantities}
           entreeQuantities={entreeQuantities}
