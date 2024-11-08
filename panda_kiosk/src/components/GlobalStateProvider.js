@@ -1,5 +1,7 @@
 // src/app/components/GlobalStateProvider.js
 
+"use client";
+
 import React, { createContext, useContext, useState } from "react";
 
 // Create the global state context

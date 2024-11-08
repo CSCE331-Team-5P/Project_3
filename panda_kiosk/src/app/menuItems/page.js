@@ -11,8 +11,8 @@ import Gallery from "@/components/Gallery";
 import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
-  // const { mealOptions } = useGlobalState();
-  // const { maxEntrees, maxSides, mealType } = mealOptions;
+  const { mealOptions } = useGlobalState();
+  const { maxEntrees, maxSides, mealType } = mealOptions;
 
   useEffect(() => {
     const fetchInventory = async () => {
