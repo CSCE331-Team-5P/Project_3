@@ -1,5 +1,3 @@
-// src/app/components/GlobalStateProvider.js
-
 "use client";
 
 import React, { createContext, useContext, useState } from "react";
@@ -29,7 +27,6 @@ export const GlobalStateProvider = ({ children }) => {
             default:
                 return setMealOptions({ maxEntrees: 0, maxSides: 0, mealType: "" });
         }
-        // console.log(`Updated meal options: ${JSON.stringify(mealOptions)}`);
     };
 
     return (
