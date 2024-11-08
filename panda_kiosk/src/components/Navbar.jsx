@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 import { useRouter, usePathname } from "next/navigation"; 
-import { useGlobalState } from "@/app/GlobalStateProvider";
+import { useGlobalState } from "@/components/GlobalStateProvider";
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import TakeoutDiningRoundedIcon from '@mui/icons-material/TakeoutDiningRounded';
 import RamenDiningRoundedIcon from '@mui/icons-material/RamenDiningRounded';

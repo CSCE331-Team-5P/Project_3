@@ -3,7 +3,7 @@
 //^ Import dependencies
 import { useState, useEffect, useRef } from "react";
 // import { useGlobalState, GlobalStateProvider } from "@/components/GlobalStateProvider";
-import { useGlobalState, GlobalStateProvider } from "@/app/GlobalStateProvider";
+import { useGlobalState, GlobalStateProvider } from "@/components/GlobalStateProvider";
 
 //^ Import components
 import Navbar from "@/components/Navbar";
