@@ -67,34 +67,44 @@ export default function Home() {
     return Object.values(quantities).reduce((total, count) => total + count, 0);
   };
 
-  // Increment item quantity with checks
-  const incrementQuantity = (item, setQuantities, isEntree = false) => {
-    const newTotal = isEntree
-      ? selectedEntreesCount + 1
-      : selectedSidesCount + 1;
+// Increment item quantity with checks
+const incrementQuantity = (item, setQuantities, isEntree = false) => {
+  // Handle special case for "A la carte"
+  if (mealOptions.allowOnlyOne) {
+      const totalSelected = selectedEntreesCount + selectedSidesCount;
+      if (totalSelected >= 1) {
+          alert("You can only choose one item for 'A la carte'.");
+          console.log("Only one item allowed for 'A la carte'.");
+          return;
+      }
+  } else {
+      const newTotal = isEntree
+          ? selectedEntreesCount + 1
+          : selectedSidesCount + 1;
 
-    if (isEntree && newTotal > maxEntrees) {
-      alert("Maximum number of entrees chosen.");
-      console.log("Max entrees chosen.");
-      return;
-    }
-    if (!isEntree && newTotal > maxSides) {
-      alert("Maximum number of sides chosen.");
-      console.log("Max sides chosen.");
-      return;
-    }
+      if (isEntree && newTotal > maxEntrees) {
+          alert("Maximum number of entrees chosen.");
+          console.log("Max entrees chosen.");
+          return;
+      }
+      if (!isEntree && newTotal > maxSides) {
+          alert("Maximum number of sides chosen.");
+          console.log("Max sides chosen.");
+          return;
+      }
+  }
 
-    setQuantities((prevState) => {
+  setQuantities((prevState) => {
       const updatedCount = prevState[item] + 1;
       isEntree
-        ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
-        : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));
+          ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
+          : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));
       return {
-        ...prevState,
-        [item]: updatedCount,
+          ...prevState,
+          [item]: updatedCount,
       };
-    });
-  };
+  });
+};
 
   // Decrement item quantity
   const decrementQuantity = (item, setQuantities, isEntree = false) => {
