@@ -19,19 +19,20 @@ export const GlobalStateProvider = ({ children }) => {
     const updateMealOptions = (mealType) => {
         switch (mealType) {
             case "A la carte":
-                setMealOptions({ maxEntrees: 1, maxSides: 0, mealType });
-                break;
+                console.log(`Updated meal options: ${JSON.stringify(mealOptions)}`);
+                return setMealOptions({ maxEntrees: 1, maxSides: 0, mealType });
             case "Bowl":
-                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType });
-                break;
+                console.log(`Updated meal options: ${JSON.stringify(mealOptions)}`)
+                return setMealOptions({ maxEntrees: 1, maxSides: 1, mealType });
             case "Plate":
-                setMealOptions({ maxEntrees: 2, maxSides: 1, mealType });
-                break;
+                console.log(`Updated meal options: ${JSON.stringify(mealOptions)}`)
+                return setMealOptions({ maxEntrees: 2, maxSides: 1, mealType });
             case "Bigger Plate":
-                setMealOptions({ maxEntrees: 3, maxSides: 1, mealType });
-                break;
+                console.log(`Updated meal options: ${JSON.stringify(mealOptions)}`)
+                return setMealOptions({ maxEntrees: 3, maxSides: 1, mealType });
             default:
-                setMealOptions({ maxEntrees: 0, maxSides: 0, mealType: "" });
+                console.log(`Updated meal options: ${JSON.stringify(mealOptions)}`)
+                return setMealOptions({ maxEntrees: 0, maxSides: 0, mealType: "" });
         }
         console.log(`Updated meal options: ${JSON.stringify(mealOptions)}`);
     };

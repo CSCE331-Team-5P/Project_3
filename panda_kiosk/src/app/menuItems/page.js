@@ -14,6 +14,8 @@ export default function Home() {
   const { mealOptions } = useGlobalState();
   const { maxEntrees, maxSides, mealType } = mealOptions;
 
+  console.log("Information", mealOptions);
+
   useEffect(() => {
     const fetchInventory = async () => {
       try {
