@@ -17,15 +17,19 @@ export const GlobalStateProvider = ({ children }) => {
     const updateMealOptions = (mealType) => {
         switch (mealType) {
             case "A la carte":
-                return setMealOptions({ maxEntrees: 1, maxSides: 0, mealType });
+                setMealOptions({ maxEntrees: 1, maxSides: 0, mealType });
+                break;
             case "Bowl":
-                return setMealOptions({ maxEntrees: 1, maxSides: 1, mealType });
+                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType });
+                break;
             case "Plate":
-                return setMealOptions({ maxEntrees: 2, maxSides: 1, mealType });
+                setMealOptions({ maxEntrees: 2, maxSides: 1, mealType });
+                break;
             case "Bigger Plate":
-                return setMealOptions({ maxEntrees: 3, maxSides: 1, mealType });
+                setMealOptions({ maxEntrees: 3, maxSides: 1, mealType });
+                break;
             default:
-                return setMealOptions({ maxEntrees: 0, maxSides: 0, mealType: "" });
+                setMealOptions({ maxEntrees: 0, maxSides: 0, mealType: "" });
         }
     };
 

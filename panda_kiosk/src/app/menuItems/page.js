@@ -40,7 +40,7 @@ export default function Home() {
   const sidesContainerRef = useRef(null);
   const entreesContainerRef = useRef(null);
 
-  // Reset counters when the meal category changes
+  // Reset counters and quantities when the meal type changes
   useEffect(() => {
     setSelectedEntreesCount(0);
     setSelectedSidesCount(0);
@@ -60,7 +60,7 @@ export default function Home() {
       shrimp: 0,
       honeyWalnutShrimp: 0,
     });
-  }, [mealType]);
+  }, [mealOptions]); // Listen for any change in mealOptions to reset states
 
   // Calculate the total number of items in an object
   const calculateTotalCount = (quantities) => {
