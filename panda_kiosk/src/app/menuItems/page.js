@@ -14,6 +14,7 @@ export default function Home() {
   const { mealOptions } = useGlobalState();
   const { maxEntrees, maxSides, mealType } = mealOptions;
 
+  // Example output of the log 
   console.log("Information", mealOptions);
 
   useEffect(() => {
@@ -107,44 +108,42 @@ export default function Home() {
   
 
   return (
-    <GlobalStateProvider>
-      <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col">
 
-        {/* Navbar at top of screen */}
-        <Navbar />
+      {/* Navbar at top of screen */}
+      <Navbar />
 
-        <div className="flex-1 pb-20">
-          <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
-          {/* Sides Section Div with horizontal scroll showing 3 items */}
-          <Gallery 
-            items={sides}
-            sideQuantities={sideQuantities}
-            incrementQuantity={(id) => incrementQuantity(id)}
-            decrementQuantity={(id) => decrementQuantity(id)}
-            scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
-            containerRef={sidesContainerRef}
-            />
-
-          <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
-          {/* Entree Section Div with horizontal scroll showing 3 items */}
-          <Gallery
-            items={entrees}
-            sideQuantities={entreeQuantities}
-            incrementQuantity={(id) => incrementQuantity(id)}
-            decrementQuantity={(id) => decrementQuantity(id)}
-            scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
-            containerRef={entreesContainerRef}
-          />
-        </div>
-
-        {/* Footer / Checkout Div */}
-        <KioskFooter 
+      <div className="flex-1 pb-20">
+        <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
+        {/* Sides Section Div with horizontal scroll showing 3 items */}
+        <Gallery 
+          items={sides}
           sideQuantities={sideQuantities}
-          entreeQuantities={entreeQuantities}
-          drinkQuantities={drinkQuantities}
-        />
+          incrementQuantity={(id) => incrementQuantity(id)}
+          decrementQuantity={(id) => decrementQuantity(id)}
+          scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
+          containerRef={sidesContainerRef}
+          />
 
+        <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
+        {/* Entree Section Div with horizontal scroll showing 3 items */}
+        <Gallery
+          items={entrees}
+          sideQuantities={entreeQuantities}
+          incrementQuantity={(id) => incrementQuantity(id)}
+          decrementQuantity={(id) => decrementQuantity(id)}
+          scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
+          containerRef={entreesContainerRef}
+        />
       </div>
-    </GlobalStateProvider>
+
+      {/* Footer / Checkout Div */}
+      <KioskFooter 
+        sideQuantities={sideQuantities}
+        entreeQuantities={entreeQuantities}
+        drinkQuantities={drinkQuantities}
+      />
+
+    </div>
   );
 }
