@@ -12,6 +12,7 @@ import KioskFooter from "@/components/KioskFooter";
 export default function Home() {
   const { mealOptions } = useGlobalState();
   const { maxEntrees, maxSides, mealType } = mealOptions;
+  console.log(mealOptions);
 
   // State for counting total selected entrees and sides
   const [selectedEntreesCount, setSelectedEntreesCount] = useState(0);
@@ -34,6 +35,13 @@ export default function Home() {
     beefBroccoli: 0,
     shrimp: 0,
     honeyWalnutShrimp: 0,
+  });
+
+  const [drinkQuantities, setDrinkQuantities] = useState({
+    coke: 0,
+    sprite: 0,
+    water: 0,
+    // Add more drink items as needed
   });
 
   // References for scrolling the sides and entrees sections
@@ -60,6 +68,11 @@ export default function Home() {
       shrimp: 0,
       honeyWalnutShrimp: 0,
     });
+    setDrinkQuantities({
+      coke: 0,
+      sprite: 0,
+      water: 0,
+    });
   }, [mealOptions]); // Listen for any change in mealOptions to reset states
 
   // Calculate the total number of items in an object
@@ -67,44 +80,43 @@ export default function Home() {
     return Object.values(quantities).reduce((total, count) => total + count, 0);
   };
 
-// Increment item quantity with checks
-const incrementQuantity = (item, setQuantities, isEntree = false) => {
-  // Handle special case for "A la carte"
-  if (mealOptions.allowOnlyOne) {
+  // Increment item quantity with checks
+  const incrementQuantity = (item, setQuantities, isEntree = false) => {
+    if (mealOptions.allowOnlyOne) {
       const totalSelected = selectedEntreesCount + selectedSidesCount;
       if (totalSelected >= 1) {
-          alert("You can only choose one item for 'A la carte'.");
-          console.log("Only one item allowed for 'A la carte'.");
-          return;
+        alert("You can only choose one item for 'A la carte'.");
+        console.log("Only one item allowed for 'A la carte'.");
+        return;
       }
-  } else {
+    } else {
       const newTotal = isEntree
-          ? selectedEntreesCount + 1
-          : selectedSidesCount + 1;
+        ? selectedEntreesCount + 1
+        : selectedSidesCount + 1;
 
       if (isEntree && newTotal > maxEntrees) {
-          alert("Maximum number of entrees chosen.");
-          console.log("Max entrees chosen.");
-          return;
+        alert("Maximum number of entrees chosen.");
+        console.log("Max entrees chosen.");
+        return;
       }
       if (!isEntree && newTotal > maxSides) {
-          alert("Maximum number of sides chosen.");
-          console.log("Max sides chosen.");
-          return;
+        alert("Maximum number of sides chosen.");
+        console.log("Max sides chosen.");
+        return;
       }
-  }
+    }
 
-  setQuantities((prevState) => {
+    setQuantities((prevState) => {
       const updatedCount = prevState[item] + 1;
       isEntree
-          ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
-          : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));
+        ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
+        : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));
       return {
-          ...prevState,
-          [item]: updatedCount,
+        ...prevState,
+        [item]: updatedCount,
       };
-  });
-};
+    });
+  };
 
   // Decrement item quantity
   const decrementQuantity = (item, setQuantities, isEntree = false) => {
@@ -162,10 +174,10 @@ const incrementQuantity = (item, setQuantities, isEntree = false) => {
   
   return (
     <div className="min-h-screen flex flex-col">
-
+  
       {/* Navbar at top of screen */}
       <Navbar />
-
+  
       <div className="flex-2 pb-16">
         <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
         {/* Sides Section */}
@@ -177,7 +189,7 @@ const incrementQuantity = (item, setQuantities, isEntree = false) => {
           scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
           containerRef={sidesContainerRef}
         />
-
+  
         <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
         {/* Entrees Section */}
         <Gallery
@@ -188,17 +200,8 @@ const incrementQuantity = (item, setQuantities, isEntree = false) => {
           scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
           containerRef={entreesContainerRef}
         />
-      </div>
-
-      {/* Footer / Checkout Div */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg h-25">
-        <KioskFooter 
-          sideQuantities={sideQuantities}
-          entreeQuantities={entreeQuantities}
-          drinkQuantities={drinkQuantities}
-        />
-      </div>
-
+      </div> {/* Properly closed div tag */}
     </div>
   );
+  
 }
