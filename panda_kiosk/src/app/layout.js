@@ -1,5 +1,6 @@
 import "./globals.css";
 // import { OrderProvider } from '@/context/OrderContext';
+import { GlobalStateProvider } from "@/components/GlobalStateProvider";
 
 export const metadata = {
   title: "Create Next App",
@@ -9,10 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased`}
-      >
-        {children}
+      <body className={`antialiased`} >
+        <GlobalStateProvider>
+          {children}
+        </GlobalStateProvider>
         {/* <OrderProvider>{children}</OrderProvider> */}
       </body>
     </html>
