@@ -18,6 +18,9 @@ export default function Home() {
   const [selectedEntreesCount, setSelectedEntreesCount] = useState(0);
   const [selectedSidesCount, setSelectedSidesCount] = useState(0);
 
+  // Dynamic list to track selected items
+  const [selectedItemIds, setSelectedItemIds] = useState([]);
+
   // State variables to manage the quantity of each item
   const [sideQuantities, setSideQuantities] = useState({
     friedRice: 0,
@@ -41,7 +44,6 @@ export default function Home() {
     coke: 0,
     sprite: 0,
     water: 0,
-    // Add more drink items as needed
   });
 
   // References for scrolling the sides and entrees sections
@@ -73,14 +75,17 @@ export default function Home() {
       sprite: 0,
       water: 0,
     });
-  }, [mealOptions]); // Listen for any change in mealOptions to reset states
+    setSelectedItemIds([]); // Clear selected items on meal type change
+  }, [mealOptions]);
 
-  // Calculate the total number of items in an object
+  useEffect(() => {
+    console.log("Selected Item IDs:", selectedItemIds);
+  }, [selectedItemIds]);
+
   const calculateTotalCount = (quantities) => {
     return Object.values(quantities).reduce((total, count) => total + count, 0);
   };
 
-  // Increment item quantity with checks
   const incrementQuantity = (item, setQuantities, isEntree = false) => {
     if (mealOptions.allowOnlyOne) {
       const totalSelected = selectedEntreesCount + selectedSidesCount;
@@ -116,9 +121,17 @@ export default function Home() {
         [item]: updatedCount,
       };
     });
+
+    setSelectedItemIds((prevIds) => {
+      if (!prevIds.includes(item)) {
+        const newIds = [...prevIds, item];
+        console.log("Updated Selected Item IDs:", newIds);
+        return newIds;
+      }
+      return prevIds;
+    });
   };
 
-  // Decrement item quantity
   const decrementQuantity = (item, setQuantities, isEntree = false) => {
     setQuantities((prevState) => {
       if (prevState[item] > 0) {
@@ -133,6 +146,12 @@ export default function Home() {
       }
       return prevState;
     });
+
+    setSelectedItemIds((prevIds) => {
+      const newIds = prevIds.filter((id) => id !== item || entreeQuantities[item] > 1);
+      console.log("Updated Selected Item IDs after Decrement:", newIds);
+      return newIds;
+    });
   };
 
   useEffect(() => {
@@ -140,12 +159,12 @@ export default function Home() {
       try {
         const response = await fetch("/api/connectDB");
         const data = await response.json();
-        console.log("Inventory Data:", data); // Logs the fetched inventory data
+        console.log("Inventory Data:", data);
       } catch (error) {
         console.error("Failed to fetch inventory data:", error);
       }
     };
-  
+
     fetchInventory();
   }, []);
 
@@ -171,16 +190,12 @@ export default function Home() {
     { id: 'stringBeanChicken', title: 'String Bean Chicken Breast', imageUrl: '/StringBeanChicken.png', calories: '210 calories' },
     { id: 'blackPepperChicken', title: 'Black Pepper Chicken', imageUrl: '/BlackPepperChicken.png', calories: '280 calories' },
   ];
-  
+
   return (
     <div className="min-h-screen flex flex-col">
-  
-      {/* Navbar at top of screen */}
       <Navbar />
-  
       <div className="flex-2 pb-16">
         <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
-        {/* Sides Section */}
         <Gallery 
           items={sides}
           sideQuantities={sideQuantities}
@@ -189,9 +204,8 @@ export default function Home() {
           scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
           containerRef={sidesContainerRef}
         />
-  
+
         <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
-        {/* Entrees Section */}
         <Gallery
           items={entrees}
           sideQuantities={entreeQuantities}
@@ -200,8 +214,7 @@ export default function Home() {
           scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
           containerRef={entreesContainerRef}
         />
-      </div> {/* Properly closed div tag */}
+      </div>
     </div>
   );
-  
 }
