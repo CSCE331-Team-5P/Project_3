@@ -13,10 +13,15 @@ export default function Home() {
   const { mealOptions } = useGlobalState();
   const { maxEntrees, maxSides, mealType } = mealOptions;
 
+  console.log(mealOptions);
+
   // State for counting total selected entrees and sides
   const [selectedEntreesCount, setSelectedEntreesCount] = useState(0);
   const [selectedSidesCount, setSelectedSidesCount] = useState(0);
 
+  // Dynamic list to track selected items
+  const [selectedItemIds, setSelectedItemIds] = useState([]);
+  
   // State variables to manage the quantity of each item
   const [sideQuantities, setSideQuantities] = useState({
     friedRice: 0,
@@ -34,6 +39,13 @@ export default function Home() {
     beefBroccoli: 0,
     shrimp: 0,
     honeyWalnutShrimp: 0,
+  });
+
+
+  const [drinkQuantities, setDrinkQuantities] = useState({
+    coke: 0,
+    sprite: 0,
+    water: 0,
   });
 
   // References for scrolling the sides and entrees sections
@@ -60,53 +72,69 @@ export default function Home() {
       shrimp: 0,
       honeyWalnutShrimp: 0,
     });
-  }, [mealOptions]); // Listen for any change in mealOptions to reset states
+    setDrinkQuantities({
+      coke: 0,
+      sprite: 0,
+      water: 0,
+    });
+    setSelectedItemIds([]); // Clear selected items on meal type change
+  }, [mealOptions]);
 
-  // Calculate the total number of items in an object
+  useEffect(() => {
+    console.log("Selected Item IDs:", selectedItemIds);
+  }, [selectedItemIds]);
+
   const calculateTotalCount = (quantities) => {
     return Object.values(quantities).reduce((total, count) => total + count, 0);
   };
 
-// Increment item quantity with checks
-const incrementQuantity = (item, setQuantities, isEntree = false) => {
-  // Handle special case for "A la carte"
-  if (mealOptions.allowOnlyOne) {
+
+  const incrementQuantity = (item, setQuantities, isEntree = false) => {
+    if (mealOptions.allowOnlyOne) {
       const totalSelected = selectedEntreesCount + selectedSidesCount;
       if (totalSelected >= 1) {
-          alert("You can only choose one item for 'A la carte'.");
-          console.log("Only one item allowed for 'A la carte'.");
-          return;
+        alert("You can only choose one item for 'A la carte'.");
+        console.log("Only one item allowed for 'A la carte'.");
+        return;
       }
-  } else {
+    } else {
       const newTotal = isEntree
-          ? selectedEntreesCount + 1
-          : selectedSidesCount + 1;
+        ? selectedEntreesCount + 1
+        : selectedSidesCount + 1;
 
       if (isEntree && newTotal > maxEntrees) {
-          alert("Maximum number of entrees chosen.");
-          console.log("Max entrees chosen.");
-          return;
+        alert("Maximum number of entrees chosen.");
+        console.log("Max entrees chosen.");
+        return;
       }
       if (!isEntree && newTotal > maxSides) {
-          alert("Maximum number of sides chosen.");
-          console.log("Max sides chosen.");
-          return;
+        alert("Maximum number of sides chosen.");
+        console.log("Max sides chosen.");
+        return;
       }
-  }
+    }
 
-  setQuantities((prevState) => {
+    setQuantities((prevState) => {
       const updatedCount = prevState[item] + 1;
       isEntree
-          ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
-          : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));
+        ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
+        : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));
       return {
-          ...prevState,
-          [item]: updatedCount,
+        ...prevState,
+        [item]: updatedCount,
       };
-  });
-};
+    });
 
-  // Decrement item quantity
+    setSelectedItemIds((prevIds) => {
+      if (!prevIds.includes(item)) {
+        const newIds = [...prevIds, item];
+        console.log("Updated Selected Item IDs:", newIds);
+        return newIds;
+      }
+      return prevIds;
+    });
+  };
+
   const decrementQuantity = (item, setQuantities, isEntree = false) => {
     setQuantities((prevState) => {
       if (prevState[item] > 0) {
@@ -121,6 +149,12 @@ const incrementQuantity = (item, setQuantities, isEntree = false) => {
       }
       return prevState;
     });
+
+    setSelectedItemIds((prevIds) => {
+      const newIds = prevIds.filter((id) => id !== item || entreeQuantities[item] > 1);
+      console.log("Updated Selected Item IDs after Decrement:", newIds);
+      return newIds;
+    });
   };
 
   useEffect(() => {
@@ -133,7 +167,7 @@ const incrementQuantity = (item, setQuantities, isEntree = false) => {
         console.error("Failed to fetch inventory data:", error);
       }
     };
-  
+
     fetchInventory();
   }, []);
 
@@ -162,13 +196,12 @@ const incrementQuantity = (item, setQuantities, isEntree = false) => {
   
   return (
     <div className="min-h-screen flex flex-col">
-
-      {/* Navbar at top of screen */}
       <Navbar />
-
       <div className="flex-2 pb-16">
         <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
+
         {/* Sides Section */}
+
         <Gallery 
           items={sides}
           sideQuantities={sideQuantities}
@@ -179,6 +212,7 @@ const incrementQuantity = (item, setQuantities, isEntree = false) => {
         />
 
         <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
+
         {/* Entrees Section */}
         <Gallery
           items={entrees}
@@ -189,16 +223,6 @@ const incrementQuantity = (item, setQuantities, isEntree = false) => {
           containerRef={entreesContainerRef}
         />
       </div>
-
-      {/* Footer / Checkout Div */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-lg h-25">
-        <KioskFooter 
-          sideQuantities={sideQuantities}
-          entreeQuantities={entreeQuantities}
-          drinkQuantities={drinkQuantities}
-        />
-      </div>
-
     </div>
   );
 }
