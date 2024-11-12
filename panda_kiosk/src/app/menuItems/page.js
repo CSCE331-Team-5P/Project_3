@@ -12,6 +12,7 @@ import KioskFooter from "@/components/KioskFooter";
 export default function Home() {
   const { mealOptions } = useGlobalState();
   const { maxEntrees, maxSides, mealType } = mealOptions;
+
   console.log(mealOptions);
 
   // State for counting total selected entrees and sides
@@ -20,7 +21,7 @@ export default function Home() {
 
   // Dynamic list to track selected items
   const [selectedItemIds, setSelectedItemIds] = useState([]);
-
+  
   // State variables to manage the quantity of each item
   const [sideQuantities, setSideQuantities] = useState({
     friedRice: 0,
@@ -39,6 +40,7 @@ export default function Home() {
     shrimp: 0,
     honeyWalnutShrimp: 0,
   });
+
 
   const [drinkQuantities, setDrinkQuantities] = useState({
     coke: 0,
@@ -85,6 +87,7 @@ export default function Home() {
   const calculateTotalCount = (quantities) => {
     return Object.values(quantities).reduce((total, count) => total + count, 0);
   };
+
 
   const incrementQuantity = (item, setQuantities, isEntree = false) => {
     if (mealOptions.allowOnlyOne) {
@@ -159,7 +162,7 @@ export default function Home() {
       try {
         const response = await fetch("/api/connectDB");
         const data = await response.json();
-        console.log("Inventory Data:", data);
+        console.log("Inventory Data:", data); // Logs the fetched inventory data
       } catch (error) {
         console.error("Failed to fetch inventory data:", error);
       }
@@ -190,12 +193,15 @@ export default function Home() {
     { id: 'stringBeanChicken', title: 'String Bean Chicken Breast', imageUrl: '/StringBeanChicken.png', calories: '210 calories' },
     { id: 'blackPepperChicken', title: 'Black Pepper Chicken', imageUrl: '/BlackPepperChicken.png', calories: '280 calories' },
   ];
-
+  
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <div className="flex-2 pb-16">
         <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
+
+        {/* Sides Section */}
+
         <Gallery 
           items={sides}
           sideQuantities={sideQuantities}
@@ -206,6 +212,8 @@ export default function Home() {
         />
 
         <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
+
+        {/* Entrees Section */}
         <Gallery
           items={entrees}
           sideQuantities={entreeQuantities}
