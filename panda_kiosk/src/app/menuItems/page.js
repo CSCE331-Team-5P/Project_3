@@ -32,8 +32,18 @@ export default function Home() {
   });
 
   const [entreeQuantities, setEntreeQuantities] = useState({
+    blackPepperChicken: 0,
+    stringBeanChicken: 0,
+    sweetfireChicken: 0, 
+    mushroomChicken: 0,
+    beijingBeef: 0, 
+    honeySesameChicken: 0, 
+    grilledTeriyakiChicken: 0,
+    blazingBourbonChicken: 0,
     orangeChicken: 0,
+    pepperSirloinSteak: 0,
     kungPaoChicken: 0,
+    broccoliBeef: 0,
     teriyakiChicken: 0,
     beefBroccoli: 0,
     shrimp: 0,
@@ -63,12 +73,22 @@ export default function Home() {
       mixedVegetables: 0,
     });
     setEntreeQuantities({
+      grilledTeriyakiChicken: 0,
+      pepperSirloinSteak: 0,
+      blazingBourbonChicken: 0,
       orangeChicken: 0,
       kungPaoChicken: 0,
+      broccoliBeef: 0,
       teriyakiChicken: 0,
       beefBroccoli: 0,
       shrimp: 0,
       honeyWalnutShrimp: 0,
+      honeySesameChicken: 0, 
+      beijingBeef: 0, 
+      mushroomChicken: 0, 
+      sweetfireChicken: 0, 
+      stringBeanChicken: 0, 
+      blackPepperChicken: 0
     });
     setDrinkQuantities({
       coke: 0,
