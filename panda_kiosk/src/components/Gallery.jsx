@@ -4,7 +4,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 
-export default function Gallery({ items, incrementQuantity, decrementQuantity }) {
+export default function Gallery({ items,sideQuantities, incrementQuantity, decrementQuantity }) {
   return (
     <div className="relative w-full max-w-6xl mx-auto">
       <Carousel
@@ -21,7 +21,7 @@ export default function Gallery({ items, incrementQuantity, decrementQuantity })
                   title={item.title}
                   imageUrl={item.imageUrl}
                   calories={item.calories}
-                  quantity={0}
+                  quantity={sideQuantities[item.id]}
                   incrementQuantity={() => incrementQuantity(item.id)}
                   decrementQuantity={() => decrementQuantity(item.id)}
                 />
