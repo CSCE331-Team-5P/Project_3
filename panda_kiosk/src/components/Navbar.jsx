@@ -63,7 +63,7 @@ const Navbar = () => {
                 
                 {/* Menu icon with notification badge */}
                 <li className={`flex flex-col items-center cursor-pointer hover:bg-red-600 rounded-lg p-2 transition-colors relative
-                            ${activeCategory === 'Menu' ? 'font-bold underline' : ''} hover:text-yellow-300`}
+                            ${(activeCategory === 'Menu' || activeCategory === 'Drink' || activeCategory === 'Dessert') ? 'font-bold underline' : ''} hover:text-yellow-300`}
                 >
                     <div className="relative">
                         <MenuRoundedIcon fontSize="large" />
