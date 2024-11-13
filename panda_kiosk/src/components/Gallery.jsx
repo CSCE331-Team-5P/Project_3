@@ -1,54 +1,41 @@
-//components/Gallery.jsx
-import React, { useRef } from 'react';
+import React from 'react';
 import MenuItemCard from './MenuItemCard';
+import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/carousel';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 
-//^ Material UI Icons
-import ArrowBackIosRoundedIcon from '@mui/icons-material/ArrowBackIosRounded';
-import ArrowForwardIosRoundedIcon from '@mui/icons-material/ArrowForwardIosRounded';
-
-const Gallery = ({ items, sideQuantities, incrementQuantity, decrementQuantity, scrollContainer }) => {
-    const sidesContainerRef = useRef(null);
-
-    return (
-        <div className='flex flex-col my-5'>
-            {/* Top Div - Buttons */}
-            <div className="flex w-full p-4 space-x-2">
-                <button 
-                    onClick={() => scrollContainer("left", sidesContainerRef)} 
-                    className="p-4 text-white bg-red-700 hover:bg-red-500 rounded-lg"
-                >
-                    <ArrowBackIosRoundedIcon />
-                </button>
-                <button 
-                    onClick={() => scrollContainer("right", sidesContainerRef)} 
-                    className="p-4 text-white bg-red-700 hover:bg-red-500 rounded-lg"
-                >
-                    <ArrowForwardIosRoundedIcon />
-                </button>
-            </div>
-            {/* Bottom Div - Cards*/}
-            <div className="p-4">
-                <div
-                    ref={sidesContainerRef}
-                    className="flex space-x-4 overflow-x-auto scrollbar-hide justify-self-center"
-                    style={{ width: "70vw" }}
-                    >
-                    {items.map((item) => (
-                        <MenuItemCard
-                        key={item.id}
-                        title={item.title}
-                        imageUrl={item.imageUrl}
-                        calories={item.calories}
-                        quantity={sideQuantities[item.id]}
-                        incrementQuantity={() => incrementQuantity(item.id)}
-                        decrementQuantity={() => decrementQuantity(item.id)}
-                        />
-                    ))}
-                </div>
-            </div>
-        </div>
-    );
-};
-
-export default Gallery;
+export default function Gallery({ items, incrementQuantity, decrementQuantity }) {
+  return (
+    <div className="relative w-full max-w-6xl mx-auto">
+      <Carousel
+        opts={{
+          align: "start",
+        }}
+        className="w-full"
+      >
+        <CarouselContent>
+          {items.map((item) => (
+            <CarouselItem key={item.id} className="md:basis-1/2 lg:basis-1/3">
+              <div className="p-1">
+                <MenuItemCard
+                  title={item.title}
+                  imageUrl={item.imageUrl}
+                  calories={item.calories}
+                  quantity={0}
+                  incrementQuantity={() => incrementQuantity(item.id)}
+                  decrementQuantity={() => decrementQuantity(item.id)}
+                />
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <CarouselPrevious className="absolute left-[-6rem] top-1/2 -translate-y-1/2 bg-red-700 border-2 border-border hover:bg-yellow-400 hover:text-accent-foreground h-16 w-16 rounded-full">
+          <ChevronLeft className="h-10 w-10" />
+        </CarouselPrevious>
+        <CarouselNext className="absolute right-[-6rem] top-1/2 -translate-y-1/2 bg-red-700 border-2 border-border hover:bg-yellow-400 hover:text-accent-foreground h-16 w-16 rounded-full">
+          <ChevronRight className="h-10 w-10" />
+        </CarouselNext>
+      </Carousel>
+    </div>
+  );
+}
