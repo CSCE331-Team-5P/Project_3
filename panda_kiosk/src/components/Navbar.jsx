@@ -12,11 +12,11 @@ import LocalDrinkRoundedIcon from '@mui/icons-material/LocalDrinkRounded';
 import IcecreamRoundedIcon from '@mui/icons-material/IcecreamRounded';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import { SettingsAccessibility } from '@mui/icons-material';
+import OrderPopover from '@/components/OrderPopover';
+
 
 const Navbar = () => {
     const router = useRouter(); //^ Initialize the router for navigation
-    // const pathname = usePathname(); 
-
 
     const {updateMealOptions} = useGlobalState();
 
@@ -62,13 +62,10 @@ const Navbar = () => {
                 ))}
                 
                 {/* Menu icon with notification badge */}
-                <li className={`flex flex-col items-center cursor-pointer hover:bg-red-600 rounded-lg p-2 transition-colors relative
-                            ${(activeCategory === 'Menu' || activeCategory === 'Drink' || activeCategory === 'Dessert') ? 'font-bold underline' : ''} hover:text-yellow-300`}
+                <li className={`flex flex-col items-center cursor-pointer hover:bg-red-600 rounded-lg p-2 transition-colors hover:text-yellow-300`}
                 >
-                    <div className="relative">
-                        <MenuRoundedIcon fontSize="large" />
-                    </div>
-                    <span className="text-sm invisible">Menu</span>
+                    <OrderPopover />
+                    <span className={`text-sm`}>Order</span>
                 </li>
             </ul>
         </nav>
