@@ -10,7 +10,7 @@ import Gallery from "@/components/Gallery";
 import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
-  const { mealOptions } = useGlobalState();
+  const { mealOptions, addItemToSelection, removeItemFromSelection } = useGlobalState();
   const { maxEntrees, maxSides, mealType } = mealOptions;
   console.log(mealOptions);
 
@@ -107,6 +107,7 @@ export default function Home() {
   };
 
   const incrementQuantity = (item, setQuantities, isEntree = false) => {
+
     if (mealOptions.allowOnlyOne) {
       const totalSelected = selectedEntreesCount + selectedSidesCount;
       if (totalSelected >= 1) {
@@ -131,6 +132,8 @@ export default function Home() {
       }
     }
 
+    addItemToSelection(item);
+
     setQuantities((prevState) => {
       const updatedCount = prevState[item] + 1;
       isEntree
@@ -153,9 +156,11 @@ export default function Home() {
   };
 
   const decrementQuantity = (item, setQuantities, isEntree = false) => {
+    const { selectedEntreesCount, selectedSidesCount, removeItem, setSelectedEntreesCount, setSelectedSidesCount } = useGlobalState();
     setQuantities((prevState) => {
       if (prevState[item] > 0) {
         const updatedCount = prevState[item] - 1;
+        removeItemFromSelection(item);
         isEntree
           ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
           : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));

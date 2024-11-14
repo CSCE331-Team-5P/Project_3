@@ -14,6 +14,8 @@ export const GlobalStateProvider = ({ children }) => {
         allowOnlyOne: true, // Set to true to enforce the "A la carte" restriction
     });
 
+    const [selectedItemIds, setSelectedItemIds] = useState([]);
+
     // Function to update meal options based on the selected category
     const updateMealOptions = (mealType) => {
         switch (mealType) {
@@ -34,8 +36,26 @@ export const GlobalStateProvider = ({ children }) => {
         }
     };
 
+    // Function to update selected item IDs
+    const addItemToSelection = (item) => {
+        setSelectedItemIds((prevIds) => {
+            if (!prevIds.includes(item)) {
+                return [...prevIds, item];
+            }
+            return prevIds;
+        });
+    };
+
+    const removeItemFromSelection = (item) => {
+        setSelectedItemIds((prevIds) => prevIds.filter((id) => id !== item));
+    };
+
+    // const clearSelectedItems = () => {
+    //     setSelectedItemIds([]); 
+    // };
+
     return (
-        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions }}>
+        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection }}>
             {children}
         </GlobalStateContext.Provider>
     );
