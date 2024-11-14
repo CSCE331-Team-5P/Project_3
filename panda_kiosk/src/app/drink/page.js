@@ -4,8 +4,10 @@ import { useRouter } from "next/navigation"; // Correctly import useRouter
 import Navbar from "@/components/Navbar";
 import KioskFooter from "@/components/KioskFooter";
 import DrinkSelection from "@/components/DrinkSelection";
+import { useGlobalState } from "@/components/GlobalStateProvider";
 
 export default function Drink() {
+
   const [activeCategory, setActiveCategory] = useState("Drink"); // Default to Drinks tab
   const [drinkQuantities, setDrinkQuantities] = useState({
     small: 0,
