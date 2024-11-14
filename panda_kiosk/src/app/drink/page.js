@@ -6,6 +6,11 @@ import KioskFooter from "@/components/KioskFooter";
 import DrinkSelection from "@/components/DrinkSelection";
 
 export default function Drink() {
+  const drinks = [
+    {id: 'cocaCola', title: 'Coca Cola', imageURL: '/images/coca-cola.jpg'},
+  ];
+
+
   const [activeCategory, setActiveCategory] = useState("Drink"); // Default to Drinks tab
   const [drinkQuantities, setDrinkQuantities] = useState({
     small: 0,
