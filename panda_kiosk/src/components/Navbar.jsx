@@ -57,7 +57,7 @@ const Navbar = () => {
                                 ${activeCategory === item.text ? "font-bold underline text-yellow-300" : ""} hover:text-yellow-300`}
                 >
                     <span className={`mb-1`}>{item.icon}</span>
-                    <span className={`text-sm`}>{item.text}</span>
+                    <span className={`text-base font-semibold`}>{item.text}</span>
                 </li>
                 ))}
                 
@@ -65,7 +65,7 @@ const Navbar = () => {
                 <li className={`flex flex-col items-center cursor-pointer hover:bg-red-600 rounded-lg p-2 transition-colors hover:text-yellow-300`}
                 >
                     <OrderPopover />
-                    <span className={`text-sm`}>Order</span>
+                    <span className={`text-base font-semibold`}>Order</span>
                 </li>
             </ul>
         </nav>
