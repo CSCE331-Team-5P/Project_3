@@ -114,6 +114,17 @@ export default function Home() {
       <Navbar />
   
       <div className="flex-2 pb-16">
+        <h2 className="text-2xl font-bold m-4 text-black">Extras</h2>
+        {/* Extras Section */}
+        <Gallery
+          items={extras}
+          sideQuantities={extraQuantities}
+          incrementQuantity={(id) => incrementQuantity(id, setExtraQuantities)}
+          decrementQuantity={(id) => decrementQuantity(id, setExtraQuantities)}
+          scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
+          containerRef={extrasContainerRef}
+        />
+        
         <h2 className="text-2xl font-bold m-4 text-black">Desserts</h2>
         {/* Desserts Section */}
         <Gallery 
@@ -125,16 +136,6 @@ export default function Home() {
           containerRef={dessertsContainerRef}
         />
   
-        <h2 className="text-2xl font-bold m-4 text-black">Extras</h2>
-        {/* Extras Section */}
-        <Gallery
-          items={extras}
-          sideQuantities={extraQuantities}
-          incrementQuantity={(id) => incrementQuantity(id, setExtraQuantities)}
-          decrementQuantity={(id) => decrementQuantity(id, setExtraQuantities)}
-          scrollContainer={(direction, ref) => scrollContainer(direction, ref)}
-          containerRef={extrasContainerRef}
-        />
       </div> {/* Properly closed div tag */}
     </div>
   );
