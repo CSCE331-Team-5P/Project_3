@@ -30,8 +30,8 @@ const Navbar = () => {
         
         if (category === "Drink") {
             router.push("/drink"); //^ Navigate to the drink page
-        } else if (category === "Dessert") {
-            router.push("/dessert"); //^ Navigate to the dessert page
+        } else if (category === "Extras") {
+            router.push("/extras"); //^ Navigate to the dessert page
         } else if (category === "A la carte" || category === "Bowl" || category === "Plate" || category === "Bigger Plate") {
             router.push("/menuItems"); //^ Navigate to the menu page
         }
@@ -44,7 +44,7 @@ const Navbar = () => {
         { icon: <RamenDiningRoundedIcon fontSize="large" />, text: 'Plate' },
         { icon: <DinnerDiningRoundedIcon fontSize="large" />, text: 'Bigger Plate' },
         { icon: <LocalDrinkRoundedIcon fontSize="large" />, text: 'Drink' },
-        { icon: <IcecreamRoundedIcon fontSize="large" />, text: 'Dessert' }
+        { icon: <IcecreamRoundedIcon fontSize="large" />, text: 'Extras' }
     ];
 
     return (
