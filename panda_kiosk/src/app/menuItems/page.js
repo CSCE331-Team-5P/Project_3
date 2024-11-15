@@ -219,8 +219,9 @@ export default function Home() {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <div className="flex-2 pb-16">
-        <h2 className="text-2xl font-bold m-4 text-black">Sides</h2>
+      <div className="flex flex-col my-auto">
+        <h2 className="text-4xl font-bold mx-4 text-black"> Step 1 </h2>
+        <h3 className="text-xl font-medium text- mx-4 my-2 text-black"> Select your sides </h3>
         <Gallery 
           items={sides}
           sideQuantities={sideQuantities}
@@ -230,7 +231,8 @@ export default function Home() {
           containerRef={sidesContainerRef}
         />
 
-        <h2 className="text-2xl font-bold m-4 text-black">Entrees</h2>
+        <h2 className="text-4xl font-bold mx-4 text-black"> Step 2 </h2>
+        <h3 className="text-xl font-medium text- mx-4 my-2 text-black"> Select your entrees </h3>
         <Gallery
           items={entrees}
           sideQuantities={entreeQuantities}
