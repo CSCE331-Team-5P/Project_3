@@ -9,7 +9,7 @@ const DrinkCard = ({
 }) => {
     return (
         <div
-            className="bg-gray-100 text-gray-900 p-6 rounded-xl shadow-md flex flex-col justify-between items-center transition-transform transform hover:scale-105"
+            className="bg-red-700 text-white p-6 rounded-xl shadow-md flex flex-col justify-between items-center transition-transform transform hover:scale-105"
             style={{ width: "220px", height: "240px", minWidth: "220px" }}
         >
             {/* Image */}
@@ -17,7 +17,7 @@ const DrinkCard = ({
             
             {/* Title with adjusted styling for wrapping text */}
             <h3
-                className="font-semibold text-center text-gray-800 mb-2"
+                className="font-semibold text-center text-white mb-2"
                 style={{
                     fontSize: '1rem', // Slightly larger font size for title
                     overflow: 'hidden',
@@ -32,14 +32,14 @@ const DrinkCard = ({
             {/* Quantity controls */}
             <div className="flex items-center justify-between w-full mt-3">
                 <button
-                    className="bg-gray-300 text-gray-800 hover:bg-gray-400 px-3 py-1 rounded-lg"
+                    className="bg-white text-red-700 hover:bg-yellow-400 px-3 py-1 rounded-lg"
                     onClick={onDecrement}
                 >
                     -
                 </button>
-                <span className="text-lg font-medium text-gray-700">{quantity}</span>
+                <span className="text-lg font-medium text-white">{quantity}</span>
                 <button
-                    className="bg-gray-300 text-gray-800 hover:bg-gray-400 px-3 py-1 rounded-lg"
+                    className="bg-white text-red-700 hover:bg-yellow-400 px-3 py-1 rounded-lg"
                     onClick={onIncrement}
                 >
                     +
