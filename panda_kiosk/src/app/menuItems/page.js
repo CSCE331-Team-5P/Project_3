@@ -156,11 +156,13 @@ export default function Home() {
   };
 
   const decrementQuantity = (item, setQuantities, isEntree = false) => {
-    const { selectedEntreesCount, selectedSidesCount, removeItem, setSelectedEntreesCount, setSelectedSidesCount } = useGlobalState();
+    // const { selectedEntreesCount, selectedSidesCount, removeItem, setSelectedEntreesCount, setSelectedSidesCount } = useGlobalState();
+    removeItemFromSelection(item);
+    
     setQuantities((prevState) => {
       if (prevState[item] > 0) {
         const updatedCount = prevState[item] - 1;
-        removeItemFromSelection(item);
+        //original remove 
         isEntree
           ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
           : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));
