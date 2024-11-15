@@ -74,17 +74,13 @@ export default function Drink() {
       <Navbar />
 
       {/* Drinks Section Div */}
-      <div className="p-4 bg-white h-[80vh] overflow-auto">
+      <div className="p-4 bg-white ">
+        <h2 className="text-3xl font-semibold mb-6 text-black text-center"> Available Drinks </h2>
         {/* Drinks content in rectangular cards */}
         <DrinkSelection />
       </div>
 
-      {/* Footer / Checkout Div */}
-      <KioskFooter 
-        sideQuantities={sideQuantities}
-        entreeQuantities={entreeQuantities}
-        drinkQuantities={drinkQuantities} // Add drinkQuantities prop
-      />
+
 
     </div>
   );
