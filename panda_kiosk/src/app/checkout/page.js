@@ -2,11 +2,12 @@
 import Navbar from "@/components/Navbar";
 import { useGlobalState } from "@/components/GlobalStateProvider"; // Import the global state
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // Import useRouter to programmatically control routing
+import { usePathname, useRouter } from "next/navigation"; // Import useRouter to programmatically control routing (originally navigation)
 
 export default function Checkout() {
-  const { selectedItemIds } = useGlobalState(); // Access selected item IDs from the global state
+  const { selectedItemIds, clearSelectedItems } = useGlobalState(); // Access selected item IDs from the global state
   const router = useRouter(); // Initialize the Next.js router to trigger a page refresh
+  const pathname = usePathname(); // Gives the current path
 
   // Sample data for item details (this would be more dynamic in a real application)
   const menuItems = [
@@ -36,11 +37,15 @@ export default function Checkout() {
     { id: 'blackPepperChicken', name: 'Black Pepper Chicken', price: 6.77 },
   ];
 
-  // Create an array of selected items with their details directly from selectedItemIds
-  const orderItems = selectedItemIds.map((id) => {
+  const itemQuantities = selectedItemIds.reduce((acc, id) => {
+    acc[id] = (acc[id] || 0) + 1;
+    return acc; 
+  },{});
+
+  const orderItems = Object.entries(itemQuantities).map(([id, quantity]) => {
     const item = menuItems.find((menuItem) => menuItem.id === id);
-    return item ? { ...item, quantity: 1 } : null; // Assuming 1 quantity for now
-  }).filter(Boolean); // Remove null items if any
+    return item ? { ...item, quantity } : null; // Include the quantity in the item object
+  }).filter(Boolean); 
 
   // Calculate subtotal
   const subtotal = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -49,11 +54,11 @@ export default function Checkout() {
 
   // useEffect hook to trigger a page refresh when the component unmounts (i.e., when the user leaves the Checkout page)
   useEffect(() => {
-    // Cleanup function to refresh page when leaving the Checkout page
-    return () => {
-      router.refresh(); // This will refresh the page when the component unmounts
-    };
-  }, [router]); // The empty dependency array ensures this runs only when the component unmounts
+    // Log pathname for debugging purposes
+    console.log(`Current pathname: ${pathname}`);
+  }, [pathname]);
+
+
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -99,6 +104,15 @@ export default function Checkout() {
           <button className="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all duration-200 transform hover:scale-105">
             Proceed to Checkout
           </button>
+
+          {/* Clear Button */}
+          <button
+            className="bg-gray-600 hover:bg-gray-500 text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all duration-200 transform hover:scale-105"
+            onClick={clearSelectedItems}
+          >
+            Clear Order
+          </button>
+
         </div>
       </div>
     </div>

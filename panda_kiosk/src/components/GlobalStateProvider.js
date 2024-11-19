@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 
 // Create the global state context
 const GlobalStateContext = createContext();
@@ -50,12 +50,12 @@ export const GlobalStateProvider = ({ children }) => {
         setSelectedItemIds((prevIds) => prevIds.filter((id) => id !== item));
     };
 
-    // const clearSelectedItems = () => {
-    //     setSelectedItemIds([]); 
-    // };
+    const clearSelectedItems = useCallback(() => {
+        setSelectedItemIds([]);
+    }, []); // No dependencies mean this function won't change
 
     return (
-        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection }}>
+        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems }}>
             {children}
         </GlobalStateContext.Provider>
     );
