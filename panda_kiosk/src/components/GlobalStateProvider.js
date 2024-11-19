@@ -39,10 +39,11 @@ export const GlobalStateProvider = ({ children }) => {
     // Function to update selected item IDs
     const addItemToSelection = (item) => {
         setSelectedItemIds((prevIds) => {
-            if (!prevIds.includes(item)) {
-                return [...prevIds, item];
-            }
-            return prevIds;
+            // if (!prevIds.includes(item)) {
+            //     return [...prevIds, item];
+            // }
+            // return prevIds;
+            return [...prevIds, item];
         });
     };
 

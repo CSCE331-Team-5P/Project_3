@@ -55,8 +55,8 @@ export default function Checkout() {
   // useEffect hook to trigger a page refresh when the component unmounts (i.e., when the user leaves the Checkout page)
   useEffect(() => {
     // Log pathname for debugging purposes
-    console.log(`Current pathname: ${pathname}`);
-  }, [pathname]);
+    console.log(`Current array: ${selectedItemIds}`);
+  }, [selectedItemIds]);
 
 
 
