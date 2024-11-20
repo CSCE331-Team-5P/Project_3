@@ -20,19 +20,19 @@ export const GlobalStateProvider = ({ children }) => {
     const updateMealOptions = (mealType) => {
         switch (mealType) {
             case "A la carte":
-                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType, allowOnlyOne: true });
+                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType, allowOnlyOne: true , allowDrink: true});
                 break;
             case "Bowl":
-                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType, allowOnlyOne: false });
+                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType, allowOnlyOne: false, allowDrink: true });
                 break;
             case "Plate":
-                setMealOptions({ maxEntrees: 2, maxSides: 1, mealType, allowOnlyOne: false });
+                setMealOptions({ maxEntrees: 2, maxSides: 1, mealType, allowOnlyOne: false, allowDrink: true });
                 break;
             case "Bigger Plate":
-                setMealOptions({ maxEntrees: 3, maxSides: 1, mealType, allowOnlyOne: false });
+                setMealOptions({ maxEntrees: 3, maxSides: 1, mealType, allowOnlyOne: false, allowDrink: true });
                 break;
             default:
-                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType: "A la carte", allowOnlyOne: true });
+                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType: "A la carte", allowOnlyOne: true, allowDrink: true });
         }
     };
 

@@ -11,7 +11,7 @@ import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
   const { mealOptions, addItemToSelection, removeItemFromSelection } = useGlobalState();
-  const { maxEntrees, maxSides, mealType } = mealOptions;
+  const { maxEntrees, maxSides, allowDrink, mealType } = mealOptions;
   console.log(mealOptions);
 
   // State for counting total selected entrees and sides
