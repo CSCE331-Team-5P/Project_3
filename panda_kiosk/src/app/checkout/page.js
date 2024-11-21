@@ -58,6 +58,44 @@ export default function Checkout() {
     console.log(`Current array: ${selectedItemIds}`);
   }, [selectedItemIds]);
 
+  const handleCheckout = async () => {
+    try {
+      // Step 3: Prepare the API request payload (selectedItemIds and itemQuantities)
+      const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
+      const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
+
+      console.log("Order Items:", orderItems); // Log the final list of items with quantities
+
+      // Step 4: Send the data to the backend API
+      const response = await fetch('/api/connectDB', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              selectedItemIds: selectedItemIdsForRequest, // Names for query
+              itemQuantities: itemQuantitiesForRequest,   // Quantities for query
+          }),
+      });
+
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Server response:", data);
+
+      if (data.success) {
+          alert(data.message);
+      } else {
+          alert("Error during checkout: " + (data.message || "Unknown error occurred"));
+      }
+  } catch (error) {
+      console.error("Error during checkout:", error);
+      alert("An error occurred: " + error.message);
+  }
+    
+  };
 
 
   return (
@@ -101,7 +139,9 @@ export default function Checkout() {
           </div>
 
           {/* Checkout Button */}
-          <button className="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all duration-200 transform hover:scale-105">
+          <button className="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all duration-200 transform hover:scale-105"
+            onClick={handleCheckout}
+          >
             Proceed to Checkout
           </button>
 

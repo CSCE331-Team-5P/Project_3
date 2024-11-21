@@ -3,28 +3,52 @@
 import { NextResponse } from 'next/server';
 import { Client } from 'pg';
 
-export async function GET() {
+
+export async function POST(request) {
     const connectionString = process.env.DATABASE_URL;
     const client = new Client({ connectionString });
 
     try {
-        // Connect to the database
+        // Parse the request body to get selectedItemIds and itemQuantities
+        const { selectedItemIds, itemQuantities } = await request.json();
+
+        if (!selectedItemIds || !itemQuantities || selectedItemIds.length !== itemQuantities.length) {
+            return NextResponse.json(
+                { success: false, message: "Invalid input: selectedItemIds and itemQuantities are required and must have the same length." },
+                { status: 400 }
+            );
+        }
+
         await client.connect();
-        console.log("Successfully connected to the database!");
+        console.log("Database connection established");
 
-        // Execute a query to get all records from the INVENTORY table
-        const result = await client.query("SELECT * FROM INVENTORY");
+        // Loop through selectedItemIds and update the quantity for each
+        for (let i = 0; i < selectedItemIds.length; i++) {
+            const itemId = selectedItemIds[i];
+            const quantityToDecrement = itemQuantities[i];
 
-        // Log the query result (useful for debugging)
-        console.log("Query Result:", result.rows);
+            // Perform the update query
+            const result = await client.query(
+                'UPDATE INVENTORY SET quantityItem = quantityItem - $1 WHERE nameItem = $2',
+                [quantityToDecrement, itemId]
+            );
 
-        // Return the result as JSON
-        return NextResponse.json(result.rows);
+            console.log(
+                `Updated item "${itemId}": decremented by ${quantityToDecrement}. Rows affected: ${result.rowCount}`
+            );
+        }
+
+        console.log("All items updated successfully");
+
+        return NextResponse.json({ success: true, message: "Items updated successfully" });
     } catch (error) {
-        console.error("Database query failed:", error);
-        return NextResponse.json({ message: "Failed to fetch data from database", error: error.message }, { status: 500 });
+        console.error("Error during query execution:", error);
+        return NextResponse.json(
+            { success: false, message: "Failed to update items", error: error.message },
+            { status: 500 }
+        );
     } finally {
-        // Ensure the client is closed when done
         await client.end();
+        console.log("Database connection closed");
     }
 }
