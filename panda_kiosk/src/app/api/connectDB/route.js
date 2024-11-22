@@ -45,6 +45,22 @@ export async function POST(request) {
         // Initialize orderId for incrementing within the loop
         let currentOrderId = newOrderId;
         // Loop through selectedItemIds and update the quantity for each
+        //Insert into TRANSACTIONS TABLE
+        let idEmp = 0;
+        let amtTotal = 0;
+        const getTimestamp = () => {
+            return new Date().toISOString().replace('T', ' ').slice(0, 19);
+          };
+          
+        console.log(getTimestamp()); // Outputs: YYYY-MM-DD HH:mm:ss
+        const transactionInsert = await client.query(
+            "INSERT INTO TRANSACTIONS (idTransaction, idEmployee, dateTransaction, amountTotal, methodPayment) VALUES ($1, $2, $3, $4, $5)",
+            [newTransactionId, idEmp, getTimestamp(), amtTotal, "Cash"]
+        );
+
+        console.log(
+            `Inserted into TRANSACTIONS. Transaction ID: ${newTransactionId}, Payment Method: "CASH"`
+        );
         for (let i = 0; i < selectedItemIds.length; i++) {
             console.log(selectedItemIds);
             console.log(currentOrderId);
@@ -80,31 +96,16 @@ export async function POST(request) {
                 `Updated item "${itemId}": decremented by ${quantityToDecrement}. Rows affected: ${result.rowCount}`
             );
             
-            //Insert into TRANSACTIONS TABLE
-            let idEmp = 0;
-            let amtTotal = 0;
-            const getTimestamp = () => {
-                return new Date().toISOString().replace('T', ' ').slice(0, 19);
-              };
-              
-            console.log(getTimestamp()); // Outputs: YYYY-MM-DD HH:mm:ss
-            const transactionInsert = await client.query(
-                "INSERT INTO TRANSACTIONS (idTransaction, idEmployee, dateTransaction, amountTotal, methodPayment) VALUES ($1, $2, $3, $4, $5)",
-                [newTransactionId, idEmp, getTimestamp(), amtTotal, "Cash"]
+            
+
+            const orderInsert = await client.query(
+                "INSERT INTO ORDERS (idOrderItem, idInventory, idTransaction, typeMeal) VALUES ($1, $2, $3, $4)",
+                [currentOrderId, idInventory, newTransactionId, "PLATE"]
             );
 
             console.log(
-                `Inserted into TRANSACTIONS. Transaction ID: ${newTransactionId}, Payment Method: "CASH"`
+                `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: "Bowl"`
             );
-
-            // const orderInsert = await client.query(
-            //     "INSERT INTO ORDERS (idOrderItem, idInventory, idTransaction, typeMeal) VALUES ($1, $2, $3, $4)",
-            //     [currentOrderId, idInventory, newTransactionId, "PLATE"]
-            // );
-
-            // console.log(
-            //     `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: "Bowl"`
-            // );
         
             // Increment newOrderId for the next item
             currentOrderId++;
