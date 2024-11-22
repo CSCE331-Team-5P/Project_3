@@ -96,11 +96,29 @@ export async function POST(request) {
                 `Updated item "${itemId}": decremented by ${quantityToDecrement}. Rows affected: ${result.rowCount}`
             );
             
-            
+            let description;
+
+            switch (selectedItemIds.length) {
+            case 1:
+                description = "A la carte";
+                break;
+            case 2:
+                description = "Bowl";
+                break;
+            case 3:
+                description = "Plate";
+                break;
+            case 4:
+                description = "Bigger Plate";
+                break;
+            default:
+                description = "Invalid selection";
+                break;
+            }
 
             const orderInsert = await client.query(
                 "INSERT INTO ORDERS (idOrderItem, idInventory, idTransaction, typeMeal) VALUES ($1, $2, $3, $4)",
-                [currentOrderId, idInventory, newTransactionId, "PLATE"]
+                [currentOrderId, idInventory, newTransactionId, description]
             );
 
             console.log(
