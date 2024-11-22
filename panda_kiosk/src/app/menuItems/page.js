@@ -185,6 +185,11 @@ export default function Home() {
     const fetchInventory = async () => {
       try {
         const response = await fetch("/api/connectDB");
+
+        if(!response.ok) {
+          // throw new Error(`HTTP error! status: ${response.status}`);
+          return;
+        }
         const data = await response.json();
         console.log("Inventory Data:", data);
       } catch (error) {

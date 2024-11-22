@@ -21,13 +21,56 @@ export async function POST(request) {
 
         await client.connect();
         console.log("Database connection established");
+        //GET TRANSACTION ID
+            // Fetch new transaction ID
+        const transactionResult = await client.query(
+            'SELECT COALESCE(MAX(idTransaction), 0) + 1 AS newTransactionId FROM TRANSACTIONS'
+        );
+        const newTransactionId = transactionResult.rows[0]?.newtransactionid;
+        if (!newTransactionId) {
+            throw new Error("Unable to determine new transaction ID");
+        }
+        console.log(`New transaction ID:`, newTransactionId);
 
+        // Fetch new order ID
+        const orderResult = await client.query(
+            'SELECT COALESCE(MAX(idOrderItem), 0) + 1 AS newOrderId FROM ORDERS'
+        );
+        const newOrderId = orderResult.rows[0]?.neworderid;
+        if (!newOrderId) {
+            throw new Error("Unable to determine new order ID");
+        }
+        console.log(`Starting Order ID:`, newOrderId);
+
+        // Initialize orderId for incrementing within the loop
+        let currentOrderId = newOrderId;
         // Loop through selectedItemIds and update the quantity for each
         for (let i = 0; i < selectedItemIds.length; i++) {
+            console.log(selectedItemIds);
+            console.log(currentOrderId);
             const itemId = selectedItemIds[i];
             const quantityToDecrement = itemQuantities[i];
 
-            // Perform the update query
+            // Fetch the idInventory from the INVENTORY table using the item name
+            // const sanitizedItemId = itemId.replace(/'/g, "''");
+            // console.log(sanitizedItemId);
+            // // Fetch the idInventory using string interpolation
+            // const inventoryQuery = `SELECT idInventory FROM INVENTORY WHERE nameItem = '$'`;
+            // console.log(`Executing query: ${inventoryQuery}`);
+            
+            const inventoryResult = await client.query(
+                'SELECT idInventory FROM INVENTORY WHERE nameItem = $1',
+                [itemId]
+            );
+            
+            //console.log(inventoryResult);
+            if (!inventoryResult.rows.length) {
+                throw new Error(`idInventory not found for item name: ${itemId}`);
+            }
+            const idInventory = inventoryResult.rows[0]?.idinventory;
+            
+            console.log(`idInventory for item "${itemId}":`, idInventory);
+            // // Perform the update query
             const result = await client.query(
                 'UPDATE INVENTORY SET quantityItem = quantityItem - $1 WHERE nameItem = $2',
                 [quantityToDecrement, itemId]
@@ -36,6 +79,35 @@ export async function POST(request) {
             console.log(
                 `Updated item "${itemId}": decremented by ${quantityToDecrement}. Rows affected: ${result.rowCount}`
             );
+            
+            //Insert into TRANSACTIONS TABLE
+            let idEmp = 0;
+            let amtTotal = 0;
+            const getTimestamp = () => {
+                return new Date().toISOString().replace('T', ' ').slice(0, 19);
+              };
+              
+            console.log(getTimestamp()); // Outputs: YYYY-MM-DD HH:mm:ss
+            const transactionInsert = await client.query(
+                "INSERT INTO TRANSACTIONS (idTransaction, idEmployee, dateTransaction, amountTotal, methodPayment) VALUES ($1, $2, $3, $4, $5)",
+                [newTransactionId, idEmp, getTimestamp(), amtTotal, "Cash"]
+            );
+
+            console.log(
+                `Inserted into TRANSACTIONS. Transaction ID: ${newTransactionId}, Payment Method: "CASH"`
+            );
+
+            // const orderInsert = await client.query(
+            //     "INSERT INTO ORDERS (idOrderItem, idInventory, idTransaction, typeMeal) VALUES ($1, $2, $3, $4)",
+            //     [currentOrderId, idInventory, newTransactionId, "PLATE"]
+            // );
+
+            // console.log(
+            //     `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: "Bowl"`
+            // );
+        
+            // Increment newOrderId for the next item
+            currentOrderId++;
         }
 
         console.log("All items updated successfully");
