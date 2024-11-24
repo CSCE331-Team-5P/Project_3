@@ -82,7 +82,7 @@ export default function Checkout() {
       const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
       const numSelectedItemIdsForRequest = selectedItemIds.length;
       const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
-
+      const employeeIdForRequest = employeeId;
       console.log("Order Items:", orderItems); // Log the final list of items with quantities
 
       // Step 4: Send the data to the backend API
@@ -95,6 +95,7 @@ export default function Checkout() {
               selectedItemIds: selectedItemIdsForRequest, // Names for query
               numSelectedItemIds: numSelectedItemIdsForRequest, 
               itemQuantities: itemQuantitiesForRequest,   // Quantities for query
+              employeeId: employeeIdForRequest
           }),
       });
 

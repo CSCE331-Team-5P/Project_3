@@ -10,7 +10,7 @@ export async function POST(request) {
 
     try {
         // Parse the request body to get selectedItemIds and itemQuantities
-        const { selectedItemIds, numSelectedItemIds, itemQuantities } = await request.json();
+        const { selectedItemIds, numSelectedItemIds, itemQuantities, employeeId } = await request.json();
 
         if (!selectedItemIds || !itemQuantities || selectedItemIds.length !== itemQuantities.length) {
             return NextResponse.json(
@@ -46,7 +46,7 @@ export async function POST(request) {
         let currentOrderId = newOrderId;
         // Loop through selectedItemIds and update the quantity for each
         //Insert into TRANSACTIONS TABLE
-        let idEmp = 0;
+        // let idEmp = employeeId;
         let amtTotal = 0;
         const getTimestamp = () => {
             return new Date().toISOString().replace('T', ' ').slice(0, 19);
@@ -55,7 +55,7 @@ export async function POST(request) {
         console.log(getTimestamp()); // Outputs: YYYY-MM-DD HH:mm:ss
         const transactionInsert = await client.query(
             "INSERT INTO TRANSACTIONS (idTransaction, idEmployee, dateTransaction, amountTotal, methodPayment) VALUES ($1, $2, $3, $4, $5)",
-            [newTransactionId, idEmp, getTimestamp(), amtTotal, "Cash"]
+            [newTransactionId, employeeId, getTimestamp(), amtTotal, "Cash"]
         );
 
         console.log(
