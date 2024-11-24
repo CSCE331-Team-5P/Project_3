@@ -117,17 +117,33 @@ export async function POST(request) {
                 break;
             }
 
-            const orderInsert = await client.query(
-                "INSERT INTO ORDERS (idOrderItem, idInventory, idTransaction, typeMeal) VALUES ($1, $2, $3, $4)",
-                [currentOrderId, idInventory, newTransactionId, description]
-            );
+            //need a for loop for the corresponding idInventory 
+            //for element in itemQuantities[idInventory], continue to insert into orders
+            for (let i = 0; i < quantityToDecrement; i++) {
+                const orderInsert = await client.query(
+                    "INSERT INTO ORDERS (idOrderItem, idInventory, idTransaction, typeMeal) VALUES ($1, $2, $3, $4)",
+                    [currentOrderId, idInventory, newTransactionId, description]
+                );
+    
+                console.log(
+                    `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: ${description}`
+                );
+            
+                // Increment newOrderId for the next item
+                currentOrderId++;
+            }
 
-            console.log(
-                `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: ${description}`
-            );
+            // const orderInsert = await client.query(
+            //     "INSERT INTO ORDERS (idOrderItem, idInventory, idTransaction, typeMeal) VALUES ($1, $2, $3, $4)",
+            //     [currentOrderId, idInventory, newTransactionId, description]
+            // );
+
+            // console.log(
+            //     `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: ${description}`
+            // );
         
-            // Increment newOrderId for the next item
-            currentOrderId++;
+            // // Increment newOrderId for the next item
+            // currentOrderId++;
         }
 
         console.log("All items updated successfully");
