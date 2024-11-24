@@ -8,6 +8,7 @@ export default function Checkout() {
   const { selectedItemIds, clearSelectedItems } = useGlobalState(); // Access selected item IDs from the global state
   const router = useRouter(); // Initialize the Next.js router to trigger a page refresh
   const pathname = usePathname(); // Gives the current path
+  const [employeeId, setEmployeeId] = useState('');
 
   // Sample data for item details (this would be more dynamic in a real application)
   const menuItems = [
@@ -71,6 +72,12 @@ export default function Checkout() {
 
   const handleCheckout = async () => {
     try {
+
+      if (!employeeId) {
+        alert('Please enter a valid Employee ID.');
+        return;
+      }
+
       // Step 3: Prepare the API request payload (selectedItemIds and itemQuantities)
       const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
       const numSelectedItemIdsForRequest = selectedItemIds.length;
@@ -149,6 +156,27 @@ export default function Checkout() {
               <p>Tax: ${tax.toFixed(2)}</p>
               <p className="font-bold text-black">Total: ${total.toFixed(2)}</p>
             </div>
+          </div>
+
+          {/* Employee ID Input */}
+          <div className="mb-4">
+            <label htmlFor="employeeId" className="block text-gray-700 font-medium mb-2">
+              Employee ID:
+            </label>
+            <input
+              type="text"
+              id="employeeId"
+              value={employeeId}
+              onChange={(e) => {
+                // Allow only numbers in the input field
+                const value = e.target.value;
+                if (/^\d*$/.test(value)) { // Regex ensures only digits
+                  setEmployeeId(value);
+                }
+              }}
+              placeholder="Enter Employee ID"
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
           </div>
 
           {/* Checkout Button */}
