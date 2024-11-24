@@ -23,7 +23,7 @@ export default function Checkout() {
     { id: 'steamedRice', name: 'White Steamed Rice', price: 6.77 },
     { id: 'superGreens', name: 'Super Greens', price: 6.77 },
     { id: 'blazingBourbonChicken', name: 'Hot Ones Blazing Bourbon Chicken', price: 6.77 },
-    { id: 'orangeChicken', name: 'The Original Orange Chicken', price: 6.77 },
+    // { id: 'orangeChicken', name: 'The Original Orange Chicken', price: 6.77 },
     { id: 'pepperSirloinSteak', name: 'Black Pepper Sirloin Steak', price: 6.77 },
     { id: 'honeyWalnutShrimp', name: 'Honey Walnut Shrimp', price: 6.77 },
     { id: 'grilledTeriyakiChicken', name: 'Grilled Teriyaki Chicken', price: 6.77 },
@@ -55,13 +55,25 @@ export default function Checkout() {
   // useEffect hook to trigger a page refresh when the component unmounts (i.e., when the user leaves the Checkout page)
   useEffect(() => {
     // Log pathname for debugging purposes
-    console.log(`Current array: ${selectedItemIds}`);
+    console.log(`Current array length: ${selectedItemIds.length}`);
   }, [selectedItemIds]);
+
+  useEffect(() => {
+    // Log pathname for debugging purposes
+    console.log(`Array from this page: ${selectedItemIds}`);
+  }, [selectedItemIds]);
+
+  useEffect(() => {
+    // Log pathname for debugging purposes
+    console.log(`Array being passed in: ${orderItems.map(item => item.name)}`);
+  }, [orderItems.map(item => item.name)]);
+  
 
   const handleCheckout = async () => {
     try {
       // Step 3: Prepare the API request payload (selectedItemIds and itemQuantities)
       const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
+      const numSelectedItemIdsForRequest = selectedItemIds.length;
       const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
 
       console.log("Order Items:", orderItems); // Log the final list of items with quantities
@@ -74,6 +86,7 @@ export default function Checkout() {
           },
           body: JSON.stringify({
               selectedItemIds: selectedItemIdsForRequest, // Names for query
+              numSelectedItemIds: numSelectedItemIdsForRequest, 
               itemQuantities: itemQuantitiesForRequest,   // Quantities for query
           }),
       });

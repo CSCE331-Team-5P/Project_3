@@ -10,7 +10,7 @@ export async function POST(request) {
 
     try {
         // Parse the request body to get selectedItemIds and itemQuantities
-        const { selectedItemIds, itemQuantities } = await request.json();
+        const { selectedItemIds, numSelectedItemIds, itemQuantities } = await request.json();
 
         if (!selectedItemIds || !itemQuantities || selectedItemIds.length !== itemQuantities.length) {
             return NextResponse.json(
@@ -61,6 +61,7 @@ export async function POST(request) {
         console.log(
             `Inserted into TRANSACTIONS. Transaction ID: ${newTransactionId}, Payment Method: "CASH"`
         );
+        
         for (let i = 0; i < selectedItemIds.length; i++) {
             console.log(selectedItemIds);
             console.log(currentOrderId);
@@ -98,7 +99,7 @@ export async function POST(request) {
             
             let description;
 
-            switch (selectedItemIds.length) {
+            switch (numSelectedItemIds) {
             case 1:
                 description = "A la carte";
                 break;
@@ -122,7 +123,7 @@ export async function POST(request) {
             );
 
             console.log(
-                `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: "Bowl"`
+                `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: ${description}`
             );
         
             // Increment newOrderId for the next item
