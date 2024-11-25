@@ -11,7 +11,7 @@ import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
   const { mealOptions, addItemToSelection, removeItemFromSelection } = useGlobalState();
-  const { maxEntrees, maxSides, mealType } = mealOptions;
+  const { maxEntrees, maxSides, allowDrink, mealType } = mealOptions;
   console.log(mealOptions);
 
   // State for counting total selected entrees and sides
@@ -156,11 +156,13 @@ export default function Home() {
   };
 
   const decrementQuantity = (item, setQuantities, isEntree = false) => {
-    const { selectedEntreesCount, selectedSidesCount, removeItem, setSelectedEntreesCount, setSelectedSidesCount } = useGlobalState();
+    // const { selectedEntreesCount, selectedSidesCount, removeItem, setSelectedEntreesCount, setSelectedSidesCount } = useGlobalState();
+    removeItemFromSelection(item);
+    
     setQuantities((prevState) => {
       if (prevState[item] > 0) {
         const updatedCount = prevState[item] - 1;
-        removeItemFromSelection(item);
+        //original remove 
         isEntree
           ? setSelectedEntreesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }))
           : setSelectedSidesCount(calculateTotalCount({ ...prevState, [item]: updatedCount }));
@@ -183,6 +185,11 @@ export default function Home() {
     const fetchInventory = async () => {
       try {
         const response = await fetch("/api/connectDB");
+
+        if(!response.ok) {
+          // throw new Error(`HTTP error! status: ${response.status}`);
+          return;
+        }
         const data = await response.json();
         console.log("Inventory Data:", data);
       } catch (error) {

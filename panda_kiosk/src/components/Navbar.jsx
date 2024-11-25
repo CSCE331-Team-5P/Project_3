@@ -18,15 +18,19 @@ import OrderPopover from '@/components/OrderPopover';
 const Navbar = () => {
     const router = useRouter(); //^ Initialize the router for navigation
 
-    const {updateMealOptions} = useGlobalState();
+    const {updateMealOptions, clearSelectedItems} = useGlobalState();
 
     //^ State variables to manage what meal item are selected
     const [activeCategory, setActiveCategory] = useState("");
 
     //^ Function to handle category click and set active category
     const handleCategoryClick = (category) => {
+        if(category != "Drink"){ //Replace with "Checkout" this says drink only because that's where checkout is accessible
+            clearSelectedItems();
+        }
         setActiveCategory(category);
         updateMealOptions(category);
+
         
         if (category === "Drink") {
             router.push("/drink"); //^ Navigate to the drink page
