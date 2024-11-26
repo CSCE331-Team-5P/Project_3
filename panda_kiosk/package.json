@@ -29,7 +29,7 @@
   "devDependencies": {
     "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
-    "@babel/eslint-parser": "^10.1.0",
+    "babel-eslint": "^10.1.0",
     "eslint": "^8",
     "eslint-config-next": "^15.0.1",
     "next": "^15.0.1",
