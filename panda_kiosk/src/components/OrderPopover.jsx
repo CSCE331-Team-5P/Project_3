@@ -21,7 +21,7 @@ import { useRouter } from "next/navigation";
 
 
 export default function OrderPopover() {
-  const { selectedItemIds, clearSelectedItems } = useGlobalState();
+  const { selectedItemIds, clearSelectedItems, addItemToSelection, removeItemFromSelection } = useGlobalState();
 
   // const [orderItems, setOrderItems] = useState([
   //   { id: 1, name: "Orange Chicken", quantity: 1 },
