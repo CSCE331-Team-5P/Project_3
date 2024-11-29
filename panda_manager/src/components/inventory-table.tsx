@@ -1,6 +1,8 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
+import {fetchInventory } from '@/lib/db/queries'; // Adjust path as needed
+
 import {
     Table,
     TableBody,
@@ -16,190 +18,27 @@ import { Label } from "@/components/ui/label"
 
 
 interface InventoryItem {
-    id: string
-    name: string
+    idinventory: string
+    nameitem: string
     status: string
-    price: string
-    category: string
-    restockTime: string
-    quantity: number
+    priceitem: string
+    categoryitem: string
+    restocktime: string
+    quantityitem: number
 }
 
 export function InventoryTable() {
 
-    const [inventory, setInventory] = useState<InventoryItem[]>([
-        {
-            id: "INV001",
-            name: "Hot Ones Blazing Bourbon Chicken",
-            status: "Inactive",
-            price: "$3.99",
-            category: "Entree",
-            restockTime: "2 days",
-            quantity: 10,
-        },
-        {
-            id: "INV002",
-            name: "Beyond Original Orange Chicken",
-            status: "Active",
-            price: "$4.99",
-            category: "Entree",
-            restockTime: "4 days",
-            quantity: 15,
-        },
-        {
-            id: "INV003",
-            name: "The Original Orange Chicken",
-            status: "Active",
-            price: "$3.99",
-            category: "Entree",
-            restockTime: "1 days",
-            quantity: 12,
-        },
-        {
-            id: "INV004",
-            name: "Black Pepper Sirloin Steak",
-            status: "Active",
-            price: "$2.99",
-            category: "Entree",
-            restockTime: "2 days",
-            quantity: 21,
-        },
-        {
-            id: "INV005",
-            name: "Honey Walnut Shrimp",
-            status: "Active",
-            price: "$5.99",
-            category: "Entree",
-            restockTime: "3 days",
-            quantity: 25,
-        },
-        {
-            id: "INV006",
-            name: "Grilled Teriyaki Chicken",
-            status: "Active",
-            price: "$3.99",
-            category: "Entree",
-            restockTime: "5 days",
-            quantity: 11,
-        },
-        {
-            id: "INV007",
-            name: "Broccoli Beef",
-            status: "Active",
-            price: "$3.99",
-            category: "Entree",
-            restockTime: "6 days",
-            quantity: 34,
-        },
-        {
-            id: "INV008",
-            name: "Kung Pao Chicken",
-            status: "Active",
-            price: "$2.99",
-            category: "Entree",
-            restockTime: "3 days",
-            quantity: 23,
-        },
-        {
-            id: "INV009",
-            name: "Honey Sesame Chicken Breast",
-            status: "Active",
-            price: "$3.99",
-            category: "Entree",
-            restockTime: "4 days",
-            quantity: 5,
-        },
-        {
-            id: "INV010",
-            name: "Beijing Beef",
-            status: "Active",
-            price: "$4.99",
-            category: "Entree",
-            restockTime: "8 days",
-            quantity: 26,
-        },
-        {
-            id: "INV011",
-            name: "Mushroom Chicken",
-            status: "Active",
-            price: "$3.99",
-            category: "Entree",
-            restockTime: "4 days",
-            quantity: 16,
-        },
-        {
-            id: "INV012",
-            name: "Sweetfire Chicken Breast",
-            status: "Active",
-            price: "$3.99",
-            category: "Entree",
-            restockTime: "5 days",
-            quantity: 41,
-        },
-        {
-            id: "INV013",
-            name: "String Bean Chicken Breast",
-            status: "Active",
-            price: "$2.99",
-            category: "Entree",
-            restockTime: "2 days",
-            quantity: 11,
-        },
-        {
-            id: "INV014",
-            name: "Super Greens",
-            status: "Active",
-            price: "$2.99",
-            category: "Entree",
-            restockTime: "3 days",
-            quantity: 25,
-        },
-        {
-            id: "INV015",
-            name: "Chow Mein",
-            status: "Active",
-            price: "$3.99",
-            category: "Side",
-            restockTime: "2 days",
-            quantity: 21,
-        },
-        {
-            id: "INV016",
-            name: "Fried Rice",
-            status: "Active",
-            price: "$2.99",
-            category: "Side",
-            restockTime: "3 days",
-            quantity: 13,
-        },
-        {
-            id: "INV017",
-            name: "White Steamed Rice",
-            status: "Active",
-            price: "$1.99",
-            category: "Side",
-            restockTime: "2 days",
-            quantity: 20,
-        },
-        {
-            id: "INV018",
-            name: "Super Greens",
-            status: "Active",
-            price: "$2.99",
-            category: "Side",
-            restockTime: "4 days",
-            quantity: 19,
-        },
-    ])
+    const [inventory, setInventory] = useState<InventoryItem[]>([])
 
     const [newItem, setNewItem] = useState<InventoryItem>({
-        id: "",
-        name: "",
+        idinventory: "",
+        nameitem: "",
         status: "",
-        price: "",
-        category: "",
-        restockTime: "",
-        quantity: 0,
+        priceitem: "",
+        categoryitem: "",
+        restocktime: "",
+        quantityitem: 0,
     })
 
     const [filters, setFilters] = useState({
@@ -207,6 +46,28 @@ export function InventoryTable() {
         status: "",
         category: "",
     })
+
+    useEffect(() => {
+        async function fetchInventory() {
+            try {
+                const response = await fetch('/api/inventory');
+                const data = await response.json();
+    
+                // Log the fetched data
+                console.log('Fetched inventory:', data);  // Add this line
+                
+                if (Array.isArray(data)) {
+                    setInventory(data);
+                } else {
+                    console.error('Inventory data is not an array:', data);
+                }
+            } catch (err) {
+                console.error('Error fetching inventory:', err);
+            }
+        }
+        fetchInventory();
+    }, []);
+    
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
@@ -219,34 +80,40 @@ export function InventoryTable() {
     }
     
     const addItem = () => {
-        if (newItem.id && newItem.name) {
+        if (newItem.idinventory && newItem.nameitem) {
             setInventory((prev) => [...prev, newItem])
             setNewItem({
-                id: "",
-                name: "",
+                idinventory: "",
+                nameitem: "",
                 status: "",
-                price: "",
-                category: "",
-                restockTime: "",
-                quantity: 0,
+                priceitem: "",
+                categoryitem: "",
+                restocktime: "",
+                quantityitem: 0,
             })
         }
     }
     
     const removeItem = (id: string) => {
-        setInventory((prev) => prev.filter((item) => item.id !== id))
+        setInventory((prev) => prev.filter((item) => item.idinventory !== id))
     }
 
     const filteredInventory = useMemo(() => {
-        return inventory.filter((item) => {
-            return (
-                item.name.toLowerCase().includes(filters.name.toLowerCase()) &&
-                item.status.toLowerCase().includes(filters.status.toLowerCase()) &&
-                item.category.toLowerCase().includes(filters.category.toLowerCase())
-            )
-        })
-    }, [inventory, filters])
+        if (!Array.isArray(inventory)) return [];
 
+        return inventory.filter((item) => {
+            // Filter by name, status, and category
+            const nameMatch = filters.name === "" || item.nameitem?.toLowerCase().includes(filters.name.toLowerCase());
+            const statusMatch = filters.status === "" || item.status?.toLowerCase().includes(filters.status.toLowerCase());
+            const categoryMatch = filters.category === "" || item.categoryitem?.toLowerCase().includes(filters.category.toLowerCase());
+
+            return nameMatch && statusMatch && categoryMatch;
+        });
+    }, [inventory, filters]);
+
+    console.log('Filtered Inventory:', filteredInventory);  // Add this line
+
+    
     return (
         <div className="space-y-4">
             <div className="mb-12 grid grid-cols-3 gap-4">
@@ -255,7 +122,7 @@ export function InventoryTable() {
                     <Input
                         id="name"
                         name="name"
-                        value={newItem.name}
+                        value={newItem.nameitem}
                         onChange={handleInputChange}
                         placeholder="Enter item name"
                     />
@@ -275,7 +142,7 @@ export function InventoryTable() {
                     <Input
                         id="price"
                         name="price"
-                        value={newItem.price}
+                        value={newItem.priceitem}
                         onChange={handleInputChange}
                         placeholder="Enter price"
                     />
@@ -285,7 +152,7 @@ export function InventoryTable() {
                     <Input
                         id="category"
                         name="category"
-                        value={newItem.category}
+                        value={newItem.categoryitem}
                         onChange={handleInputChange}
                         placeholder="Enter category"
                     />
@@ -295,7 +162,7 @@ export function InventoryTable() {
                     <Input
                         id="restockTime"
                         name="restockTime"
-                        value={newItem.restockTime}
+                        value={newItem.restocktime}
                         onChange={handleInputChange}
                         placeholder="Enter restock time"
                     />
@@ -306,7 +173,7 @@ export function InventoryTable() {
                         id="quantity"
                         name="quantity"
                         type="number"
-                        value={newItem.quantity.toString()}
+                        value={newItem.quantityitem.toString()}
                         onChange={handleInputChange}
                         placeholder="Enter quantity"
                     />
@@ -368,16 +235,16 @@ export function InventoryTable() {
                 </TableHeader>
                 <TableBody>
                     {filteredInventory.map((item) => (
-                        <TableRow key={item.id}>
-                        <TableCell className="font-medium">{item.id}</TableCell>
-                        <TableCell>{item.name}</TableCell>
+                        <TableRow key={item.idinventory}>
+                        <TableCell className="font-medium">{item.idinventory}</TableCell>
+                        <TableCell>{item.nameitem}</TableCell>
                         <TableCell>{item.status}</TableCell>
-                        <TableCell>{item.price}</TableCell>
-                        <TableCell>{item.category}</TableCell>
-                        <TableCell>{item.restockTime}</TableCell>
-                        <TableCell className="text-right">{item.quantity}</TableCell>
+                        <TableCell>${item.priceitem}</TableCell>
+                        <TableCell>{item.categoryitem}</TableCell>
+                        <TableCell>{item.restocktime}</TableCell>
+                        <TableCell className="text-right">{item.quantityitem}</TableCell>
                         <TableCell>
-                            <Button variant="destructive" onClick={() => removeItem(item.id)}>
+                            <Button variant="destructive" onClick={() => removeItem(item.idinventory)}>
                             Remove
                             </Button>
                         </TableCell>

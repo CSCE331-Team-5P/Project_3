@@ -1,16 +1,9 @@
 import { query } from './client';
 
-//^ Example queries
-export async function getAllUsers() {
-    const result = await query('SELECT * FROM users');
-    return result.rows;
-}
-
-//^ Example queries with parameters
-export async function getUserById(id: number) {
-    const result = await query('SELECT * FROM users WHERE id = $1', [id]);
-    return result.rows[0];
-}
+export const fetchInventory = async () => {
+    const result = await query('SELECT * FROM inventory ORDER BY idinventory ASC'); // Replace with your actual inventory table name
+    return result.rows; // Return the result rows
+};
 
 //^ //////////////////////////////////////////
 //^ Home Page Queries
