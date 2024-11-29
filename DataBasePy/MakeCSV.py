@@ -65,7 +65,7 @@ print("Generating Inventory CSV...")
 category_hash = {
     'Side': ['Fried Rice', 'White Steamed Rice', 'Chow Mein', 'Super Greens'],
     'Entree': ['Orange Chicken', 'Beijing Beef', 'Honey Walnut Shrimp', 'Kung Pow Chicken',
-               'Broccoli Beef', 'Black Pepper Sirloin steak', 'Mushroom Chicken',
+               'Broccoli Beef', 'Black Pepper Sirloin Steak', 'Mushroom Chicken',
                'Sweet Fire Chicken Breast', 'String Bean Chicken Breast', 'Grilled Teriyaki Chicken',
                'Honey Sesame Chicken', 'Black Pepper Chicken', 'Blazing Burbon Chicken'],
     'Extras': ['Chicken Egg Roll', 'Veggie Spring Roll', 'Cream Cheese Rangoon', 'Apple Pie Roll'],
