@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { fetchEmployees } from '@/lib/db/dashboard_queries'; // Adjust path as needed
+import { fetchEmployees } from '@/lib/db/staff_queries'; // Adjust path as needed
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {

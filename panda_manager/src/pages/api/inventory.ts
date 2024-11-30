@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { fetchInventory, fetchEmployees } from '@/lib/db/dashboard_queries'; // Import the fetchInventory function
+import { fetchInventory} from '@/lib/db/inventory_queries'; // Import the fetchInventory function
 
 // This API handler fetches the inventory from the database
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
