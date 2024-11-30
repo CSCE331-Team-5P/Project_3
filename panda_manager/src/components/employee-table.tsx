@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import {
     Table,
     TableBody,
@@ -16,53 +16,26 @@ import { Label } from "@/components/ui/label"
 // import { Separator } from "@radix-ui/react-separator"
 
 interface Employee {
-    id: string
-    firstName: string
-    lastName: string
-    birthdate: string
-    job: string
-    hourlyWage: number
-    status: string
+    idemployee: string
+    firstnameemployee: string
+    lastnameemployee: string
+    datebirth: string
+    roleemployee: string
+    wageemployee: number
+    statusemployee: string
 }
 
 export function EmployeeTable() {
-    const [employees, setEmployees] = useState<Employee[]>([
-        {
-            id: "EMP001",
-            firstName: "John",
-            lastName: "Doe",
-            birthdate: "1990-01-01",
-            job: "Cashier",
-            hourlyWage: 15,
-            status: "Active",
-        },
-        {
-            id: "EMP002",
-            firstName: "Jane",
-            lastName: "Smith",
-            birthdate: "1985-05-15",
-            job: "Cook",
-            hourlyWage: 18,
-            status: "Active",
-        },
-        {
-            id: "EMP003",
-            firstName: "Mike",
-            lastName: "Johnson",
-            birthdate: "1988-09-30",
-            job: "Manager",
-            hourlyWage: 25,
-            status: "Active",
-        },
-    ])
+    const [employees, setEmployees] = useState<Employee[]>([])
 
-    const [newEmployee, setNewEmployee] = useState<Omit<Employee, 'id'>>({
-        firstName: "",
-        lastName: "",
-        birthdate: "",
-        job: "",
-        hourlyWage: 0,
-        status: "",
+    const [newEmployee, setNewEmployee] = useState<Employee>({
+        idemployee: "",
+        firstnameemployee: "",
+        lastnameemployee: "",
+        datebirth: "",
+        roleemployee: "",
+        wageemployee: 0,
+        statusemployee: "",
     })
 
     const [filters, setFilters] = useState({
@@ -71,6 +44,39 @@ export function EmployeeTable() {
         status: "",
     })
     
+    useEffect(() => {
+        async function fetchEmployees() {
+            try {
+                const response = await fetch('/api/employee'); // Ensure endpoint matches your API
+                const data = await response.json();
+    
+                console.log('Fetched employees:', data); // Debugging log
+    
+                if (Array.isArray(data)) {
+                    // Map data to align with the Employee interface
+                    setEmployees(
+                        data.map((employee: any) => ({
+                            idemployee: employee.idEmployee, // Adjust to match actual API field
+                            firstnameemployee: employee.firstnameemployee || employee.first_name, // Adjust to match actual API field
+                            lastnameemployee: employee.lastnameemployee || employee.last_name,
+                            datebirth: employee.datebirth,
+                            roleemployee: employee.roleemployee,
+                            wageemployee: employee.wageemployee || employee.hourly_wage,
+                            statusemployee: employee.statusemployee,
+                        }))
+                    );
+                } else {
+                    console.error('Employee data is not an array:', data);
+                }
+            } catch (error) {
+                console.error('Error fetching employees:', error);
+            }
+        }
+    
+        fetchEmployees();
+    }, []);
+    
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target
         setNewEmployee((prev) => ({ ...prev, [name]: name === "hourlyWage" ? parseFloat(value) : value }))
@@ -82,34 +88,43 @@ export function EmployeeTable() {
     }
     
     const addEmployee = () => {
-        if (newEmployee.firstName && newEmployee.lastName) {
+        if (newEmployee.firstnameemployee && newEmployee.lastnameemployee) {
             const newId = `EMP${(employees.length + 1).toString().padStart(3, '0')}`
-            setEmployees((prev) => [...prev, { ...newEmployee, id: newId }])
+            setEmployees((prev) => [...prev, { ...newEmployee, idemployee: newId }])
             setNewEmployee({
-                firstName: "",
-                lastName: "",
-                birthdate: "",
-                job: "",
-                hourlyWage: 0,
-                status: "",
+                idemployee: "",
+                firstnameemployee: "",
+                lastnameemployee: "",
+                datebirth: "",
+                roleemployee: "",
+                wageemployee: 0,
+                statusemployee: "",
             })
         }
     }
     
     const removeEmployee = (id: string) => {
-        setEmployees((prev) => prev.filter((employee) => employee.id !== id))
+        setEmployees((prev) => prev.filter((employee) => employee.idemployee !== id))
     }
 
     const filteredEmployees = useMemo(() => {
         return employees.filter((employee) => {
-            const fullName = `${employee.firstName} ${employee.lastName}`.toLowerCase()
-            return (
-                fullName.includes(filters.name.toLowerCase()) &&
-                employee.job.toLowerCase().includes(filters.job.toLowerCase()) &&
-                employee.status.toLowerCase().includes(filters.status.toLowerCase())
-            )
-        })
-    }, [employees, filters])
+            const nameMatch =
+                filters.name === "" ||
+                `${employee.firstnameemployee || ""} ${employee.lastnameemployee || ""}`.toLowerCase().includes(filters.name.toLowerCase());
+    
+            const jobMatch =
+                filters.job === "" ||
+                (employee.roleemployee?.toLowerCase() || "").includes(filters.job.toLowerCase());
+    
+            const statusMatch =
+                filters.status === "" ||
+                (employee.statusemployee?.toLowerCase() || "").includes(filters.status.toLowerCase());
+    
+            return nameMatch && jobMatch && statusMatch;
+        });
+    }, [employees, filters]);
+    
 
     return (
         <div className="space-y-4">
@@ -119,7 +134,7 @@ export function EmployeeTable() {
                     <Input
                         id="firstName"
                         name="firstName"
-                        value={newEmployee.firstName}
+                        value={newEmployee.firstnameemployee}
                         onChange={handleInputChange}
                         placeholder="Enter first name"
                     />
@@ -129,7 +144,7 @@ export function EmployeeTable() {
                     <Input
                         id="lastName"
                         name="lastName"
-                        value={newEmployee.lastName}
+                        value={newEmployee.lastnameemployee}
                         onChange={handleInputChange}
                         placeholder="Enter last name"
                     />
@@ -140,7 +155,7 @@ export function EmployeeTable() {
                         id="birthdate"
                         name="birthdate"
                         type="date"
-                        value={newEmployee.birthdate}
+                        value={newEmployee.datebirth}
                         onChange={handleInputChange}
                     />
                 </div>
@@ -149,7 +164,7 @@ export function EmployeeTable() {
                     <Input
                         id="job"
                         name="job"
-                        value={newEmployee.job}
+                        value={newEmployee.roleemployee}
                         onChange={handleInputChange}
                         placeholder="Enter job title"
                     />
@@ -160,7 +175,7 @@ export function EmployeeTable() {
                         id="hourlyWage"
                         name="hourlyWage"
                         type="number"
-                        value={newEmployee.hourlyWage.toString()}
+                        value={newEmployee.wageemployee.toString()}
                         onChange={handleInputChange}
                         placeholder="Enter hourly wage"
                     />
@@ -170,7 +185,7 @@ export function EmployeeTable() {
                     <Input
                         id="status"
                         name="status"
-                        value={newEmployee.status}
+                        value={newEmployee.statusemployee}
                         onChange={handleInputChange}
                         placeholder="Enter status"
                     />
@@ -232,16 +247,16 @@ export function EmployeeTable() {
                 </TableHeader>
                 <TableBody>
                     {filteredEmployees.map((employee) => (
-                        <TableRow key={employee.id}>
-                        <TableCell className="font-medium">{employee.id}</TableCell>
-                        <TableCell>{employee.firstName}</TableCell>
-                        <TableCell>{employee.lastName}</TableCell>
-                        <TableCell>{employee.birthdate}</TableCell>
-                        <TableCell>{employee.job}</TableCell>
-                        <TableCell>${employee.hourlyWage.toFixed(2)}</TableCell>
-                        <TableCell>{employee.status}</TableCell>
+                        <TableRow key={employee.idemployee}>
+                        <TableCell className="font-medium">{employee.idemployee}</TableCell>
+                        <TableCell>{employee.firstnameemployee}</TableCell>
+                        <TableCell>{employee.lastnameemployee}</TableCell>
+                        <TableCell>{employee.datebirth}</TableCell>
+                        <TableCell>{employee.roleemployee}</TableCell>
+                        <TableCell>${employee.wageemployee}</TableCell>
+                        <TableCell>{employee.statusemployee}</TableCell>
                         <TableCell>
-                            <Button variant="destructive" onClick={() => removeEmployee(employee.id)}>
+                            <Button variant="destructive" onClick={() => removeEmployee(employee.idemployee)}>
                             Remove
                             </Button>
                         </TableCell>
