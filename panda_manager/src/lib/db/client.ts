@@ -18,6 +18,5 @@ export const query = async (text: string, params?: unknown[]) => {
     }
 };
 
-
 // Exporting the pool for direct usage (if needed)
 export default pool;
