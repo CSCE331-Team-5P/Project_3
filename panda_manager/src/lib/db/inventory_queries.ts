@@ -40,3 +40,13 @@ export const addInventoryItem = async (item: {
     );
     return result.rows[0]; // Return the inserted row
 };
+
+// Update the status of an item to "inactive"
+export const removeInventoryItem = async (id: string) => {
+    const result = await query(
+        `UPDATE inventory SET status = 'INACTIVE' WHERE idinventory = $1 RETURNING *`,
+        [id]
+    );
+
+    return result.rows[0]; // Return the updated row
+};

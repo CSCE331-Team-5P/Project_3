@@ -126,9 +126,31 @@ export function InventoryTable() {
         }
     };
     
-    const removeItem = (id: string) => {
-        setInventory((prev) => prev.filter((item) => item.idinventory !== id))
-    }
+    const removeItem = async (id: string) => {
+        try {
+            const response = await fetch('/api/inventory', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ idinventory: id }),
+            });
+    
+            if (!response.ok) {
+                throw new Error(`Error: ${response.statusText}`);
+            }
+    
+            const updatedItem = await response.json();
+            console.log('Updated item:', updatedItem);
+    
+            // Update local state to reflect the change
+            setInventory((prev) => prev.map((item) =>
+                item.idinventory === id ? { ...item, status: 'INACTIVE' } : item
+            ));
+        } catch (error) {
+            console.error('Error removing item from inventory:', error);
+        }
+    };
 
     const filteredInventory = useMemo(() => {
         if (!Array.isArray(inventory)) return [];
