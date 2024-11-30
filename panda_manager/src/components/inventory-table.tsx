@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
-import {fetchInventory } from '@/lib/db/inventory_queries'; // Adjust path as needed
+import {fetchInventory, addInventoryItem } from '@/lib/db/inventory_queries'; // Adjust path as needed
 
 import {
     Table,
@@ -50,7 +50,17 @@ export function InventoryTable() {
     useEffect(() => {
         async function fetchInventory() {
             try {
-                const response = await fetch('/api/inventory');
+                const response = await fetch('/api/inventory', {
+                    method: 'GET', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`Error fetching inventory: ${response.statusText}`);
+                }
+
                 const data = await response.json();
     
                 // Log the fetched data
@@ -79,20 +89,42 @@ export function InventoryTable() {
         setFilters((prev) => ({ ...prev, [name]: value }))
     }
     
-    const addItem = () => {
-        if (newItem.idinventory && newItem.nameitem) {
-            setInventory((prev) => [...prev, newItem])
-            setNewItem({
-                idinventory: "",
-                nameitem: "",
-                status: "",
-                priceitem: "",
-                categoryitem: "",
-                restocktime: "",
-                quantityitem: 0,
-            })
+    const addItem = async () => {
+        if (newItem.nameitem) {
+            try {
+                const response = await fetch('/api/inventory', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(newItem),
+                });
+    
+                if (!response.ok) {
+                    throw new Error(`Error: ${response.statusText}`);
+                }
+    
+                const insertedItem = await response.json();
+                console.log('Inserted item:', insertedItem);
+    
+                // Update local state with the inserted item
+                setInventory((prev) => [...prev, insertedItem]);
+                setNewItem({
+                    idinventory: "",
+                    nameitem: "",
+                    quantityitem: 0,
+                    priceitem: "",
+                    categoryitem: "",
+                    restocktime: "",
+                    status: "",
+                });
+            } catch (error) {
+                console.error('Error adding item to inventory:', error);
+            }
+        } else {
+            console.error('Item ID and Name are required to add an item.');
         }
-    }
+    };
     
     const removeItem = (id: string) => {
         setInventory((prev) => prev.filter((item) => item.idinventory !== id))
@@ -121,7 +153,7 @@ export function InventoryTable() {
                     <Label htmlFor="name">Item Name</Label>
                     <Input
                         id="name"
-                        name="name"
+                        name="nameitem" 
                         value={newItem.nameitem}
                         onChange={handleInputChange}
                         placeholder="Enter item name"
@@ -141,7 +173,7 @@ export function InventoryTable() {
                     <Label htmlFor="price">Price</Label>
                     <Input
                         id="price"
-                        name="price"
+                        name="priceitem"
                         value={newItem.priceitem}
                         onChange={handleInputChange}
                         placeholder="Enter price"
@@ -151,7 +183,7 @@ export function InventoryTable() {
                     <Label htmlFor="category">Category</Label>
                     <Input
                         id="category"
-                        name="category"
+                        name="categoryitem"
                         value={newItem.categoryitem}
                         onChange={handleInputChange}
                         placeholder="Enter category"
@@ -161,7 +193,8 @@ export function InventoryTable() {
                     <Label htmlFor="restockTime">Restock Time</Label>
                     <Input
                         id="restockTime"
-                        name="restockTime"
+                        name="restocktime"
+                        type="date"
                         value={newItem.restocktime}
                         onChange={handleInputChange}
                         placeholder="Enter restock time"
@@ -171,9 +204,9 @@ export function InventoryTable() {
                     <Label htmlFor="quantity">Quantity</Label>
                     <Input
                         id="quantity"
-                        name="quantity"
+                        name="quantityitem"
                         type="number"
-                        value={newItem.quantityitem.toString()}
+                        value={newItem.quantityitem}
                         onChange={handleInputChange}
                         placeholder="Enter quantity"
                     />
