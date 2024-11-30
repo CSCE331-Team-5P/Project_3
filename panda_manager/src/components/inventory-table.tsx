@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
-import {fetchInventory } from '@/lib/db/dashboard_queries'; // Adjust path as needed
+import {fetchInventory } from '@/lib/db/inventory_queries'; // Adjust path as needed
 
 import {
     Table,

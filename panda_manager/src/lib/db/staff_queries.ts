@@ -7,6 +7,7 @@ import { query } from './client';
 export const fetchEmployees = async () => {
     try {
         const result = await query("SELECT * FROM STAFF ORDER BY idEmployee ASC"); // Adjust query as needed
+        console.log(result.rows);
         return result.rows; // Ensure rows are returned
     } catch (error) {
         console.error("Database query error:", error);

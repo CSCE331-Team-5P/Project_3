@@ -52,19 +52,20 @@ export function EmployeeTable() {
     
                 console.log('Fetched employees:', data); // Debugging log
     
-                if (Array.isArray(data)) {
+                if (Array.isArray(data) && data.length > 0) {
                     // Map data to align with the Employee interface
-                    setEmployees(
-                        data.map((employee: any) => ({
-                            idemployee: employee.idEmployee, // Adjust to match actual API field
-                            firstnameemployee: employee.firstnameemployee || employee.first_name, // Adjust to match actual API field
-                            lastnameemployee: employee.lastnameemployee || employee.last_name,
-                            datebirth: employee.datebirth,
-                            roleemployee: employee.roleemployee,
-                            wageemployee: employee.wageemployee || employee.hourly_wage,
-                            statusemployee: employee.statusemployee,
-                        }))
-                    );
+                    
+                    const mapped_employees = data.map((employee: any) => ({
+                        idemployee: employee.idemployee, // Adjust to match actual API field
+                        firstnameemployee: employee.firstnameemployee, // Adjust to match actual API field
+                        lastnameemployee: employee.lastnameemployee,
+                        datebirth: employee.datebirth,
+                        roleemployee: employee.roleemployee,
+                        wageemployee: employee.wageemployee,
+                        statusemployee: employee.statusemployee,
+                    }));
+                    setEmployees(mapped_employees); 
+
                 } else {
                     console.error('Employee data is not an array:', data);
                 }
