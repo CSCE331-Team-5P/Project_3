@@ -154,7 +154,7 @@ export function XReport() {
                 <li>Card Transactions: {summary.cardCount}</li>
                 <li>Dining Dollars Transactions: {summary.diningDollarsCount}</li>
                 <li>Meal Swipe Transactions: {summary.mealSwipeCount}</li>
-                <li>Total Transactions: {summary.cashCount + summary.cardCount + summary.diningDollarsCount + summary.mealSwipeCount}</li>
+                <li>Total Transactions: {Number(summary.cashCount) + Number(summary.cardCount) + Number(summary.diningDollarsCount) + Number(summary.mealSwipeCount)}</li>
                 <li>Total Sales: ${summary.totalSales.toFixed(2)}</li>
               </ul>
             </AlertDescription>
