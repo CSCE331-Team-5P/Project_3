@@ -22,31 +22,49 @@ import {
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-interface DailySummary {
-  cashCount: number
-  cardCount: number
-  diningDollarsCount: number
-  mealSwipeCount: number
-  totalSales: number
+interface TransactionRow {
+  cashCount: number;
+  cardCount: number;
+  diningDollarsCount: number;
+  mealSwipeCount: number;
+  totalSales: number;
 }
 
 export function XReport() {
   const [date, setDate] = useState<Date>()
-  const [summary, setSummary] = useState<DailySummary | null>(null)
+  const [summary, setSummary] = useState<TransactionRow | null>(null)
   const [isConfirmOpen, setIsConfirmOpen] = useState(false)
   const [isNewDayOpen, setIsNewDayOpen] = useState(false)
 
   const fetchDailySummary = async (selectedDate: Date) => {
-    // This would be replaced with an actual API call
-    const mockSummary: DailySummary = {
-      cashCount: Math.floor(Math.random() * 300) + 100,
-      cardCount: Math.floor(Math.random() * 500) + 200,
-      diningDollarsCount: Math.floor(Math.random() * 200) + 50,
-      mealSwipeCount: Math.floor(Math.random() * 400) + 100,
-      totalSales: Math.floor(Math.random() * 10000) + 5000,
+    try {
+        const formattedDate = format(selectedDate, 'yyyy-MM-dd'); // Format date for API
+        const response = await fetch(`/api/reports?date=${formattedDate}`);
+
+        console.log('Response status:', response.status);
+        console.log('Response headers:', response.headers);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('API Error Response:', errorText);
+            throw new Error(`Failed to fetch daily transaction summary: ${response.statusText}`);
+        }
+
+        const data: TransactionRow = await response.json(); // Explicit type for API response
+        console.log('Fetched Data:', data);
+
+        setSummary({
+            cashCount: data.cashCount || 0,
+            cardCount: data.cardCount || 0,
+            diningDollarsCount: data.diningDollarsCount || 0,
+            mealSwipeCount: data.mealSwipeCount || 0,
+            totalSales: data.totalSales || 0,
+        });
+    } catch (error) {
+        console.error('Error fetching daily summary:', error);
+        alert('Error fetching daily summary. Please try again.');
     }
-    setSummary(mockSummary)
-  }
+  };
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate)
