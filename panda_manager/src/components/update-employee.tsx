@@ -15,9 +15,9 @@ import {
 const fields = [
   { value: "firstNameEmployee", label: "First Name" },
   { value: "lastNameEmployee", label: "Last Name" },
-  { value: "dateBirth", label: "Birthdate" },
   { value: "roleEmployee", label: "Job Title" },
   { value: "wageEmployee", label: "Wage" },
+  { value: "statusEmployee", label: "Status"}
 ]
 
 export function EmployeeUpdateForm() {
