@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useMemo, useEffect } from "react"
-import {fetchInventory, addInventoryItem } from '@/lib/db/inventory_queries'; // Adjust path as needed
+// import {fetchInventory, addInventoryItem } from '@/lib/db/inventory_queries'; // Adjust path as needed
 import { InventoryUpdateForm } from "@/components/update-inventory"
 import {
     Table,
