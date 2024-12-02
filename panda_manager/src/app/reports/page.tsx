@@ -2,6 +2,8 @@
 
 import React from 'react';
 import Navbar from "@/components/Navbar";
+import { ZReport } from '@/components/z-report';
+import { XReport } from '@/components/x-report';
 
 export default function Inventory() {
 
@@ -10,7 +12,8 @@ export default function Inventory() {
         <div className="p-12">
             <Navbar />
             <h1 className="text-4xl font-medium pb-6"> Franchise Reports </h1>
-            <h2 className="text-lg font-normal pb-4"> Insert Inventory Item </h2>
+            <XReport />
+            <ZReport />
         </div>
     )
 }
