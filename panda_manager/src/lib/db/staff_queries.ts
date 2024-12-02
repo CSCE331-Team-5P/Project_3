@@ -65,3 +65,37 @@ export const updateEmployeeStatus = async (id: string, status: string) => {
         throw error;
     }
 };
+
+
+export const updateEmployeeField = async (id: string, field: string, value: string | number) => {
+    try {
+        // Validate allowed fields to prevent SQL injection
+        const allowedFields = [
+            "firstNameEmployee",
+            "lastNameEmployee",
+            "dateBirth",
+            "roleEmployee",
+            "wageEmployee",
+            "statusEmployee",
+        ];
+
+        if (!allowedFields.includes(field)) {
+            throw new Error(`Invalid field: ${field}`);
+        }
+
+        // Update the specified field dynamically
+        const result = await query(
+            `UPDATE STAFF SET ${field} = $1 WHERE idEmployee = $2 RETURNING *`,
+            [value, id]
+        );
+
+        if (result.rows.length === 0) {
+            throw new Error("Employee not found.");
+        }
+
+        return result.rows[0]; // Return the updated employee record
+    } catch (error) {
+        console.error("Error updating employee:", error);
+        throw error;
+    }
+};

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { fetchEmployees, addEmployee, updateEmployeeStatus  } from '@/lib/db/staff_queries'; // Adjust path as needed
+import { fetchEmployees, addEmployee, updateEmployeeStatus, updateEmployeeField   } from '@/lib/db/staff_queries'; // Adjust path as needed
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -23,17 +23,25 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
             const insertedEmployee = await addEmployee(newEmployee);
             res.status(201).json(insertedEmployee);
-        } else if (req.method === 'PATCH') {
-            const { id, status } = req.body;
-
-            if (!id || !status) {
-                res.status(400).json({ error: 'Missing required fields' });
+        }  
+        else if (req.method === 'PATCH') {
+            const { id, field, value } = req.body;
+        
+            if (!id || !field || value === undefined) {
+                res.status(400).json({ error: "Missing required fields." });
                 return;
             }
-
-            const updatedEmployee = await updateEmployeeStatus(id, status);
-            res.status(200).json(updatedEmployee);
-        } else {
+        
+            try {
+                const updatedEmployee = await updateEmployeeField(id, field, value);
+                res.status(200).json(updatedEmployee);
+            } catch (error) {
+                console.error("Error updating employee:", error);
+                res.status(500).json({ error: "Failed to update employee." });
+            }
+        }
+        
+        else {
             res.setHeader('Allow', ['GET', 'POST', 'PATCH']);
             res.status(405).end(`Method ${req.method} Not Allowed`);
         }

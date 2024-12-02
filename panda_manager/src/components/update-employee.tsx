@@ -27,31 +27,43 @@ export function EmployeeUpdateForm() {
 
   const handleUpdate = async () => {
     if (!employeeID || !selectedField || !newValue) {
-      alert("All fields are required.");
-      return;
+        alert("All fields are required.");
+        return;
     }
 
+    // Prepare payload
     const payload = {
-      idemployee: employeeID,
-      field: selectedField,
-      value: newValue,
+        id: employeeID,
+        field: selectedField,
+        value: selectedField === 'wageEmployee' ? parseFloat(newValue) : newValue,
     };
 
     try {
-      const response = await fetch("/api/employee", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
-      });
+        const response = await fetch("/api/employee", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+        });
 
-      if (!response.ok) throw new Error("Failed to update employee");
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert(`Error updating employee: ${errorData.error}`);
+            return;
+        }
 
-      alert("Employee updated successfully!");
+        const updatedEmployee = await response.json();
+        console.log("Employee updated successfully:", updatedEmployee);
+        alert("Employee updated successfully!");
+
+        // Optionally update the state if needed
+        // Example: Update local state in EmployeeTable
     } catch (err) {
-      console.error(err);
+        console.error("Error updating employee:", err);
+        alert("An error occurred while updating the employee.");
     }
   };
 
+  
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">Update Employee Information</h2>
