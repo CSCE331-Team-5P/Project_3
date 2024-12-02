@@ -13,8 +13,8 @@ import {
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { EmployeeUpdateForm } from "./update-employee"
 // import { Separator } from "@radix-ui/react-separator"
-
 interface Employee {
     idemployee: string
     firstnameemployee: string
@@ -189,6 +189,7 @@ export function EmployeeTable() {
                     Add Employee
                 </Button>
             </div>
+            <EmployeeUpdateForm />
             <h2 className="text-lg font-normal">View Employees</h2>
             <div className="mb-4 grid grid-cols-3 gap-4">
                 <div>
