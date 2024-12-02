@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect } from "react"
 import {fetchInventory, addInventoryItem } from '@/lib/db/inventory_queries'; // Adjust path as needed
-
+import { InventoryUpdateForm } from "@/components/update-inventory"
 import {
     Table,
     TableBody,
@@ -241,6 +241,7 @@ export function InventoryTable() {
                     Add Item
                 </Button>
             </div>
+            <InventoryUpdateForm />
             <h2 className="text-lg font-normal">View Inventory</h2>
             <div className="mb-4 grid grid-cols-3 gap-4">
                 <div>

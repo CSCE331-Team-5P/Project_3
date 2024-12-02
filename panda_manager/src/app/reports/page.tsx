@@ -7,11 +7,10 @@ export default function Inventory() {
 
 
     return (
-        <div>
+        <div className="p-12">
             <Navbar />
-            <div>
-                
-            </div>
+            <h1 className="text-4xl font-medium pb-6"> Franchise Reports </h1>
+            <h2 className="text-lg font-normal pb-4"> Insert Inventory Item </h2>
         </div>
     )
 }
