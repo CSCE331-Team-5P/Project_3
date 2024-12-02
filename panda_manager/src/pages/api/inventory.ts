@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { fetchInventory, addInventoryItem, removeInventoryItem} from '@/lib/db/inventory_queries'; // Import the fetchInventory function
+import { fetchInventory, addInventoryItem, removeInventoryItem, updateInventoryItem } from '@/lib/db/inventory_queries'; // Import the fetchInventory function
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
     try {
@@ -42,7 +42,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }
 
             res.status(200).json(updatedItem);
-        } else {
+        } else if (req.method === 'PATCH') {
+            const { idinventory, field, value } = req.body;
+
+            if (!idinventory || !field || value === undefined) {
+                res.status(400).json({ error: 'Missing required fields for update.' });
+                return;
+            }
+
+            try {
+                const updatedItem = await updateInventoryItem(idinventory, field, value);
+                res.status(200).json(updatedItem);
+            } catch (error) {
+                res.status(400).json({ error: "Failed to update" });
+            }
+        }
+        else {
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${req.method} Not Allowed`);
         }

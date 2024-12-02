@@ -50,3 +50,19 @@ export const removeInventoryItem = async (id: string) => {
 
     return result.rows[0]; // Return the updated row
 };
+
+// Update an inventory item based on a given field and value
+export const updateInventoryItem = async (id: string, field: string, value: string | number) => {
+    // Ensure only valid fields are updated to prevent SQL injection
+    const allowedFields = ['status', 'priceItem', 'categoryItem', 'quantityItem'];
+    if (!allowedFields.includes(field)) {
+        throw new Error(`Invalid field: ${field}`);
+    }
+
+    const result = await query(
+        `UPDATE inventory SET ${field} = $1 WHERE idinventory = $2 RETURNING *`,
+        [value, id]
+    );
+
+    return result.rows[0]; // Return the updated row
+};

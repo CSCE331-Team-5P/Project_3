@@ -13,12 +13,10 @@ import {
 } from "@/components/ui/select"
 
 const fields = [
-  { value: "nameitem", label: "Item Name" },
   { value: "status", label: "Status" },
-  { value: "priceitem", label: "Price" },
-  { value: "categoryitem", label: "Category" },
-  { value: "restocktime", label: "Restock Time" },
-  { value: "quantityitem", label: "Quantity" },
+  { value: "priceItem", label: "Price" },
+  { value: "categoryItem", label: "Category" },
+  { value: "quantityItem", label: "Quantity" },
 ]
 
 export function InventoryUpdateForm() {
@@ -27,10 +25,43 @@ export function InventoryUpdateForm() {
   const [newValue, setNewValue] = useState("")
 
   const handleUpdate = async () => {
-    // Implement the update logic here
-    console.log("Updating:", { inventoryId, field: selectedField, value: newValue })
-    // You would typically make an API call here to update the inventory item
-  }
+    if (!inventoryId || !selectedField || !newValue) {
+        alert('Please fill out all fields before updating.');
+        return;
+    }
+
+    const payload = {
+        idinventory: inventoryId,
+        field: selectedField,
+        value: selectedField === 'priceitem' || selectedField === 'quantityitem' 
+               ? Number(newValue) 
+               : newValue,
+    };
+
+    try {
+        const response = await fetch('/api/inventory', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+
+        if (!response.ok) {
+            const error = await response.json();
+            alert(`Error updating inventory item: ${error.error}`);
+            return;
+        }
+
+        const updatedItem = await response.json();
+        console.log('Updated item:', updatedItem);
+        alert('Inventory item updated successfully!');
+    } catch (error) {
+        console.error('Error updating inventory item:', error);
+        alert('An error occurred while updating the item.');
+    }
+  };
+
 
   return (
     <div className="space-y-4">
