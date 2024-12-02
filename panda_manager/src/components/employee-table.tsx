@@ -77,11 +77,38 @@ export function EmployeeTable() {
         const { name, value } = e.target
         setFilters((prev) => ({ ...prev, [name]: value }))
     }
-    
-    const addEmployee = () => {
-        if (newEmployee.firstnameemployee && newEmployee.lastnameemployee) {
-            const newId = `EMP${(employees.length + 1).toString().padStart(3, '0')}`
-            setEmployees((prev) => [...prev, { ...newEmployee, idemployee: newId }])
+
+
+    const addEmployee = async () => {
+        if (
+            !newEmployee.firstnameemployee ||
+            !newEmployee.lastnameemployee ||
+            !newEmployee.datebirth ||
+            !newEmployee.roleemployee ||
+            newEmployee.wageemployee === undefined ||
+            !newEmployee.statusemployee
+        ) {
+            alert("Please fill out all fields before adding an employee.")
+            return
+        }
+
+        try {
+            const response = await fetch('/api/employee', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newEmployee),
+            })
+
+            if (!response.ok) {
+                throw new Error("Failed to add employee")
+            }
+
+            const insertedEmployee = await response.json()
+            setEmployees((prev) => [...prev, insertedEmployee])
+
+            // Reset the form
             setNewEmployee({
                 idemployee: "",
                 firstnameemployee: "",
@@ -91,12 +118,41 @@ export function EmployeeTable() {
                 wageemployee: 0,
                 statusemployee: "",
             })
+        } catch (error) {
+            console.error("Error adding employee:", error)
+            alert("Error adding employee. Please try again.")
         }
     }
     
-    const removeEmployee = (id: string) => {
-        setEmployees((prev) => prev.filter((employee) => employee.idemployee !== id))
-    }
+    const removeEmployee = async (id: string) => {
+        try {
+            const response = await fetch('/api/employee', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ id, status: 'Inactive' }),
+            });
+    
+            if (!response.ok) {
+                throw new Error('Failed to update employee status');
+            }
+    
+            const updatedEmployee = await response.json();
+    
+            // Update the UI
+            setEmployees((prev) =>
+                prev.map((employee) =>
+                    employee.idemployee === updatedEmployee.idemployee
+                        ? { ...employee, statusemployee: updatedEmployee.statusemployee }
+                        : employee
+                )
+            );
+        } catch (error) {
+            console.error('Error updating employee status:', error);
+            alert('Error removing employee. Please try again.');
+        }
+    };
 
     const filteredEmployees = useMemo(() => {
         return employees.filter((employee) => {
@@ -124,7 +180,7 @@ export function EmployeeTable() {
                     <Label htmlFor="firstName">First Name</Label>
                     <Input
                         id="firstName"
-                        name="firstName"
+                        name="firstnameemployee"
                         value={newEmployee.firstnameemployee}
                         onChange={handleInputChange}
                         placeholder="Enter first name"
@@ -134,7 +190,7 @@ export function EmployeeTable() {
                     <Label htmlFor="lastName">Last Name</Label>
                     <Input
                         id="lastName"
-                        name="lastName"
+                        name="lastnameemployee"
                         value={newEmployee.lastnameemployee}
                         onChange={handleInputChange}
                         placeholder="Enter last name"
@@ -144,7 +200,7 @@ export function EmployeeTable() {
                     <Label htmlFor="birthdate">Birthdate</Label>
                     <Input
                         id="birthdate"
-                        name="birthdate"
+                        name="datebirth"
                         type="date"
                         value={newEmployee.datebirth}
                         onChange={handleInputChange}
@@ -154,7 +210,7 @@ export function EmployeeTable() {
                     <Label htmlFor="job">Job</Label>
                     <Input
                         id="job"
-                        name="job"
+                        name="roleemployee"
                         value={newEmployee.roleemployee}
                         onChange={handleInputChange}
                         placeholder="Enter job title"
@@ -164,9 +220,9 @@ export function EmployeeTable() {
                     <Label htmlFor="hourlyWage">Hourly Wage</Label>
                     <Input
                         id="hourlyWage"
-                        name="hourlyWage"
+                        name="wageemployee"
                         type="number"
-                        value={newEmployee.wageemployee.toString()}
+                        value={newEmployee.wageemployee}
                         onChange={handleInputChange}
                         placeholder="Enter hourly wage"
                     />
@@ -175,7 +231,7 @@ export function EmployeeTable() {
                     <Label htmlFor="status">Status</Label>
                     <Input
                         id="status"
-                        name="status"
+                        name="statusemployee"
                         value={newEmployee.statusemployee}
                         onChange={handleInputChange}
                         placeholder="Enter status"

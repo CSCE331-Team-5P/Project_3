@@ -26,10 +26,31 @@ export function EmployeeUpdateForm() {
   const [newValue, setNewValue] = useState("")
 
   const handleUpdate = async () => {
-    // Implement the update logic here
-    console.log("Updating:", { employeeID, field: selectedField, value: newValue })
-    // You would typically make an API call here to update the inventory item
-  }
+    if (!employeeID || !selectedField || !newValue) {
+      alert("All fields are required.");
+      return;
+    }
+
+    const payload = {
+      idemployee: employeeID,
+      field: selectedField,
+      value: newValue,
+    };
+
+    try {
+      const response = await fetch("/api/employee", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error("Failed to update employee");
+
+      alert("Employee updated successfully!");
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <div className="space-y-4">
