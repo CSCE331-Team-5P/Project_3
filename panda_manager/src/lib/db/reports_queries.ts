@@ -34,3 +34,32 @@ export const getHourlyTransactionSummary = async (date: string) => {
         throw error;
     }
 };
+
+export const sumTransactionsByDay = async (date: string) => {
+    try {
+        const result = await query(
+            `SELECT 
+                SUM(CASE WHEN methodPayment = 'Cash' THEN 1 END) AS "cashCount",
+                SUM(CASE WHEN methodPayment = 'Card' THEN 1 END) AS "cardCount",
+                SUM(CASE WHEN methodPayment = 'Dining Dollars' THEN 1 END) AS "diningDollarsCount",
+                SUM(CASE WHEN methodPayment = 'Meal Swipe' THEN 1 END) AS "mealSwipeCount",
+                SUM(amountTotal) AS "totalSales"
+             FROM transactions
+             WHERE dateTransaction::date = $1`,
+            [date]
+        );
+
+        // Return the first row, as it aggregates the entire day
+        const row = result.rows[0];
+        return {
+            cashCount: row.cashCount || 0,
+            cardCount: row.cardCount || 0,
+            diningDollarsCount: row.diningDollarsCount || 0,
+            mealSwipeCount: row.mealSwipeCount || 0,
+            totalSales: parseFloat(row.totalSales || 0),
+        };
+    } catch (error) {
+        console.error('Error summing daily transactions:', error);
+        throw error;
+    }
+};
