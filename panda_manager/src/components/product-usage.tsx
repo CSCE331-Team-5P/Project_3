@@ -23,28 +23,58 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface ItemSale {
+  idInventory: number
   itemName: string
-  count: number
+  totalUsed: number
 }
 
 export function ProductUsage() {
   const [startDate, setStartDate] = useState<Date>()
   const [endDate, setEndDate] = useState<Date>()
   const [itemSales, setItemSales] = useState<ItemSale[]>([])
+  const [loading, setLoading] = useState(false)
+const [error, setError] = useState<string | null>(null)
+
 
   const fetchItemSales = async (start: Date, end: Date) => {
     // This would be replaced with an actual API call
-    const mockData: ItemSale[] = [
-      { itemName: "Burger", count: Math.floor(Math.random() * 100) + 50 },
-      { itemName: "Pizza", count: Math.floor(Math.random() * 100) + 50 },
-      { itemName: "Salad", count: Math.floor(Math.random() * 100) + 20 },
-      { itemName: "Fries", count: Math.floor(Math.random() * 200) + 100 },
-      { itemName: "Soda", count: Math.floor(Math.random() * 150) + 75 },
-      { itemName: "Ice Cream", count: Math.floor(Math.random() * 50) + 25 },
-      { itemName: "Coffee", count: Math.floor(Math.random() * 120) + 80 },
-      { itemName: "Sandwich", count: Math.floor(Math.random() * 80) + 40 },
-    ]
-    setItemSales(mockData)
+    try {
+      setLoading(true)
+      setError(null)
+
+      console.log("Fetching item sales with dates:", {
+        start: start.toISOString(),
+        end: end.toISOString(),
+      });
+  
+      const response = await fetch(
+        `/api/item_usage?startDate=${start.toISOString()}&endDate=${end.toISOString()}`
+      )
+      
+      if (!response.ok) {
+        throw new Error(`Error fetching data: ${response.statusText}`)
+      }
+  
+      const data: ItemSale[] = await response.json()
+
+      console.log("API Response Data:", data);
+      
+      setItemSales(
+        data.map(item => ({
+          idInventory: item.idInventory,
+          itemName: item.itemName,
+          totalUsed: item.totalUsed,// Convert 'totalUsed' string to a number
+        }))
+      )
+      
+      
+      
+    } catch (error: any) {
+      console.error("Error fetching item usage:", error)
+      setError(error.message || "Failed to fetch data")
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleSubmit = () => {
@@ -122,9 +152,9 @@ export function ProductUsage() {
             </TableHeader>
             <TableBody>
               {itemSales.map((item) => (
-                <TableRow key={item.itemName}>
+                <TableRow key={item.idInventory}>
                   <TableCell>{item.itemName}</TableCell>
-                  <TableCell className="text-right">{item.count}</TableCell>
+                  <TableCell className="text-right">{item.totalUsed}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

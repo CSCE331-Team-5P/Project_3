@@ -4,6 +4,7 @@ import { query } from './client';
 //^ Reports Queries
 //^ //////////////////////////////////////////
 
+//X-Table Reports page queries
 export const getHourlyTransactionSummary = async (date: string) => {
     try {
         const result = await query(
@@ -35,6 +36,8 @@ export const getHourlyTransactionSummary = async (date: string) => {
     }
 };
 
+
+//Z-Table Reports page queries
 export const sumTransactionsByDay = async (date: string) => {
     try {
         const result = await query(
@@ -63,3 +66,29 @@ export const sumTransactionsByDay = async (date: string) => {
         throw error;
     }
 };
+
+//Inventory Usage table summary
+export const getItemUsageBetweenDates = async (startDate: string, endDate: string) => {
+    try {
+      const result = await query(
+        `SELECT i.idinventory, i.nameitem, COUNT(*) AS "totalUsed"
+         FROM transactions t
+         JOIN orders o ON t.idtransaction = o.idtransaction
+         JOIN inventory i ON o.idinventory = i.idinventory
+         WHERE t.datetransaction BETWEEN $1 AND $2
+         GROUP BY i.idinventory, i.nameitem
+         ORDER BY i.idinventory`,
+        [startDate, endDate] // Use parameterized queries for security
+      );
+  
+      return result.rows.map((row) => ({
+        idInventory: row.idinventory,
+        itemName: row.nameitem,
+        totalUsed: row.totalUsed,
+      }));
+    } catch (error) {
+      console.error("Error fetching item usage between dates:", error);
+      throw error;
+    }
+  };
+  
