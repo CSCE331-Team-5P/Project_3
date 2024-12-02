@@ -25,15 +25,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             res.status(201).json(insertedEmployee);
         }  
         else if (req.method === 'PATCH') {
-            const { id, field, value } = req.body;
+            const { id, field, value, status } = req.body;
         
-            if (!id || !field || value === undefined) {
-                res.status(400).json({ error: "Missing required fields." });
+            if (!id) {
+                res.status(400).json({ error: "Employee ID is required." });
                 return;
             }
         
             try {
-                const updatedEmployee = await updateEmployeeField(id, field, value);
+                let updatedEmployee;
+        
+                if (status) {
+                    // If a status update is requested
+                    updatedEmployee = await updateEmployeeStatus(id, status);
+                } else if (field && value !== undefined) {
+                    // If a specific field update is requested
+                    updatedEmployee = await updateEmployeeField(id, field, value);
+                } else {
+                    res.status(400).json({ error: "Invalid update parameters." });
+                    return;
+                }
+        
                 res.status(200).json(updatedEmployee);
             } catch (error) {
                 console.error("Error updating employee:", error);

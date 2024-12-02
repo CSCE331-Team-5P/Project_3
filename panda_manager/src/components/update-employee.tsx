@@ -26,17 +26,19 @@ export function EmployeeUpdateForm() {
   const [newValue, setNewValue] = useState("")
 
   const handleUpdate = async () => {
-    if (!employeeID || !selectedField || !newValue) {
+    if (!employeeID || (!selectedField && !newValue)) {
         alert("All fields are required.");
         return;
     }
 
-    // Prepare payload
-    const payload = {
-        id: employeeID,
-        field: selectedField,
-        value: selectedField === 'wageEmployee' ? parseFloat(newValue) : newValue,
-    };
+    const payload: any = { id: employeeID };
+
+    if (selectedField && newValue) {
+        payload.field = selectedField;
+        payload.value = selectedField === 'wageEmployee' ? parseFloat(newValue) : newValue;
+    } else {
+        payload.status = newValue; // For status updates
+    }
 
     try {
         const response = await fetch("/api/employee", {
@@ -55,15 +57,19 @@ export function EmployeeUpdateForm() {
         console.log("Employee updated successfully:", updatedEmployee);
         alert("Employee updated successfully!");
 
-        // Optionally update the state if needed
-        // Example: Update local state in EmployeeTable
+        // Optionally update local state in EmployeeTable if needed
+        // setEmployees((prev) =>
+        //     prev.map((emp) =>
+        //         emp.idemployee === updatedEmployee.idemployee ? updatedEmployee : emp
+        //     )
+        // );
     } catch (err) {
         console.error("Error updating employee:", err);
         alert("An error occurred while updating the employee.");
     }
   };
 
-  
+
   return (
     <div className="space-y-4">
       <h2 className="text-lg font-semibold">Update Employee Information</h2>

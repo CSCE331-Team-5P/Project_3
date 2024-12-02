@@ -154,6 +154,7 @@ export function EmployeeTable() {
         }
     };
 
+    
     const filteredEmployees = useMemo(() => {
         return employees.filter((employee) => {
             const nameMatch =
