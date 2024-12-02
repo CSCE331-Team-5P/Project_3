@@ -4,6 +4,7 @@ import React from 'react';
 import Navbar from "@/components/Navbar";
 import { ZReport } from '@/components/z-report';
 import { XReport } from '@/components/x-report';
+import { ProductUsage } from '@/components/product-usage';
 
 export default function Inventory() {
 
@@ -14,6 +15,7 @@ export default function Inventory() {
             <h1 className="text-4xl font-medium pb-6"> Franchise Reports </h1>
             <XReport />
             <ZReport />
+            <ProductUsage />
         </div>
     )
 }
