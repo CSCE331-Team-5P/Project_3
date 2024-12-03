@@ -16,6 +16,44 @@ export const GlobalStateProvider = ({ children }) => {
 
     const [selectedItemIds, setSelectedItemIds] = useState([]);
 
+    // Add menuItems state to global provider
+    // Static menuItems array (global)
+    const [menuItems, setMenuItems] = useState([
+        { id: "orangeChicken", name: "Orange Chicken", price: 2222222 },
+        { id: "chowMein", name: "Chow Mein", price: 0 },
+        { id: "friedRice", name: "Fried Rice", price: 0 },
+        { id: "eggRoll", name: "Egg Roll", price: 0 },
+        { id: "applePieRoll", name: "Apple Pie Roll", price: 0 },
+        { id: "vegetableSpringRoll", name: "Vegetable Spring Roll", price: 0 },
+        { id: "creamCheeseRangoon", name: "Cream Cheese Rangoon", price: 0 },
+        { id: 'chowMein', name: 'Chow Mein', price: 0 },
+        { id: 'friedRice', name: 'Fried Rice', price: 0 },
+        { id: 'steamedRice', name: 'White Steamed Rice', price: 0 },
+        { id: 'superGreens', name: 'Super Greens', price: 0 },
+        { id: 'blazingBourbonChicken', name: 'Hot Ones Blazing Bourbon Chicken', price: 0 },
+        // { id: 'orangeChicken', name: 'The Original Orange Chicken', price: 6.77 },
+        { id: 'pepperSirloinSteak', name: 'Black Pepper Sirloin Steak', price: 0 },
+        { id: 'honeyWalnutShrimp', name: 'Honey Walnut Shrimp', price: 0 },
+        { id: 'grilledTeriyakiChicken', name: 'Grilled Teriyaki Chicken', price: 0 },
+        { id: 'broccoliBeef', name: 'Broccoli Beef', price: 0 },
+        { id: 'kungPaoChicken', name: 'Kung Pao Chicken', price: 0 },
+        { id: 'honeySesameChicken', name: 'Honey Sesame Chicken Breast', price: 0 },
+        { id: 'beijingBeef', name: 'Beijing Beef', price: 0},
+        { id: 'mushroomChicken', name: 'Mushroom Chicken', price: 0 },
+        { id: 'sweetfireChicken', name: 'SweetFire Chicken Breast', price: 0 },
+        { id: 'stringBeanChicken', name: 'String Bean Chicken Breast', price: 0 },
+        { id: 'blackPepperChicken', name: 'Black Pepper Chicken', price: 0 },
+    ]);
+
+    const updateMenuItems = (updatedMenuItems) => {
+        updatedMenuItems.forEach((updatedItem) => {
+            const item = menuItems.find((menuItem) => menuItem.name === updatedItem.name);
+            if (item) {
+                item.price = parseFloat(updatedItem.price); // Update price directly
+            }
+        });
+    };
+
     // Function to update meal options based on the selected category
     const updateMealOptions = (mealType) => {
         switch (mealType) {
@@ -56,7 +94,7 @@ export const GlobalStateProvider = ({ children }) => {
     }, []); // No dependencies mean this function won't change
 
     return (
-        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems }}>
+        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, updateMenuItems }}>
             {children}
         </GlobalStateContext.Provider>
     );

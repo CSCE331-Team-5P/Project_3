@@ -5,38 +5,61 @@ import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation"; // Import useRouter to programmatically control routing (originally navigation)
 
 export default function Checkout() {
-  const { selectedItemIds, clearSelectedItems } = useGlobalState(); // Access selected item IDs from the global state
+  const { selectedItemIds, clearSelectedItems, menuItems, updateMenuItems } = useGlobalState(); // Access selected item IDs from the global state
   const router = useRouter(); // Initialize the Next.js router to trigger a page refresh
   const pathname = usePathname(); // Gives the current path
   const [employeeId, setEmployeeId] = useState('');
 
   // Sample data for item details (this would be more dynamic in a real application)
-  const menuItems = [
-    { id: "orangeChicken", name: "Orange Chicken", price: 8.99 },
-    { id: "chowMein", name: "Chow Mein", price: 6.99 },
-    { id: "friedRice", name: "Fried Rice", price: 5.99 },
-    { id: "eggRoll", name: "Egg Roll", price: 1.99 },
-    { id: "applePieRoll", name: "Apple Pie Roll", price: 3.99 },
-    { id: "vegetableSpringRoll", name: "Vegetable Spring Roll", price: 2.49 },
-    { id: "creamCheeseRangoon", name: "Cream Cheese Rangoon", price: 4.49 },
-    { id: 'chowMein', name: 'Chow Mein', price: 6.77 },
-    { id: 'friedRice', name: 'Fried Rice', price: 6.77 },
-    { id: 'steamedRice', name: 'White Steamed Rice', price: 6.77 },
-    { id: 'superGreens', name: 'Super Greens', price: 6.77 },
-    { id: 'blazingBourbonChicken', name: 'Hot Ones Blazing Bourbon Chicken', price: 6.77 },
-    // { id: 'orangeChicken', name: 'The Original Orange Chicken', price: 6.77 },
-    { id: 'pepperSirloinSteak', name: 'Black Pepper Sirloin Steak', price: 6.77 },
-    { id: 'honeyWalnutShrimp', name: 'Honey Walnut Shrimp', price: 6.77 },
-    { id: 'grilledTeriyakiChicken', name: 'Grilled Teriyaki Chicken', price: 6.77 },
-    { id: 'broccoliBeef', name: 'Broccoli Beef', price: 6.77 },
-    { id: 'kungPaoChicken', name: 'Kung Pao Chicken', price: 6.77 },
-    { id: 'honeySesameChicken', name: 'Honey Sesame Chicken Breast', price: 6.77 },
-    { id: 'beijingBeef', name: 'Beijing Beef', price: 6.77 },
-    { id: 'mushroomChicken', name: 'Mushroom Chicken', price: 6.77 },
-    { id: 'sweetfireChicken', name: 'SweetFire Chicken Breast', price: 6.77 },
-    { id: 'stringBeanChicken', name: 'String Bean Chicken Breast', price: 6.77 },
-    { id: 'blackPepperChicken', name: 'Black Pepper Chicken', price: 6.77 },
-  ];
+  // const menuItems = [
+  //   { id: "orangeChicken", name: "Orange Chicken", price: 0 },
+  //   { id: "chowMein", name: "Chow Mein", price: 0 },
+  //   { id: "friedRice", name: "Fried Rice", price: 0 },
+  //   { id: "eggRoll", name: "Egg Roll", price: 0 },
+  //   { id: "applePieRoll", name: "Apple Pie Roll", price: 0 },
+  //   { id: "vegetableSpringRoll", name: "Vegetable Spring Roll", price: 0 },
+  //   { id: "creamCheeseRangoon", name: "Cream Cheese Rangoon", price: 0 },
+  //   { id: 'chowMein', name: 'Chow Mein', price: 0 },
+  //   { id: 'friedRice', name: 'Fried Rice', price: 0 },
+  //   { id: 'steamedRice', name: 'White Steamed Rice', price: 0 },
+  //   { id: 'superGreens', name: 'Super Greens', price: 0 },
+  //   { id: 'blazingBourbonChicken', name: 'Hot Ones Blazing Bourbon Chicken', price: 0 },
+  //   // { id: 'orangeChicken', name: 'The Original Orange Chicken', price: 6.77 },
+  //   { id: 'pepperSirloinSteak', name: 'Black Pepper Sirloin Steak', price: 0 },
+  //   { id: 'honeyWalnutShrimp', name: 'Honey Walnut Shrimp', price: 0 },
+  //   { id: 'grilledTeriyakiChicken', name: 'Grilled Teriyaki Chicken', price: 0 },
+  //   { id: 'broccoliBeef', name: 'Broccoli Beef', price: 0 },
+  //   { id: 'kungPaoChicken', name: 'Kung Pao Chicken', price: 0 },
+  //   { id: 'honeySesameChicken', name: 'Honey Sesame Chicken Breast', price: 0 },
+  //   { id: 'beijingBeef', name: 'Beijing Beef', price: 0},
+  //   { id: 'mushroomChicken', name: 'Mushroom Chicken', price: 0 },
+  //   { id: 'sweetfireChicken', name: 'SweetFire Chicken Breast', price: 0 },
+  //   { id: 'stringBeanChicken', name: 'String Bean Chicken Breast', price: 0 },
+  //   { id: 'blackPepperChicken', name: 'Black Pepper Chicken', price: 0 },
+  // ];
+
+  useEffect(() => {
+    async function fetchMenuItems() {
+      try {
+        const response = await fetch("/api/connectDB");
+        const data = await response.json();
+
+        if (data.success) {
+          updateMenuItems(data.menuItems); // Update menuItems in the global state
+        } else {
+          console.error("Failed to fetch menu items:", data.message);
+        }
+      } catch (error) {
+        console.error("Error fetching menu items:", error);
+      }
+    }
+
+    fetchMenuItems();
+  }, [updateMenuItems]);
+
+
+  console.log("menuItems after fetch:", menuItems);
+
 
   const itemQuantities = selectedItemIds.reduce((acc, id) => {
     acc[id] = (acc[id] || 0) + 1;

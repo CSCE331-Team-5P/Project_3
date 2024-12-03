@@ -1,0 +1,17 @@
+idEmployee,firstNameEmployee,lastNameEmployee,dateBirth,roleEmployee,wageEmployee,statusEmployee
+0,Customer,Customer,1/11/99,Customer,0,Active
+1,Howard,Burgess,8/13/85,Server,16.66,Active
+2,Amy,Marks,8/16/75,Cook,18.75,Active
+3,Alyssa,Lopez,1/6/99,Cashier,16.24,Inactive
+4,Tammy,Bean,4/10/91,Cook,15.63,Active
+5,Kristen,Guzman,10/28/95,Cashier,19.93,Active
+6,Luis,Bell,3/6/78,Cashier,19.89,Active
+7,Michael,Christian,9/2/76,Cashier,15.13,Inactive
+8,Kevin,Sims,10/7/01,Server,20.66,Active
+9,Carl,Morris,1/22/06,Cashier,17.85,Active
+10,Christian,Lee,3/22/64,Cashier,20.43,Active
+11,Travis,Colon,11/27/70,Server,15.12,Active
+12,Bradley,Underwood,9/27/75,Server,16.74,Active
+13,Victoria,Vaughn,7/22/06,Cook,20.01,Inactive
+14,Briana,Jackson,10/21/65,Cook,18.19,Active
+15,Angela,Brennan,12/16/86,Cashier,17.91,Active

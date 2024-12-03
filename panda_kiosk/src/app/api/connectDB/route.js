@@ -160,3 +160,48 @@ export async function POST(request) {
         console.log("Database connection closed");
     }
 }
+
+export async function GET() {
+    const connectionString = process.env.DATABASE_URL; // Replace with your database connection string
+    const client = new Client({ connectionString });
+
+    try {
+        await client.connect();
+        console.log("Database connection established");
+
+        // Query to fetch item details (id, name, price)
+        const query = `
+            SELECT 
+                idInventory AS id, 
+                nameItem AS name, 
+                CAST(priceItem AS FLOAT) AS price 
+            FROM INVENTORY
+        `;
+        const result = await client.query(query);
+        console.log("result aaaaaaa", result);
+
+        // If no items are found, return a meaningful response
+        if (!result.rows.length) {
+            return NextResponse.json(
+                { success: false, message: "No items found in the inventory" },
+                { status: 404 }
+            );
+        }
+
+        // Return the fetched data as JSON
+        return NextResponse.json({
+            success: true,
+            menuItems: result.rows,
+        });
+
+    } catch (error) {
+        console.error("Error fetching menu items:", error);
+        return NextResponse.json(
+            { success: false, message: "Failed to fetch menu items", error: error.message },
+            { status: 500 }
+        );
+    } finally {
+        await client.end();
+        console.log("Database connection closed");
+    }
+}

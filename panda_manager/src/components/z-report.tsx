@@ -45,17 +45,23 @@ export function ZReport() {
 
   // Simulated data fetch - replace with actual API call
   const fetchTransactionData = async (selectedDate: Date) => {
-    // This would be replaced with an actual API call
-    const mockData: TransactionData[] = Array.from({ length: 12 }, (_, i) => ({
-      hour: `${i + 10}:00:00`,
-      cashCount: Math.floor(Math.random() * 30) + 30,
-      cardCount: Math.floor(Math.random() * 30) + 30,
-      diningDollarsCount: Math.floor(Math.random() * 30) + 30,
-      mealSwipeCount: Math.floor(Math.random() * 30) + 30,
-      totalSales: Math.floor(Math.random() * 1000) + 2000,
-    }))
-    setTransactionData(mockData)
-  }
+    try {
+      const formattedDate = format(selectedDate, 'yyyy-MM-dd'); // Format the date for the GET request
+      const response = await fetch(`/api/reports?date=${formattedDate}`, {
+        method: 'GET', // Explicitly specifying the HTTP method
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error fetching transaction data: ${response.statusText}`);
+      }
+  
+      const data: TransactionData[] = await response.json(); // Parse the JSON response
+      setTransactionData(data); // Update the state with the fetched data
+    } catch (error) {
+      console.error('Failed to fetch transaction data:', error);
+      setTransactionData([]); // Reset the state to an empty array on failure
+    }
+  };
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate)
