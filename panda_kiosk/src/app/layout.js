@@ -1,6 +1,6 @@
 import "./globals.css";
-// import { OrderProvider } from '@/context/OrderContext';
 import { GlobalStateProvider } from "@/components/GlobalStateProvider";
+import { MagnifierProvider } from "@/context/MagnifierContext";
 
 export const metadata = {
   title: "Create Next App",
@@ -10,11 +10,10 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`antialiased`} >
+      <body className={`antialiased`}>
         <GlobalStateProvider>
-          {children}
+          <MagnifierProvider>{children}</MagnifierProvider>
         </GlobalStateProvider>
-        {/* <OrderProvider>{children}</OrderProvider> */}
       </body>
     </html>
   );

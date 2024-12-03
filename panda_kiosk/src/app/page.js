@@ -1,16 +1,20 @@
 "use client";
 
+import { useState, useEffect, useRef } from "react"; // Ensure useState is imported
 import { useRouter } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
+import { useMagnifier } from "@/context/MagnifierContext";
 
 export default function Home() {
   const router = useRouter();
-  const [weather, setWeather] = useState(null);
-  const [isMagnifierEnabled, setIsMagnifierEnabled] = useState(false);
-  const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
+  const {
+    isMagnifierEnabled,
+    setIsMagnifierEnabled,
+    magnifierPosition,
+    setMagnifierPosition,
+  } = useMagnifier();
   const screenshotRef = useRef(null);
+  const [weather, setWeather] = useState(null); // useState is used here
 
-  // Fetch weather data on component mount
   useEffect(() => {
     const fetchWeather = async () => {
       try {
@@ -26,7 +30,6 @@ export default function Home() {
     };
     fetchWeather();
 
-    // Capture screenshot after rendering
     const captureScreenshot = () => {
       html2canvas(document.body, {
         useCORS: true,
@@ -36,13 +39,10 @@ export default function Home() {
       });
     };
 
-    // Delay screenshot capture to ensure all content is loaded
     const timer = setTimeout(captureScreenshot, 1000);
-
     return () => clearTimeout(timer);
   }, []);
 
-  // Track cursor position relative to the viewport
   const handleMouseMove = (e) => {
     if (isMagnifierEnabled) {
       setMagnifierPosition({
@@ -52,7 +52,6 @@ export default function Home() {
     }
   };
 
-  // Handle click to start order
   const handleStartOrder = () => {
     router.push("/menuItems");
   };
@@ -63,7 +62,6 @@ export default function Home() {
       onMouseMove={handleMouseMove}
       className="relative flex bg-red-700 items-center justify-center min-h-screen cursor-pointer"
     >
-      {/* Existing page content */}
       <div className="w-full md:max-w-prose p-4">
         <h1 className="text-9xl text-white font-extrabold my-8">
           Order & Pay Here
@@ -86,9 +84,7 @@ export default function Home() {
             <h3 className="text-2xl font-semibold">
               Weather in College Station
             </h3>
-            <p className="text-lg">
-              Temperature: {weather.current.temp_f}°F
-            </p>
+            <p className="text-lg">Temperature: {weather.current.temp_f}°F</p>
             <p className="text-lg">
               Conditions: {weather.current.condition.text}
             </p>
@@ -96,7 +92,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Magnifier */}
       {isMagnifierEnabled && screenshotRef.current && (
         <div
           style={{
@@ -131,7 +126,6 @@ export default function Home() {
         </div>
       )}
 
-      {/* Accessibility Toggle Button */}
       <button
         onClick={(e) => {
           e.stopPropagation();

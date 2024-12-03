@@ -3,7 +3,7 @@ import { useState } from "react";
 import DrinkCard from "@/components/DrinkCard";
 import { useGlobalState } from "@/components/GlobalStateProvider";
 
-export default function DrinkSelection() {
+export default function DrinkSelection({ onButtonClick }) {
     const { addDrink, removeDrink } = useGlobalState();
 
     const drinks = [
@@ -46,12 +46,14 @@ export default function DrinkSelection() {
             ...prevState,
             [drinkId]: prevState[drinkId] + 1,
         }));
+        onButtonClick(); // Trigger the screenshot update
     };
 
     const decrementQuantity = (drinkId) => {
         setDrinkQuantities((prevState) => {
             if (prevState[drinkId] > 0) {
                 removeDrink(drinkId);
+                onButtonClick(); // Trigger the screenshot update
                 return {
                     ...prevState,
                     [drinkId]: prevState[drinkId] - 1,
