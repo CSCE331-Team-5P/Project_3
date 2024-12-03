@@ -27,9 +27,9 @@ export default function DrinkSelection() {
         { name: 'Coke Zero', image: '/CokeZero.avif' },
         { name: 'Smartwater', image: '/Smartwater.avif' },
         { name: 'Bai Coco Fusion', image: '/BaiCocoFusion.avif' },
-        { name: 'Drink Small', image: '/DrinkSmall.avif' },
-        { name: 'Drink Medium', image: '/DrinkMedium.avif' },
-        { name: 'Drink Large', image: '/DrinkLarge.avif' },
+        { name: 'Drink Small', image: '/PandaLogo.svg' },
+        { name: 'Drink Medium', image: '/PandaLogo.svg' },
+        { name: 'Drink Large', image: '/PandaLogo.svg' },
     ];
     
     
