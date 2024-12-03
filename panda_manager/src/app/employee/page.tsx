@@ -14,6 +14,7 @@ export default function Inventory() {
             <h1 className="text-4xl font-medium pb-6"> Franchise Staff </h1>
             <h2 className="text-lg font-normal pb-4"> Insert Inventory Item </h2>
             <EmployeeTable />
+            <h2 className="text-lg font-normal pb-4"> Individual Employee Report </h2>
             <EmployeeHoursChart />
         </div>
     )
