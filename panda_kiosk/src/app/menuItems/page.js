@@ -239,7 +239,7 @@ export default function Home() {
         />
 
         <h2 className="text-4xl font-bold mx-4 text-black"> Step 2 </h2>
-        <h3 className="text-xl font-medium text- mx-4 my-2 text-black"> Select your entrees </h3>
+        <h3 className="text-xl font-medium text- mx-4 my-2 text-black"> Select your entrees ({maxEntrees}) </h3>
         <Gallery
           items={entrees}
           sideQuantities={entreeQuantities}
