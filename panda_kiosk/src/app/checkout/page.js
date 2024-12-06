@@ -61,7 +61,7 @@ export default function Checkout() {
 
   console.log("menuItems after fetch:", menuItems);
 
-
+  
   const itemQuantities = selectedItemIds.reduce((acc, id) => {
     acc[id] = (acc[id] || 0) + 1;
     return acc; 
@@ -111,6 +111,7 @@ export default function Checkout() {
       const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
       const numSelectedItemIdsForRequest = selectedItemIds.length;
       const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
+      const totalAmount = total;
       const employeeIdForRequest = employeeId;
       const paymentMethodForRequest = paymentMethod;
       console.log("Order Items:", orderItems); // Log the final list of items with quantities
@@ -125,6 +126,7 @@ export default function Checkout() {
               selectedItemIds: selectedItemIdsForRequest, // Names for query
               numSelectedItemIds: numSelectedItemIdsForRequest, 
               itemQuantities: itemQuantitiesForRequest,   // Quantities for query
+              total: totalAmount,
               employeeId: employeeIdForRequest,
               paymentMethod: paymentMethodForRequest
           }),
