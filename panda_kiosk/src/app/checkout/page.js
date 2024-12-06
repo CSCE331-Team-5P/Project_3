@@ -2,13 +2,14 @@
 import Navbar from "@/components/Navbar";
 import { useGlobalState } from "@/components/GlobalStateProvider"; // Import the global state
 import { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation"; // Import useRouter to programmatically control routing (originally navigation)
+import { usePathname, useRouter } from "next/navigation"; // Import useRouter to programmatically control routing (originally navigation) // Initialize payment method state
 
 export default function Checkout() {
   const { selectedItemIds, clearSelectedItems, menuItems, updateMenuItems } = useGlobalState(); // Access selected item IDs from the global state
   const router = useRouter(); // Initialize the Next.js router to trigger a page refresh
   const pathname = usePathname(); // Gives the current path
   const [employeeId, setEmployeeId] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
 
   // Sample data for item details (this would be more dynamic in a real application)
   // const menuItems = [
@@ -101,11 +102,17 @@ export default function Checkout() {
         return;
       }
 
+      if (!paymentMethod) {
+        alert('Please select a payment method.');
+        return;
+      }
+
       // Step 3: Prepare the API request payload (selectedItemIds and itemQuantities)
       const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
       const numSelectedItemIdsForRequest = selectedItemIds.length;
       const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
       const employeeIdForRequest = employeeId;
+      const paymentMethodForRequest = paymentMethod;
       console.log("Order Items:", orderItems); // Log the final list of items with quantities
 
       // Step 4: Send the data to the backend API
@@ -118,7 +125,8 @@ export default function Checkout() {
               selectedItemIds: selectedItemIdsForRequest, // Names for query
               numSelectedItemIds: numSelectedItemIdsForRequest, 
               itemQuantities: itemQuantitiesForRequest,   // Quantities for query
-              employeeId: employeeIdForRequest
+              employeeId: employeeIdForRequest,
+              paymentMethod: paymentMethodForRequest
           }),
       });
 
@@ -201,6 +209,25 @@ export default function Checkout() {
               placeholder="Enter Employee ID"
               className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
             />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="paymentMethod" className="block text-gray-700 font-medium mb-2">
+              Payment Method:
+            </label>
+            <select
+              id="paymentMethod"
+              value={paymentMethod}
+              onChange={(e) => {
+                console.log('Selected Payment Method:', e.target.value);
+                setPaymentMethod(e.target.value);}} // Update the state when an option is selected
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              <option value="" disabled>Select Payment Method</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Dining Dollars">Dining Dollars</option>
+              <option value="Meal Swipe">Meal Swipe</option>
+            </select>
           </div>
 
           {/* Checkout Button */}
