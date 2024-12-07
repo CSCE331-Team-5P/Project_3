@@ -170,6 +170,7 @@ export async function GET() {
         const query = `
             SELECT idInventory AS id, nameItem AS name, CAST(priceItem AS FLOAT) AS price, categoryItem as category
             FROM INVENTORY
+            WHERE status = 'ACTIVE'
         `;
         const result = await client.query(query);
         
