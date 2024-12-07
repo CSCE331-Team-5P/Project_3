@@ -39,24 +39,24 @@ export default function Checkout() {
   //   { id: 'blackPepperChicken', name: 'Black Pepper Chicken', price: 0 },
   // ];
 
-  useEffect(() => {
-    async function fetchMenuItems() {
-      try {
-        const response = await fetch("/api/connectDB");
-        const data = await response.json();
+  // useEffect(() => {
+  //   async function fetchMenuItems() {
+  //     try {
+  //       const response = await fetch("/api/connectDB");
+  //       const data = await response.json();
 
-        if (data.success) {
-          updateMenuItems(data.menuItems); // Update menuItems in the global state
-        } else {
-          console.error("Failed to fetch menu items:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching menu items:", error);
-      }
-    }
+  //       if (data.success) {
+  //         updateMenuItems(data.menuItems); // Update menuItems in the global state
+  //       } else {
+  //         console.error("Failed to fetch menu items:", data.message);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching menu items:", error);
+  //     }
+  //   }
 
-    fetchMenuItems();
-  }, [updateMenuItems]);
+  //   fetchMenuItems();
+  // }, [updateMenuItems]);
 
 
   console.log("menuItems after fetch:", menuItems);
