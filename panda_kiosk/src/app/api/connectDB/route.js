@@ -10,7 +10,7 @@ export async function POST(request) {
 
     try {
         // Parse the request body to get selectedItemIds and itemQuantities
-        const { selectedItemIds, numSelectedItemIds, itemQuantities, total, employeeId, paymentMethod } = await request.json();
+        const { selectedItemIds, numSelectedItemIds, itemQuantities, employeeId } = await request.json();
 
         if (!selectedItemIds || !itemQuantities || selectedItemIds.length !== itemQuantities.length) {
             return NextResponse.json(
@@ -47,7 +47,7 @@ export async function POST(request) {
         // Loop through selectedItemIds and update the quantity for each
         //Insert into TRANSACTIONS TABLE
         // let idEmp = employeeId;
-        let amtTotal = total;
+        let amtTotal = 0;
         const getTimestamp = () => {
             return new Date().toISOString().replace('T', ' ').slice(0, 19);
           };
@@ -55,7 +55,7 @@ export async function POST(request) {
         console.log(getTimestamp()); // Outputs: YYYY-MM-DD HH:mm:ss
         const transactionInsert = await client.query(
             "INSERT INTO TRANSACTIONS (idTransaction, idEmployee, dateTransaction, amountTotal, methodPayment) VALUES ($1, $2, $3, $4, $5)",
-            [newTransactionId, employeeId, getTimestamp(), amtTotal, paymentMethod]
+            [newTransactionId, employeeId, getTimestamp(), amtTotal, "Cash"]
         );
 
         console.log(
@@ -160,22 +160,27 @@ export async function POST(request) {
         console.log("Database connection closed");
     }
 }
+
 export async function GET() {
-    const connectionString = process.env.DATABASE_URL; 
+    const connectionString = process.env.DATABASE_URL; // Replace with your database connection string
     const client = new Client({ connectionString });
 
     try {
         await client.connect();
+        console.log("Database connection established");
 
+        // Query to fetch item details (id, name, price)
         const query = `
-            SELECT idInventory AS id, nameItem AS name, CAST(priceItem AS FLOAT) AS price, categoryItem as category
+            SELECT 
+                idInventory AS id, 
+                nameItem AS name, 
+                CAST(priceItem AS FLOAT) AS price 
             FROM INVENTORY
-            WHERE status = 'ACTIVE'
         `;
         const result = await client.query(query);
-        
-        console.log("result", result);
+        console.log("result aaaaaaa", result);
 
+        // If no items are found, return a meaningful response
         if (!result.rows.length) {
             return NextResponse.json(
                 { success: false, message: "No items found in the inventory" },
@@ -183,15 +188,10 @@ export async function GET() {
             );
         }
 
-        const formattedItems = result.rows.map(item => ({
-            name: item.name,
-            price: item.price,
-            category: item.category || 'uncategorized', // Default category if not available
-        }));
-
+        // Return the fetched data as JSON
         return NextResponse.json({
             success: true,
-            menuItems: formattedItems,
+            menuItems: result.rows,
         });
 
     } catch (error) {
@@ -202,5 +202,6 @@ export async function GET() {
         );
     } finally {
         await client.end();
+        console.log("Database connection closed");
     }
 }
