@@ -15,6 +15,8 @@ export const GlobalStateProvider = ({ children }) => {
     });
 
     const [selectedItemIds, setSelectedItemIds] = useState([]);
+    const [extras, setExtras] = useState([]);
+    const [drinks, setDrinks] = useState([]);
 
     const [menuItems, setMenuItems] = useState([]);
     const [sides, setSides] = useState([]);
@@ -165,6 +167,39 @@ export const GlobalStateProvider = ({ children }) => {
         setSelectedItemIds((prevIds) => prevIds.filter((id) => id !== item));
     };
 
+    // Function to manage extras
+    const addExtra = (extra) => {
+        setExtras((prevExtras) => [...prevExtras, extra]);
+    };
+
+    const removeExtra = (extra) => {
+        setExtras((prevExtras) => prevExtras.filter((id) => id !== extra));
+    };
+
+    // Function to manage drinks
+    const addDrink = (drink) => {
+        setDrinks((prevDrinks) => [...prevDrinks, drink]);
+    };
+
+    const removeDrink = (drink) => {
+        setDrinks((prevDrinks) => prevDrinks.filter((id) => id !== drink));
+    };
+
+    return (
+        <GlobalStateContext.Provider value={{
+            mealOptions,
+            updateMealOptions,
+            selectedItemIds,
+            addItemToSelection,
+            removeItemFromSelection,
+            extras,
+            addExtra,
+            removeExtra,
+            drinks,
+            addDrink,
+            removeDrink
+        }}>
+      
     const clearSelectedItems = useCallback(() => {
         setSelectedItemIds([]);
     }, []);
