@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/select"
 
 const fields = [
-  { value: "nameItem", label: "Name"},
   { value: "status", label: "Status" },
   { value: "priceItem", label: "Price" },
   { value: "categoryItem", label: "Category" },
