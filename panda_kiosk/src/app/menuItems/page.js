@@ -21,80 +21,95 @@ export default function Home() {
   // Dynamic list to track selected items
   const [selectedItemIds, setSelectedItemIds] = useState([]);
 
-  // State variables to manage the quantity of each item
-  const [sideQuantities, setSideQuantities] = useState({
-    friedRice: 0,
-    chowMein: 0,
-    superGreens: 0,
-    steamedRice: 0
-  });
+  const [sideQuantities, setSideQuantities] = useState({});
+  const [entreeQuantities, setEntreeQuantities] = useState({});
 
-  const [entreeQuantities, setEntreeQuantities] = useState({
-    blackPepperChicken: 0,
-    stringBeanChicken: 0,
-    sweetfireChicken: 0, 
-    mushroomChicken: 0,
-    beijingBeef: 0, 
-    honeySesameChicken: 0, 
-    grilledTeriyakiChicken: 0,
-    blazingBourbonChicken: 0,
-    orangeChicken: 0,
-    pepperSirloinSteak: 0,
-    kungPaoChicken: 0,
-    broccoliBeef: 0,
-    teriyakiChicken: 0,
-    beefBroccoli: 0,
-    shrimp: 0,
-    honeyWalnutShrimp: 0,
-  });
+  // Initialize quantities based on GSP data
+  useEffect(() => {
+    const initQuantities = (items) => {
+        return items.reduce((acc, item) => {
+            acc[item.id] = 0;
+            return acc;
+        }, {});
+    };
 
-  const [drinkQuantities, setDrinkQuantities] = useState({
-    coke: 0,
-    sprite: 0,
-    water: 0,
-  });
+    setSideQuantities(initQuantities(sides));
+    setEntreeQuantities(initQuantities(entrees));
+  }, [sides, entrees]);
+  // // State variables to manage the quantity of each item
+  // const [sideQuantities, setSideQuantities] = useState({
+  //   friedRice: 0,
+  //   chowMein: 0,
+  //   superGreens: 0,
+  //   steamedRice: 0
+  // });
+
+  // const [entreeQuantities, setEntreeQuantities] = useState({
+  //   blackPepperChicken: 0,
+  //   stringBeanChicken: 0,
+  //   sweetfireChicken: 0, 
+  //   mushroomChicken: 0,
+  //   beijingBeef: 0, 
+  //   honeySesameChicken: 0, 
+  //   grilledTeriyakiChicken: 0,
+  //   blazingBourbonChicken: 0,
+  //   orangeChicken: 0,
+  //   pepperSirloinSteak: 0,
+  //   kungPaoChicken: 0,
+  //   broccoliBeef: 0,
+  //   teriyakiChicken: 0,
+  //   beefBroccoli: 0,
+  //   shrimp: 0,
+  //   honeyWalnutShrimp: 0,
+  // });
+
+  // const [drinkQuantities, setDrinkQuantities] = useState({
+  //   coke: 0,
+  //   sprite: 0,
+  //   water: 0,
+  // });
 
   // References for scrolling the sides and entrees sections
   const sidesContainerRef = useRef(null);
   const entreesContainerRef = useRef(null);
 
   // Reset counters and quantities when the meal type changes
-  useEffect(() => {
-    setSelectedEntreesCount(0);
-    setSelectedSidesCount(0);
-    setSideQuantities({
-      friedRice: 0,
-      chowMein: 0,
-      superGreens: 0,
-      steamedRice: 0,
-      brownRice: 0,
-      mixedVegetables: 0,
-    });
-    setEntreeQuantities({
-      grilledTeriyakiChicken: 0,
-      pepperSirloinSteak: 0,
-      blazingBourbonChicken: 0,
-      orangeChicken: 0,
-      kungPaoChicken: 0,
-      broccoliBeef: 0,
-      teriyakiChicken: 0,
-      beefBroccoli: 0,
-      shrimp: 0,
-      honeyWalnutShrimp: 0,
-      honeySesameChicken: 0, 
-      beijingBeef: 0, 
-      mushroomChicken: 0, 
-      sweetfireChicken: 0, 
-      stringBeanChicken: 0, 
-      blackPepperChicken: 0
-    });
-    setDrinkQuantities({
-      coke: 0,
-      sprite: 0,
-      water: 0,
-    });
-    setSelectedItemIds([]); // Clear selected items on meal type change
-  }, [mealOptions]);
+  // useEffect(() => {
+  //   setSelectedEntreesCount(0);
+  //   setSelectedSidesCount(0);
+  //   setSideQuantities({
+  //     friedRice: 0,
+  //     chowMein: 0,
+  //     superGreens: 0,
+  //     steamedRice: 0,
+  //     brownRice: 0,
+  //     mixedVegetables: 0,
+  //   });
+  //   setEntreeQuantities({
+  //     grilledTeriyakiChicken: 0,
+  //     pepperSirloinSteak: 0,
+  //     blazingBourbonChicken: 0,
+  //     orangeChicken: 0,
+  //     kungPaoChicken: 0,
+  //     broccoliBeef: 0,
+  //     teriyakiChicken: 0,
+  //     beefBroccoli: 0,
+  //     shrimp: 0,
+  //     honeyWalnutShrimp: 0,
+  //     honeySesameChicken: 0, 
+  //     beijingBeef: 0, 
+  //     mushroomChicken: 0, 
+  //     sweetfireChicken: 0, 
+  //     stringBeanChicken: 0, 
+  //     blackPepperChicken: 0
+  //   });
+  //   setDrinkQuantities({
+  //     coke: 0,
+  //     sprite: 0,
+  //     water: 0,
+  //   });
+  //   setSelectedItemIds([]); // Clear selected items on meal type change
+  // }, [mealOptions]);
 
   useEffect(() => {
     console.log("Selected Item IDs:", selectedItemIds);

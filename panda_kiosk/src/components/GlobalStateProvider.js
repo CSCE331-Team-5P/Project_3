@@ -133,7 +133,8 @@ export const GlobalStateProvider = ({ children }) => {
         };
 
         // Generate a new ID if the item doesn't exist in the map
-        return idMap[name] || `item_${Math.random().toString(36).substr(2, 9)}`;
+        // return idMap[name] || `item_${Math.random().toString(36).substr(2, 9)}`;
+        return idMap[name] || name;
     };
 
     // Function to update meal options based on the selected category
