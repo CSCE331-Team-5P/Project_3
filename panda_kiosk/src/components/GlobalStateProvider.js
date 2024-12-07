@@ -63,14 +63,14 @@ export const GlobalStateProvider = ({ children }) => {
                         id: item.id,
                         title: item.name,
                         imageUrl: item.imageUrl,
-                        calories: item.calories || "N/A",
+                        calories: item.calories || "220",
                     });
                 } else if (item.category === "Entree") {
                     newEntrees.push({
                         id: item.id,
                         title: item.name,
                         imageUrl: item.imageUrl,
-                        calories: item.calories || "N/A",
+                        calories: item.calories || "220",
                     });
                 }
             });

@@ -26,9 +26,7 @@ export default function Home() {
     friedRice: 0,
     chowMein: 0,
     superGreens: 0,
-    steamedRice: 0,
-    brownRice: 0,
-    mixedVegetables: 0,
+    steamedRice: 0
   });
 
   const [entreeQuantities, setEntreeQuantities] = useState({
