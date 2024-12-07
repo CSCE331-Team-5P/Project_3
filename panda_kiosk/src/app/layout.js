@@ -1,6 +1,6 @@
 import "./globals.css";
+// import { OrderProvider } from '@/context/OrderContext';
 import { GlobalStateProvider } from "@/components/GlobalStateProvider";
-import { MagnifierProvider } from "@/context/MagnifierContext";
 
 export const metadata = {
   title: "Panda Kiosk",
@@ -11,10 +11,11 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`antialiased`}>
+      <body className={`antialiased`} >
         <GlobalStateProvider>
-          <MagnifierProvider>{children}</MagnifierProvider>
+          {children}
         </GlobalStateProvider>
+        {/* <OrderProvider>{children}</OrderProvider> */}
       </body>
     </html>
   );
