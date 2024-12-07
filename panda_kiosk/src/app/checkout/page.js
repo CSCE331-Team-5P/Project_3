@@ -10,58 +10,9 @@ export default function Checkout() {
   const pathname = usePathname(); // Gives the current path
   const [employeeId, setEmployeeId] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
-
-  // Sample data for item details (this would be more dynamic in a real application)
-  // const menuItems = [
-  //   { id: "orangeChicken", name: "Orange Chicken", price: 0 },
-  //   { id: "chowMein", name: "Chow Mein", price: 0 },
-  //   { id: "friedRice", name: "Fried Rice", price: 0 },
-  //   { id: "eggRoll", name: "Egg Roll", price: 0 },
-  //   { id: "applePieRoll", name: "Apple Pie Roll", price: 0 },
-  //   { id: "vegetableSpringRoll", name: "Vegetable Spring Roll", price: 0 },
-  //   { id: "creamCheeseRangoon", name: "Cream Cheese Rangoon", price: 0 },
-  //   { id: 'chowMein', name: 'Chow Mein', price: 0 },
-  //   { id: 'friedRice', name: 'Fried Rice', price: 0 },
-  //   { id: 'steamedRice', name: 'White Steamed Rice', price: 0 },
-  //   { id: 'superGreens', name: 'Super Greens', price: 0 },
-  //   { id: 'blazingBourbonChicken', name: 'Hot Ones Blazing Bourbon Chicken', price: 0 },
-  //   // { id: 'orangeChicken', name: 'The Original Orange Chicken', price: 6.77 },
-  //   { id: 'pepperSirloinSteak', name: 'Black Pepper Sirloin Steak', price: 0 },
-  //   { id: 'honeyWalnutShrimp', name: 'Honey Walnut Shrimp', price: 0 },
-  //   { id: 'grilledTeriyakiChicken', name: 'Grilled Teriyaki Chicken', price: 0 },
-  //   { id: 'broccoliBeef', name: 'Broccoli Beef', price: 0 },
-  //   { id: 'kungPaoChicken', name: 'Kung Pao Chicken', price: 0 },
-  //   { id: 'honeySesameChicken', name: 'Honey Sesame Chicken Breast', price: 0 },
-  //   { id: 'beijingBeef', name: 'Beijing Beef', price: 0},
-  //   { id: 'mushroomChicken', name: 'Mushroom Chicken', price: 0 },
-  //   { id: 'sweetfireChicken', name: 'SweetFire Chicken Breast', price: 0 },
-  //   { id: 'stringBeanChicken', name: 'String Bean Chicken Breast', price: 0 },
-  //   { id: 'blackPepperChicken', name: 'Black Pepper Chicken', price: 0 },
-  // ];
-
-  // useEffect(() => {
-  //   async function fetchMenuItems() {
-  //     try {
-  //       const response = await fetch("/api/connectDB");
-  //       const data = await response.json();
-
-  //       if (data.success) {
-  //         updateMenuItems(data.menuItems); // Update menuItems in the global state
-  //       } else {
-  //         console.error("Failed to fetch menu items:", data.message);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching menu items:", error);
-  //     }
-  //   }
-
-  //   fetchMenuItems();
-  // }, [updateMenuItems]);
-
-
+  
   console.log("menuItems after fetch:", menuItems);
 
-  
   const itemQuantities = selectedItemIds.reduce((acc, id) => {
     acc[id] = (acc[id] || 0) + 1;
     return acc; 
@@ -72,10 +23,10 @@ export default function Checkout() {
     return item ? { ...item, quantity } : null; // Include the quantity in the item object
   }).filter(Boolean); 
 
-  // Calculate subtotal
-  const subtotal = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  const tax = subtotal * 0.08; // Assuming 8% tax rate
-  const total = subtotal + tax;
+        // Extras
+        { id: "chickenEggRoll", name: "Chicken Egg Roll", price: 1.99 },
+        { id: "vegetableSpringRoll", name: "Vegetable Spring Roll", price: 2.49 },
+        { id: "creamCheeseRangoon", name: "Cream Cheese Rangoon", price: 4.49 },
 
   // useEffect hook to trigger a page refresh when the component unmounts (i.e., when the user leaves the Checkout page)
   useEffect(() => {
@@ -151,44 +102,78 @@ export default function Checkout() {
     
   };
 
+        // Drinks
+        { id: "drPepper", name: "Dr Pepper", price: 2.99 },
+        { id: "cocaCola", name: "Coca Cola", price: 2.99 },
+        { id: "dietCoke", name: "Diet Coke", price: 2.99 },
+        { id: "mangoGuavaTea", name: "Mango Guava Flavored Tea", price: 3.49 },
+        { id: "peachLycheeRefresher", name: "Peach Lychee Flavored Refresher", price: 3.49 },
+        { id: "pomegranatePineappleLemonade", name: "Pomegranate Pineapple Flavored Lemonade", price: 3.49 },
+        { id: "watermelonMangoRefresher", name: "Watermelon Mango Flavored Refresher", price: 3.49 },
+        { id: "barqsRootBeer", name: "Barq's Root Beer", price: 2.99 },
+        { id: "fantaOrange", name: "Fanta Orange", price: 2.99 },
+        { id: "minuteMaidLemonade", name: "Minute Maid Lemonade", price: 2.99 },
+        { id: "poweradeMountainBerryBlast", name: "Powerade Mountain Berry Blast", price: 3.49 },
+        { id: "sprite", name: "Sprite", price: 2.99 },
+        { id: "cocaColaCherry", name: "Coca Cola Cherry", price: 2.99 },
+        { id: "fuzeRaspberryIcedTea", name: "Fuze Raspberry Iced Tea", price: 3.49 },
+        { id: "sweetTea", name: "Sweet Tea", price: 2.99 },
+        { id: "poweradeFruitPunch", name: "Powerade Fruit Punch", price: 3.49 },
+        { id: "dasani", name: "Dasani Water", price: 1.99 },
+        { id: "poweradeBerryBlast", name: "Powerade Berry Blast", price: 3.49 },
+        { id: "minuteMaidOrange", name: "Minute Maid Orange", price: 2.99 },
+        { id: "minuteMaidAppleJuice", name: "Minute Maid Apple Juice", price: 2.99 },
+        { id: "cokeMexico", name: "Coke Mexico", price: 2.99 },
+        { id: "cokeZero", name: "Coke Zero", price: 2.99 },
+        { id: "smartwater", name: "Smartwater", price: 2.49 },
+        { id: "baiCocoFusion", name: "Bai Coco Fusion", price: 3.49 },
+        { id: "drinkSmall", name: "Small Drink", price: 1.99 },
+        { id: "drinkMedium", name: "Medium Drink", price: 2.49 },
+        { id: "drinkLarge", name: "Large Drink", price: 2.99 },
+    ];
 
-  return (
-    <div className="min-h-screen flex flex-col bg-white">
-      <Navbar />
+    const allItems = [...selectedItemIds, ...extras, ...drinks];
 
-      {/* Centered Checkout Div */}
-      <div className="flex justify-center items-center flex-grow">
-        <div className="flex flex-col items-center space-y-8 w-full max-w-lg px-4 bg-red-100 rounded-lg p-6">
-          {/* Order Summary Card */}
-          <div className="bg-white shadow-lg rounded-lg p-6 w-full">
-            <h1 className="text-3xl font-bold text-black mb-4 text-center">Your Order</h1>
+    const aggregatedItems = allItems.reduce((acc, id) => {
+        if (acc[id]) {
+            acc[id].quantity += 1;
+        } else {
+            const item = menuItems.find((menuItem) => menuItem.id === id);
+            if (item) {
+                acc[id] = { ...item, quantity: 1 };
+            }
+        }
+        return acc;
+    }, {});
 
-            <div
-              className="bg-white rounded-lg p-4 h-[50vh] overflow-y-auto"
-              style={{
-                boxShadow: "inset 0 3px 4px rgba(0, 0, 0, 0.05), inset 0 -2px 4px rgba(0, 0, 0, 0.05)",
-              }}
-            >
-              <h3 className="text-lg font-semibold text-black mb-3">Current Order</h3>
+    const orderItems = Object.values(aggregatedItems);
+    const subtotal = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    const tax = subtotal * 0.08;
+    const total = subtotal + tax;
 
-              <ul className="text-sm text-black space-y-2">
-                {orderItems.map((item, index) => (
-                  <li key={index} className="flex justify-between">
-                    <span>{item.quantity}x {item.name}</span>
-                    <span>${(item.price * item.quantity).toFixed(2)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Checkout Total and Summary */}
-          <div className="bg-white shadow-lg rounded-lg p-6 w-full space-y-4">
-            <h3 className="text-lg font-semibold text-black">Checkout Total</h3>
-            <div className="text-sm text-black">
-              <p>Subtotal: ${subtotal.toFixed(2)}</p>
-              <p>Tax: ${tax.toFixed(2)}</p>
-              <p className="font-bold text-black">Total: ${total.toFixed(2)}</p>
+    return (
+        <div className="min-h-screen flex flex-col bg-white">
+            <Navbar />
+            <div className="flex justify-center items-center flex-grow">
+                <div className="flex flex-col items-center space-y-8 w-full max-w-lg px-4 bg-red-100 rounded-lg p-6">
+                    <div className="bg-white shadow-lg rounded-lg p-6 w-full">
+                        <h1 className="text-3xl font-bold text-black mb-4 text-center">Your Order</h1>
+                        <ul className="text-sm text-black space-y-2">
+                            {orderItems.map((item, index) => (
+                                <li key={index} className="flex justify-between">
+                                    <span>{item.quantity}x {item.name}</span>
+                                    <span>${(item.price * item.quantity).toFixed(2)}</span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className="bg-white shadow-lg rounded-lg p-6 w-full space-y-4">
+                        <p>Subtotal: ${subtotal.toFixed(2)}</p>
+                        <p>Tax: ${tax.toFixed(2)}</p>
+                        <p className="font-bold text-black">Total: ${total.toFixed(2)}</p>
+                    </div>
+                    <button className="bg-red-600 text-white px-8 py-3 rounded-full">Proceed to Checkout</button>
+                </div>
             </div>
           </div>
 
@@ -246,9 +231,6 @@ export default function Checkout() {
           >
             Clear Order
           </button>
-
         </div>
-      </div>
-    </div>
-  );
+    );
 }

@@ -4,9 +4,9 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 
-export default function Gallery({ items,sideQuantities, incrementQuantity, decrementQuantity }) {
+export default function Gallery({ items, sideQuantities, incrementQuantity, decrementQuantity, onButtonClick }) {
   return (
-    <div className="relative w-full max-w-6xl mx-auto">
+    <div className="relative w-full max-w-6xl mx-auto" onClick={onButtonClick}>
       <Carousel
         opts={{
           align: "start",
