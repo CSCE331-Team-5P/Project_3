@@ -1,46 +1,106 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { useGlobalState } from "@/components/GlobalStateProvider";
-import { useRouter } from "next/navigation";
+import { useGlobalState } from "@/components/GlobalStateProvider"; // Import the global state
+import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation"; // Import useRouter to programmatically control routing (originally navigation) // Initialize payment method state
 
 export default function Checkout() {
-    const { selectedItemIds, extras, drinks } = useGlobalState();
-    const router = useRouter();
+  const { selectedItemIds, clearSelectedItems, menuItems, updateMenuItems } = useGlobalState(); // Access selected item IDs from the global state
+  const router = useRouter(); // Initialize the Next.js router to trigger a page refresh
+  const pathname = usePathname(); // Gives the current path
+  const [employeeId, setEmployeeId] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
+  
+  console.log("menuItems after fetch:", menuItems);
 
-    const menuItems = [
-        // Entrees
-        { id: "blackPepperChicken", name: "Black Pepper Chicken", price: 8.49 },
-        { id: "stringBeanChicken", name: "String Bean Chicken", price: 8.49 },
-        { id: "sweetfireChicken", name: "Sweetfire Chicken Breast", price: 8.49 },
-        { id: "mushroomChicken", name: "Mushroom Chicken", price: 8.49 },
-        { id: "beijingBeef", name: "Beijing Beef", price: 8.99 },
-        { id: "honeySesameChicken", name: "Honey Sesame Chicken", price: 8.99 },
-        { id: "grilledTeriyakiChicken", name: "Grilled Teriyaki Chicken", price: 8.99 },
-        { id: "blazingBourbonChicken", name: "Blazing Bourbon Chicken", price: 9.49 },
-        { id: "orangeChicken", name: "Orange Chicken", price: 8.99 },
-        { id: "pepperSirloinSteak", name: "Pepper Sirloin Steak", price: 10.49 },
-        { id: "kungPaoChicken", name: "Kung Pao Chicken", price: 8.49 },
-        { id: "broccoliBeef", name: "Broccoli Beef", price: 9.49 },
-        { id: "teriyakiChicken", name: "Teriyaki Chicken", price: 8.49 },
-        { id: "beefBroccoli", name: "Beef Broccoli", price: 9.49 },
-        { id: "shrimp", name: "Shrimp", price: 10.49 },
-        { id: "honeyWalnutShrimp", name: "Honey Walnut Shrimp", price: 11.49 },
+  const itemQuantities = selectedItemIds.reduce((acc, id) => {
+    acc[id] = (acc[id] || 0) + 1;
+    return acc; 
+  },{});
 
-        // Sides
-        { id: "friedRice", name: "Fried Rice", price: 4.99 },
-        { id: "chowMein", name: "Chow Mein", price: 4.99 },
-        { id: "superGreens", name: "Super Greens", price: 4.99 },
-        { id: "steamedRice", name: "Steamed Rice", price: 3.99 },
-        { id: "brownRice", name: "Brown Rice", price: 3.99 },
-        { id: "mixedVegetables", name: "Mixed Vegetables", price: 4.49 },
+  const orderItems = Object.entries(itemQuantities).map(([id, quantity]) => {
+    const item = menuItems.find((menuItem) => menuItem.id === id);
+    return item ? { ...item, quantity } : null; // Include the quantity in the item object
+  }).filter(Boolean); 
 
         // Extras
         { id: "chickenEggRoll", name: "Chicken Egg Roll", price: 1.99 },
         { id: "vegetableSpringRoll", name: "Vegetable Spring Roll", price: 2.49 },
         { id: "creamCheeseRangoon", name: "Cream Cheese Rangoon", price: 4.49 },
 
-        // Desserts
-        { id: "applePieRoll", name: "Apple Pie Roll", price: 3.99 },
+  // useEffect hook to trigger a page refresh when the component unmounts (i.e., when the user leaves the Checkout page)
+  useEffect(() => {
+    // Log pathname for debugging purposes
+    console.log(`Current array length: ${selectedItemIds.length}`);
+  }, [selectedItemIds]);
+
+  useEffect(() => {
+    // Log pathname for debugging purposes
+    console.log(`Array from this page: ${selectedItemIds}`);
+  }, [selectedItemIds]);
+
+  useEffect(() => {
+    // Log pathname for debugging purposes
+    console.log(`Array being passed in: ${orderItems.map(item => item.name)}`);
+  }, [orderItems.map(item => item.name)]);
+  
+
+  const handleCheckout = async () => {
+    try {
+
+      if (!employeeId) {
+        alert('Please enter a valid Employee ID.');
+        return;
+      }
+
+      if (!paymentMethod) {
+        alert('Please select a payment method.');
+        return;
+      }
+
+      // Step 3: Prepare the API request payload (selectedItemIds and itemQuantities)
+      const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
+      const numSelectedItemIdsForRequest = selectedItemIds.length;
+      const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
+      const totalAmount = total;
+      const employeeIdForRequest = employeeId;
+      const paymentMethodForRequest = paymentMethod;
+      console.log("Order Items:", orderItems); // Log the final list of items with quantities
+
+      // Step 4: Send the data to the backend API
+      const response = await fetch('/api/connectDB', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              selectedItemIds: selectedItemIdsForRequest, // Names for query
+              numSelectedItemIds: numSelectedItemIdsForRequest, 
+              itemQuantities: itemQuantitiesForRequest,   // Quantities for query
+              total: totalAmount,
+              employeeId: employeeIdForRequest,
+              paymentMethod: paymentMethodForRequest
+          }),
+      });
+
+      if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Server response:", data);
+
+      if (data.success) {
+          alert(data.message);
+      } else {
+          alert("Error during checkout: " + (data.message || "Unknown error occurred"));
+      }
+  } catch (error) {
+      console.error("Error during checkout:", error);
+      alert("An error occurred: " + error.message);
+  }
+    
+  };
 
         // Drinks
         { id: "drPepper", name: "Dr Pepper", price: 2.99 },
@@ -115,6 +175,62 @@ export default function Checkout() {
                     <button className="bg-red-600 text-white px-8 py-3 rounded-full">Proceed to Checkout</button>
                 </div>
             </div>
+          </div>
+
+          {/* Employee ID Input */}
+          <div className="mb-4">
+            <label htmlFor="employeeId" className="block text-gray-700 font-medium mb-2">
+              Employee ID:
+            </label>
+            <input
+              type="text"
+              id="employeeId"
+              value={employeeId}
+              onChange={(e) => {
+                // Allow only numbers in the input field
+                const value = e.target.value;
+                if (/^\d*$/.test(value)) { // Regex ensures only digits
+                  setEmployeeId(value);
+                }
+              }}
+              placeholder="Enter Employee ID"
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="paymentMethod" className="block text-gray-700 font-medium mb-2">
+              Payment Method:
+            </label>
+            <select
+              id="paymentMethod"
+              value={paymentMethod}
+              onChange={(e) => {
+                console.log('Selected Payment Method:', e.target.value);
+                setPaymentMethod(e.target.value);}} // Update the state when an option is selected
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              <option value="" disabled>Select Payment Method</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Dining Dollars">Dining Dollars</option>
+              <option value="Meal Swipe">Meal Swipe</option>
+            </select>
+          </div>
+
+          {/* Checkout Button */}
+          <button className="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all duration-200 transform hover:scale-105"
+            onClick={handleCheckout}
+          >
+            Proceed to Checkout
+          </button>
+
+          {/* Clear Button */}
+          <button
+            className="bg-gray-600 hover:bg-gray-500 text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all duration-200 transform hover:scale-105"
+            onClick={clearSelectedItems}
+          >
+            Clear Order
+          </button>
         </div>
     );
 }

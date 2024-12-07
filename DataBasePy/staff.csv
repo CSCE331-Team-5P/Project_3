@@ -1,0 +1,17 @@
+idEmployee,firstNameEmployee,lastNameEmployee,dateBirth,roleEmployee,wageEmployee,statusEmployee
+0,Customer,Customer,1/1/99,Customer,0,Active
+1,Katelyn,Smith,6/16/94,Cashier,18.25,Active
+2,Adriana,Alvarez,12/23/83,Server,17.09,Active
+3,Regina,Stewart,10/29/01,Server,17.66,Active
+4,Angela,Rodriguez,3/3/88,Cook,15.69,Inactive
+5,Charles,Flowers,7/19/00,Cook,20.32,Inactive
+6,Amanda,Osborn,6/6/89,Cashier,18.89,Active
+7,Nicole,Donovan,10/12/03,Server,16.54,Inactive
+8,John,Russell,6/27/78,Server,18.98,Inactive
+9,Jeffrey,Andrews,12/4/79,Cook,15.02,Active
+10,Jessica,Orozco,10/30/87,Server,20.78,Inactive
+11,Brenda,Bryant,8/1/76,Cashier,16.17,Inactive
+12,Jessica,Phillips,2/16/82,Cook,15.28,Active
+13,Tara,Crawford,12/5/93,Server,16.24,Active
+14,Javier,Adams,9/28/02,Server,17.59,Inactive
+15,Melanie,Sparks,4/17/81,Cook,19.14,Inactive

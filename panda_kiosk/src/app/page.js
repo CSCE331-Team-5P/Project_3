@@ -54,6 +54,28 @@ export default function Home() {
 
   const handleStartOrder = () => {
     router.push("/menuItems");
+    // Add Google Translate script
+    const googleTranslateScript = document.createElement('script');
+    googleTranslateScript.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    googleTranslateScript.async = true;
+    document.body.appendChild(googleTranslateScript);
+
+    // Add Google Translate initialization function
+    window.googleTranslateElementInit = function () {
+      new window.google.translate.TranslateElement(
+        { pageLanguage: 'en' },
+        'google_translate_element'
+      );
+    };
+  }, []);
+
+  //^ Function to handle click and route to Checkout page
+  const handleClick = (event) => {
+    // Prevent navigation if the click is on the Google Translate widget
+    if (event.target.closest("#google_translate_element")) {
+      return;
+    }
+    router.push('/menuItems');
   };
 
   return (
@@ -62,6 +84,12 @@ export default function Home() {
       onMouseMove={handleMouseMove}
       className="relative flex bg-red-700 items-center justify-center min-h-screen cursor-pointer"
     >
+      {/* Google Translate Widget */}
+      <div 
+        id="google_translate_element" 
+        className="absolute top-5 right-5 bg-white p-2 rounded-lg shadow-lg z-50"
+      ></div>
+
       <div className="w-full md:max-w-prose p-4">
         <h1 className="text-9xl text-white font-extrabold my-8">
           Order & Pay Here

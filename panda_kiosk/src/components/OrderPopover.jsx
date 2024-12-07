@@ -1,9 +1,13 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ShoppingCart, X, Minus, Plus } from 'lucide-react'
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
 import { Button } from "@/components/ui/button"
+// GSP imports 
+import { useGlobalState } from "@/components/GlobalStateProvider";
+// import {menuItems} from "@/app/checkout/"
+
 import {
   Sheet,
   SheetContent,
@@ -15,14 +19,44 @@ import { Badge } from "@/components/ui/badge"
 
 import { useRouter } from "next/navigation"; 
 
-export default function OrderPopover() {
-  const [orderItems, setOrderItems] = useState([
-    { id: 1, name: "Orange Chicken", quantity: 1 },
-    { id: 2, name: "Beijing Beef", quantity: 1 },
-    { id: 3, name: "Chow Mein", quantity: 1 },
-    { id: 4, name: "Medium Drink", quantity: 1 },
-  ])
 
+export default function OrderPopover() {
+  const { selectedItemIds, clearSelectedItems, addItemToSelection, removeItemFromSelection } = useGlobalState();
+
+  // const [orderItems, setOrderItems] = useState([
+  //   { id: 1, name: "Orange Chicken", quantity: 1 },
+  //   { id: 2, name: "Beijing Beef", quantity: 1 },
+  //   { id: 3, name: "Chow Mein", quantity: 1 },
+  //   { id: 4, name: "Medium Drink", quantity: 1 },
+  // ])
+
+  const itemsMap = {};
+  let uniqueId = 1;
+
+  const [orderItems, setOrderItems] = useState([]);
+
+  useEffect(() => {
+    const itemsMap = {};
+    let uniqueId = 1;
+  
+    selectedItemIds.forEach(itemName => {
+      if (itemsMap[itemName]) {
+        // If the item already exists, increment its quantity
+        itemsMap[itemName].quantity += 1;
+      } else {
+        // Otherwise, create a new entry with a unique ID
+        itemsMap[itemName] = {
+          id: uniqueId++,
+          name: itemName,
+          quantity: 1,
+        };
+      }
+    });
+  
+    // Convert the itemsMap into an array of objects and set it to orderItems
+    setOrderItems(Object.values(itemsMap));
+  }, [selectedItemIds]);
+  
   const updateQuantity = (id, change) => {
     setOrderItems(prevItems => 
       prevItems.map(item => 

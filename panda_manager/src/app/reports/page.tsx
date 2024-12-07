@@ -2,16 +2,20 @@
 
 import React from 'react';
 import Navbar from "@/components/Navbar";
+import { ZReport } from '@/components/z-report';
+import { XReport } from '@/components/x-report';
+import { ProductUsage } from '@/components/product-usage';
 
 export default function Inventory() {
 
 
     return (
-        <div>
+        <div className="p-12">
             <Navbar />
-            <div>
-                
-            </div>
+            <h1 className="text-4xl font-medium pb-6"> Franchise Reports </h1>
+            <XReport />
+            <ZReport />
+            <ProductUsage />
         </div>
     )
 }
