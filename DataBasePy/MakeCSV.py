@@ -69,7 +69,12 @@ category_hash = {
                'Sweet Fire Chicken Breast', 'String Bean Chicken Breast', 'Grilled Teriyaki Chicken',
                'Honey Sesame Chicken', 'Black Pepper Chicken', 'Blazing Burbon Chicken'],
     'Extras': ['Chicken Egg Roll', 'Veggie Spring Roll', 'Cream Cheese Rangoon', 'Apple Pie Roll'],
-    'Drink': ['Drink small', 'Drink medium', 'Drink large', 'Drink Bottle']
+    'Drink': ['Dr Pepper', 'Coca Cola', 'Diet Coke', 'Manga Guava Flavored Tea', 'Peach Lychee Flavored Refresher', 
+              'Pomegranate Pineapple Flavored Lemonade', 'Watermelon Manga Flavored Refresher', 'Barq\'s Root Berr', 
+              'Fanta Orange', 'Minute Maid Lemonade', 'Powerade Mountain Berry Blast', 'Sprite', 'Coca Cola Cherry', 
+              'Fuze Raspberry Iced Tea', 'Sweet Tea', 'Powerade Fruit Punch', 'Dasani', 'Powerade Berry Blast', 
+              'Minute Maid Orange', 'Minute Maid Apple Juice', 'Coke Mexico', 'Coke Zero', 'Smartwater', 'Bai Coco Fusion',
+              'Drink small', 'Drink medium', 'Drink large']
 }
 
 # Write inventory data to CSV file

@@ -54,7 +54,7 @@ export const removeInventoryItem = async (id: string) => {
 // Update an inventory item based on a given field and value
 export const updateInventoryItem = async (id: string, field: string, value: string | number) => {
     // Ensure only valid fields are updated to prevent SQL injection
-    const allowedFields = ['status', 'priceItem', 'categoryItem', 'quantityItem'];
+    const allowedFields = ['nameItem', 'status', 'priceItem', 'categoryItem', 'quantityItem'];
     if (!allowedFields.includes(field)) {
         throw new Error(`Invalid field: ${field}`);
     }

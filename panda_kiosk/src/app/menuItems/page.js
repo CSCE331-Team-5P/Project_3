@@ -10,7 +10,7 @@ import Gallery from "@/components/Gallery";
 import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
-  const { mealOptions, addItemToSelection, removeItemFromSelection } = useGlobalState();
+  const { mealOptions, addItemToSelection, removeItemFromSelection, sides, entrees } = useGlobalState();
   const { maxEntrees, maxSides, allowDrink, mealType } = mealOptions;
   console.log(mealOptions);
 
@@ -21,82 +21,95 @@ export default function Home() {
   // Dynamic list to track selected items
   const [selectedItemIds, setSelectedItemIds] = useState([]);
 
-  // State variables to manage the quantity of each item
-  const [sideQuantities, setSideQuantities] = useState({
-    friedRice: 0,
-    chowMein: 0,
-    superGreens: 0,
-    steamedRice: 0,
-    brownRice: 0,
-    mixedVegetables: 0,
-  });
+  const [sideQuantities, setSideQuantities] = useState({});
+  const [entreeQuantities, setEntreeQuantities] = useState({});
 
-  const [entreeQuantities, setEntreeQuantities] = useState({
-    blackPepperChicken: 0,
-    stringBeanChicken: 0,
-    sweetfireChicken: 0, 
-    mushroomChicken: 0,
-    beijingBeef: 0, 
-    honeySesameChicken: 0, 
-    grilledTeriyakiChicken: 0,
-    blazingBourbonChicken: 0,
-    orangeChicken: 0,
-    pepperSirloinSteak: 0,
-    kungPaoChicken: 0,
-    broccoliBeef: 0,
-    teriyakiChicken: 0,
-    beefBroccoli: 0,
-    shrimp: 0,
-    honeyWalnutShrimp: 0,
-  });
+  // Initialize quantities based on GSP data
+  useEffect(() => {
+    const initQuantities = (items) => {
+        return items.reduce((acc, item) => {
+            acc[item.id] = 0;
+            return acc;
+        }, {});
+    };
 
-  const [drinkQuantities, setDrinkQuantities] = useState({
-    coke: 0,
-    sprite: 0,
-    water: 0,
-  });
+    setSideQuantities(initQuantities(sides));
+    setEntreeQuantities(initQuantities(entrees));
+  }, [sides, entrees]);
+  // // State variables to manage the quantity of each item
+  // const [sideQuantities, setSideQuantities] = useState({
+  //   friedRice: 0,
+  //   chowMein: 0,
+  //   superGreens: 0,
+  //   steamedRice: 0
+  // });
+
+  // const [entreeQuantities, setEntreeQuantities] = useState({
+  //   blackPepperChicken: 0,
+  //   stringBeanChicken: 0,
+  //   sweetfireChicken: 0, 
+  //   mushroomChicken: 0,
+  //   beijingBeef: 0, 
+  //   honeySesameChicken: 0, 
+  //   grilledTeriyakiChicken: 0,
+  //   blazingBourbonChicken: 0,
+  //   orangeChicken: 0,
+  //   pepperSirloinSteak: 0,
+  //   kungPaoChicken: 0,
+  //   broccoliBeef: 0,
+  //   teriyakiChicken: 0,
+  //   beefBroccoli: 0,
+  //   shrimp: 0,
+  //   honeyWalnutShrimp: 0,
+  // });
+
+  // const [drinkQuantities, setDrinkQuantities] = useState({
+  //   coke: 0,
+  //   sprite: 0,
+  //   water: 0,
+  // });
 
   // References for scrolling the sides and entrees sections
   const sidesContainerRef = useRef(null);
   const entreesContainerRef = useRef(null);
 
   // Reset counters and quantities when the meal type changes
-  useEffect(() => {
-    setSelectedEntreesCount(0);
-    setSelectedSidesCount(0);
-    setSideQuantities({
-      friedRice: 0,
-      chowMein: 0,
-      superGreens: 0,
-      steamedRice: 0,
-      brownRice: 0,
-      mixedVegetables: 0,
-    });
-    setEntreeQuantities({
-      grilledTeriyakiChicken: 0,
-      pepperSirloinSteak: 0,
-      blazingBourbonChicken: 0,
-      orangeChicken: 0,
-      kungPaoChicken: 0,
-      broccoliBeef: 0,
-      teriyakiChicken: 0,
-      beefBroccoli: 0,
-      shrimp: 0,
-      honeyWalnutShrimp: 0,
-      honeySesameChicken: 0, 
-      beijingBeef: 0, 
-      mushroomChicken: 0, 
-      sweetfireChicken: 0, 
-      stringBeanChicken: 0, 
-      blackPepperChicken: 0
-    });
-    setDrinkQuantities({
-      coke: 0,
-      sprite: 0,
-      water: 0,
-    });
-    setSelectedItemIds([]); // Clear selected items on meal type change
-  }, [mealOptions]);
+  // useEffect(() => {
+  //   setSelectedEntreesCount(0);
+  //   setSelectedSidesCount(0);
+  //   setSideQuantities({
+  //     friedRice: 0,
+  //     chowMein: 0,
+  //     superGreens: 0,
+  //     steamedRice: 0,
+  //     brownRice: 0,
+  //     mixedVegetables: 0,
+  //   });
+  //   setEntreeQuantities({
+  //     grilledTeriyakiChicken: 0,
+  //     pepperSirloinSteak: 0,
+  //     blazingBourbonChicken: 0,
+  //     orangeChicken: 0,
+  //     kungPaoChicken: 0,
+  //     broccoliBeef: 0,
+  //     teriyakiChicken: 0,
+  //     beefBroccoli: 0,
+  //     shrimp: 0,
+  //     honeyWalnutShrimp: 0,
+  //     honeySesameChicken: 0, 
+  //     beijingBeef: 0, 
+  //     mushroomChicken: 0, 
+  //     sweetfireChicken: 0, 
+  //     stringBeanChicken: 0, 
+  //     blackPepperChicken: 0
+  //   });
+  //   setDrinkQuantities({
+  //     coke: 0,
+  //     sprite: 0,
+  //     water: 0,
+  //   });
+  //   setSelectedItemIds([]); // Clear selected items on meal type change
+  // }, [mealOptions]);
 
   useEffect(() => {
     console.log("Selected Item IDs:", selectedItemIds);
@@ -200,28 +213,28 @@ export default function Home() {
     fetchInventory();
   }, []);
 
-  const sides = [
-    { id: 'chowMein', title: 'Chow Mein', imageUrl: '/ChowMein.png', calories: '600 calories' },
-    { id: 'friedRice', title: 'Fried Rice', imageUrl: '/FriedRice.png', calories: '620 calories' },
-    { id: 'steamedRice', title: 'White Steamed Rice', imageUrl: '/WhiteSteamedRice.png', calories: '520 calories' },
-    { id: 'superGreens', title: 'Super Greens', imageUrl: '/SuperGreens.png', calories: '130 calories' },
-  ];
+  // const sides = [
+  //   { id: 'chowMein', title: 'Chow Mein', imageUrl: '/ChowMein.png', calories: '600 calories' },
+  //   { id: 'friedRice', title: 'Fried Rice', imageUrl: '/FriedRice.png', calories: '620 calories' },
+  //   { id: 'steamedRice', title: 'White Steamed Rice', imageUrl: '/WhiteSteamedRice.png', calories: '520 calories' },
+  //   { id: 'superGreens', title: 'Super Greens', imageUrl: '/SuperGreens.png', calories: '130 calories' },
+  // ];
 
-  const entrees = [
-    { id: 'blazingBourbonChicken', title: 'Hot Ones Blazing Bourbon Chicken', imageUrl: '/BlazinBurbon.png', calories: '400 calories' },
-    { id: 'orangeChicken', title: 'The Original Orange Chicken', imageUrl: '/OrangeChicken.png', calories: '510 calories' },
-    { id: 'pepperSirloinSteak', title: 'Black Pepper Sirloin Steak', imageUrl: '/BlackPepperSteak.png', calories: '+$1.50 | 180 calories' },
-    { id: 'honeyWalnutShrimp', title: 'Honey Walnut Shrimp', imageUrl: '/HoneyWalnutShrimp.png', calories: '+$1.50 | 430 calories' },
-    { id: 'grilledTeriyakiChicken', title: 'Grilled Teriyaki Chicken', imageUrl: '/GrilledTeriyakiChicken.png', calories: '275 calories' },
-    { id: 'broccoliBeef', title: 'Broccoli Beef', imageUrl: '/BroccoliBeef.png', calories: '150 calories' },
-    { id: 'kungPaoChicken', title: 'Kung Pao Chicken', imageUrl: '/KungPaoChicken.png', calories: '320 calories' },
-    { id: 'honeySesameChicken', title: 'Honey Sesame Chicken Breast', imageUrl: '/HoneySesameChicken.png', calories: '340 calories' },
-    { id: 'beijingBeef', title: 'Beijing Beef', imageUrl: '/BeijingBeef.png', calories: '480 calories' },
-    { id: 'mushroomChicken', title: 'Mushroom Chicken', imageUrl: '/MushroomChicken.png', calories: '220 calories' },
-    { id: 'sweetfireChicken', title: 'SweetFire Chicken Breast', imageUrl: '/SweetfireChicken.png', calories: '380 calories' },
-    { id: 'stringBeanChicken', title: 'String Bean Chicken Breast', imageUrl: '/StringBeanChicken.png', calories: '210 calories' },
-    { id: 'blackPepperChicken', title: 'Black Pepper Chicken', imageUrl: '/BlackPepperChicken.png', calories: '280 calories' },
-  ];
+  // const entrees = [
+  //   { id: 'blazingBourbonChicken', title: 'Hot Ones Blazing Bourbon Chicken', imageUrl: '/BlazinBurbon.png', calories: '400 calories' },
+  //   { id: 'orangeChicken', title: 'The Original Orange Chicken', imageUrl: '/OrangeChicken.png', calories: '510 calories' },
+  //   { id: 'pepperSirloinSteak', title: 'Black Pepper Sirloin Steak', imageUrl: '/BlackPepperSteak.png', calories: '+$1.50 | 180 calories' },
+  //   { id: 'honeyWalnutShrimp', title: 'Honey Walnut Shrimp', imageUrl: '/HoneyWalnutShrimp.png', calories: '+$1.50 | 430 calories' },
+  //   { id: 'grilledTeriyakiChicken', title: 'Grilled Teriyaki Chicken', imageUrl: '/GrilledTeriyakiChicken.png', calories: '275 calories' },
+  //   { id: 'broccoliBeef', title: 'Broccoli Beef', imageUrl: '/BroccoliBeef.png', calories: '150 calories' },
+  //   { id: 'kungPaoChicken', title: 'Kung Pao Chicken', imageUrl: '/KungPaoChicken.png', calories: '320 calories' },
+  //   { id: 'honeySesameChicken', title: 'Honey Sesame Chicken Breast', imageUrl: '/HoneySesameChicken.png', calories: '340 calories' },
+  //   { id: 'beijingBeef', title: 'Beijing Beef', imageUrl: '/BeijingBeef.png', calories: '480 calories' },
+  //   { id: 'mushroomChicken', title: 'Mushroom Chicken', imageUrl: '/MushroomChicken.png', calories: '220 calories' },
+  //   { id: 'sweetfireChicken', title: 'SweetFire Chicken Breast', imageUrl: '/SweetfireChicken.png', calories: '380 calories' },
+  //   { id: 'stringBeanChicken', title: 'String Bean Chicken Breast', imageUrl: '/StringBeanChicken.png', calories: '210 calories' },
+  //   { id: 'blackPepperChicken', title: 'Black Pepper Chicken', imageUrl: '/BlackPepperChicken.png', calories: '280 calories' },
+  // ];
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -239,7 +252,7 @@ export default function Home() {
         />
 
         <h2 className="text-4xl font-bold mx-4 text-black"> Step 2 </h2>
-        <h3 className="text-xl font-medium text- mx-4 my-2 text-black"> Select your entrees </h3>
+        <h3 className="text-xl font-medium text- mx-4 my-2 text-black"> Select your entrees ({maxEntrees}) </h3>
         <Gallery
           items={entrees}
           sideQuantities={entreeQuantities}
