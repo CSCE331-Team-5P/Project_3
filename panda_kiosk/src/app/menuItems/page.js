@@ -14,6 +14,8 @@ export default function Home() {
   const { maxEntrees, maxSides, allowDrink, mealType } = mealOptions;
   console.log(mealOptions);
 
+  console.log("check");
+
   // State for counting total selected entrees and sides
   const [selectedEntreesCount, setSelectedEntreesCount] = useState(0);
   const [selectedSidesCount, setSelectedSidesCount] = useState(0);
