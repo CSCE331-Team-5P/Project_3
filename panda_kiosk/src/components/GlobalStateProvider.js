@@ -20,6 +20,9 @@ export const GlobalStateProvider = ({ children }) => {
     const [sides, setSides] = useState([]);
     const [entrees, setEntrees] = useState([]);
 
+    const [extras, setExtras] = useState([]);
+    const [drinks, setDrinks] = useState([]);
+
     // Fetch menu items from the database and format them
     useEffect(() => {
         const fetchMenuItems = async () => {
@@ -169,8 +172,26 @@ export const GlobalStateProvider = ({ children }) => {
         setSelectedItemIds([]);
     }, []);
 
+    // Function to manage extras
+    const addExtra = (extra) => {
+        setExtras((prevExtras) => [...prevExtras, extra]);
+    };
+
+    const removeExtra = (extra) => {
+        setExtras((prevExtras) => prevExtras.filter((id) => id !== extra));
+    };
+
+    // Function to manage drinks
+    const addDrink = (drink) => {
+        setDrinks((prevDrinks) => [...prevDrinks, drink]);
+    };
+
+    const removeDrink = (drink) => {
+        setDrinks((prevDrinks) => prevDrinks.filter((id) => id !== drink));
+    };
+
     return (
-        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees }}>
+        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees, addExtra, removeExtra, addDrink, removeDrink }}>
             {children}
         </GlobalStateContext.Provider>
     );
