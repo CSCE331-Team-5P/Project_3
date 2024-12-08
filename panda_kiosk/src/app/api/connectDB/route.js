@@ -178,7 +178,9 @@ export async function GET() {
             FROM INVENTORY
         `;
         const result = await client.query(query);
-        console.log("result aaaaaaa", result);
+      
+        //Test for a force push
+        console.log("result", result);
 
         // If no items are found, return a meaningful response
         if (!result.rows.length) {
