@@ -113,7 +113,7 @@ export async function POST(request) {
                 description = "Bigger Plate";
                 break;
             default:
-                description = "Invalid selection";
+                description = "Other";
                 break;
             }
 

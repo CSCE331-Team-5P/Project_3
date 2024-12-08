@@ -61,7 +61,19 @@ export default function Checkout() {
 
       // Step 3: Prepare the API request payload (selectedItemIds and itemQuantities)
       const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
-      const numSelectedItemIdsForRequest = selectedItemIds.length;
+
+      const drinksCount = selectedItemIds.filter((id) => {
+        const item = menuItems.find((menuItem) => menuItem.id === id);
+        return item && item.category === "Drink";
+      }).length;
+      
+      const extrasAndDessertsCount = selectedItemIds.filter((id) => {
+        const item = menuItems.find((menuItem) => menuItem.id === id);
+        return item && (item.category === "Extras");
+      }).length;
+
+
+      const numSelectedItemIdsForRequest = selectedItemIds.length - drinksCount - extrasAndDessertsCount;
       const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
       const totalAmount = total;
       const employeeIdForRequest = employeeId;
