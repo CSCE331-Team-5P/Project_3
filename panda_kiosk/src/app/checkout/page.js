@@ -1,54 +1,91 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { useGlobalState } from "@/components/GlobalStateProvider"; // Import the global state
+import { useGlobalState } from "@/components/GlobalStateProvider";
 import { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation"; // Import useRouter to programmatically control routing (originally navigation) // Initialize payment method state
+import { usePathname, useRouter } from "next/navigation";
+import { useMagnifier } from "@/context/MagnifierContext";
 
 export default function Checkout() {
-  const { selectedItemIds, clearSelectedItems, menuItems, updateMenuItems } = useGlobalState(); // Access selected item IDs from the global state
-  const router = useRouter(); // Initialize the Next.js router to trigger a page refresh
-  const pathname = usePathname(); // Gives the current path
+  const { selectedItemIds, clearSelectedItems, menuItems } = useGlobalState();
+  const { isMagnifierEnabled, setIsMagnifierEnabled, magnifierPosition, setMagnifierPosition } = useMagnifier();
+
+  const router = useRouter();
+  const pathname = usePathname();
   const [employeeId, setEmployeeId] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [screenshot, setScreenshot] = useState(null);
+  const [isCapturing, setIsCapturing] = useState(false);
 
-  console.log("menuItems after fetch:", menuItems);
+  const captureScreenshot = async () => {
+    const html2canvas = (await import("html2canvas")).default;
+    setIsCapturing(true);
 
-  
+    try {
+      const canvas = await html2canvas(document.body, {
+        useCORS: true,
+        scale: 1,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
+      });
+      setScreenshot(canvas.toDataURL());
+    } catch (error) {
+      console.error("Error capturing screenshot:", error);
+    } finally {
+      setIsCapturing(false);
+    }
+  };
+
   const itemQuantities = selectedItemIds.reduce((acc, id) => {
     acc[id] = (acc[id] || 0) + 1;
-    return acc; 
-  },{});
+    return acc;
+  }, {});
 
   const orderItems = Object.entries(itemQuantities).map(([id, quantity]) => {
     const item = menuItems.find((menuItem) => menuItem.id === id);
-    return item ? { ...item, quantity } : null; // Include the quantity in the item object
-  }).filter(Boolean); 
+    return item ? { ...item, quantity } : null;
+  }).filter(Boolean);
 
-  // Calculate subtotal
+  const drinksCount = selectedItemIds.filter((id) => {
+    const item = menuItems.find((menuItem) => menuItem.id === id);
+    return item && item.category === "Drink";
+  }).length;
+
+  const extrasAndDessertsCount = selectedItemIds.filter((id) => {
+    const item = menuItems.find((menuItem) => menuItem.id === id);
+    return item && item.category === "Extras";
+  }).length;
+
+  const numSelectedItemIdsForRequest = selectedItemIds.length - drinksCount - extrasAndDessertsCount;
+
   const subtotal = orderItems.reduce((total, item) => total + item.price * item.quantity, 0);
-  const tax = subtotal * 0.08; // Assuming 8% tax rate
+  const tax = subtotal * 0.08;
   const total = subtotal + tax;
 
-  // useEffect hook to trigger a page refresh when the component unmounts (i.e., when the user leaves the Checkout page)
   useEffect(() => {
-    // Log pathname for debugging purposes
-    console.log(`Current array length: ${selectedItemIds.length}`);
-  }, [selectedItemIds]);
+    const handleMouseMove = (e) => {
+      if (isMagnifierEnabled && !isCapturing) {
+        setMagnifierPosition({
+          x: e.clientX + (window.scrollX || document.documentElement.scrollLeft),
+          y: e.clientY + (window.scrollY || document.documentElement.scrollTop),
+        });
+      }
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, [isMagnifierEnabled]);
 
   useEffect(() => {
-    // Log pathname for debugging purposes
-    console.log(`Array from this page: ${selectedItemIds}`);
-  }, [selectedItemIds]);
-
-  useEffect(() => {
-    // Log pathname for debugging purposes
-    console.log(`Array being passed in: ${orderItems.map(item => item.name)}`);
-  }, [orderItems.map(item => item.name)]);
-  
+    if (isMagnifierEnabled) {
+      captureScreenshot();
+    }
+  }, [isMagnifierEnabled]);
 
   const handleCheckout = async () => {
     try {
-
       if (!employeeId) {
         alert('Please enter a valid Employee ID.');
         return;
@@ -59,81 +96,49 @@ export default function Checkout() {
         return;
       }
 
-      // Step 3: Prepare the API request payload (selectedItemIds and itemQuantities)
-      const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
+      const selectedItemIdsForRequest = orderItems.map(item => item.name);
+      const itemQuantitiesForRequest = orderItems.map(item => item.quantity);
 
-      const drinksCount = selectedItemIds.filter((id) => {
-        const item = menuItems.find((menuItem) => menuItem.id === id);
-        return item && item.category === "Drink";
-      }).length;
-      
-      const extrasAndDessertsCount = selectedItemIds.filter((id) => {
-        const item = menuItems.find((menuItem) => menuItem.id === id);
-        return item && (item.category === "Extras");
-      }).length;
-
-
-      const numSelectedItemIdsForRequest = selectedItemIds.length - drinksCount - extrasAndDessertsCount;
-      const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
-      const totalAmount = total;
-      const employeeIdForRequest = employeeId;
-      const paymentMethodForRequest = paymentMethod;
-      console.log("Order Items:", orderItems); // Log the final list of items with quantities
-
-      // Step 4: Send the data to the backend API
       const response = await fetch('/api/connectDB', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              selectedItemIds: selectedItemIdsForRequest, // Names for query
-              numSelectedItemIds: numSelectedItemIdsForRequest, 
-              itemQuantities: itemQuantitiesForRequest,   // Quantities for query
-              total: totalAmount,
-              employeeId: employeeIdForRequest,
-              paymentMethod: paymentMethodForRequest
-          }),
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          selectedItemIds: selectedItemIdsForRequest,
+          numSelectedItemIds: numSelectedItemIdsForRequest,
+          itemQuantities: itemQuantitiesForRequest,
+          total,
+          employeeId,
+          paymentMethod,
+        }),
       });
 
       if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Server response:", data);
-
       if (data.success) {
-          alert(data.message);
+        alert(data.message);
       } else {
-          alert("Error during checkout: " + (data.message || "Unknown error occurred"));
+        alert("Error during checkout: " + (data.message || "Unknown error occurred"));
       }
-  } catch (error) {
+    } catch (error) {
       console.error("Error during checkout:", error);
       alert("An error occurred: " + error.message);
-  }
-    
+    }
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
-
-      {/* Centered Checkout Div */}
       <div className="flex justify-center items-center flex-grow">
         <div className="flex flex-col items-center space-y-8 w-full max-w-lg px-4 bg-red-100 rounded-lg p-6">
-          {/* Order Summary Card */}
           <div className="bg-white shadow-lg rounded-lg p-6 w-full">
             <h1 className="text-3xl font-bold text-black mb-4 text-center">Your Order</h1>
-
-            <div
-              className="bg-white rounded-lg p-4 h-[50vh] overflow-y-auto"
-              style={{
-                boxShadow: "inset 0 3px 4px rgba(0, 0, 0, 0.05), inset 0 -2px 4px rgba(0, 0, 0, 0.05)",
-              }}
-            >
+            <div className="bg-white rounded-lg p-4 h-[50vh] overflow-y-auto">
               <h3 className="text-lg font-semibold text-black mb-3">Current Order</h3>
-
               <ul className="text-sm text-black space-y-2">
                 {orderItems.map((item, index) => (
                   <li key={index} className="flex justify-between">
@@ -144,8 +149,6 @@ export default function Checkout() {
               </ul>
             </div>
           </div>
-
-          {/* Checkout Total and Summary */}
           <div className="bg-white shadow-lg rounded-lg p-6 w-full space-y-4">
             <h3 className="text-lg font-semibold text-black">Checkout Total</h3>
             <div className="text-sm text-black">
@@ -154,8 +157,6 @@ export default function Checkout() {
               <p className="font-bold text-black">Total: ${total.toFixed(2)}</p>
             </div>
           </div>
-
-          {/* Employee ID Input */}
           <div className="mb-4">
             <label htmlFor="employeeId" className="block text-gray-700 font-medium mb-2">
               Employee ID:
@@ -165,14 +166,11 @@ export default function Checkout() {
               id="employeeId"
               value={employeeId}
               onChange={(e) => {
-                // Allow only numbers in the input field
                 const value = e.target.value;
-                if (/^\d*$/.test(value)) { // Regex ensures only digits
-                  setEmployeeId(value);
-                }
+                if (/^\d*$/.test(value)) setEmployeeId(value);
               }}
               placeholder="Enter Employee ID"
-              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
+              className="border border-gray-300 rounded-md px-4 py-2 w-full"
             />
           </div>
           <div className="mb-4">
@@ -182,10 +180,8 @@ export default function Checkout() {
             <select
               id="paymentMethod"
               value={paymentMethod}
-              onChange={(e) => {
-                console.log('Selected Payment Method:', e.target.value);
-                setPaymentMethod(e.target.value);}} // Update the state when an option is selected
-              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
+              onChange={(e) => setPaymentMethod(e.target.value)}
+              className="border border-gray-300 rounded-md px-4 py-2 w-full"
             >
               <option value="" disabled>Select Payment Method</option>
               <option value="Cash">Cash</option>
@@ -194,24 +190,46 @@ export default function Checkout() {
               <option value="Meal Swipe">Meal Swipe</option>
             </select>
           </div>
-
-          {/* Checkout Button */}
-          <button className="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all duration-200 transform hover:scale-105"
-            onClick={handleCheckout}
-          >
+          <button className="bg-red-600 text-white px-8 py-3 rounded-full" onClick={handleCheckout}>
             Proceed to Checkout
           </button>
-
-          {/* Clear Button */}
-          <button
-            className="bg-gray-600 hover:bg-gray-500 text-white px-8 py-3 rounded-full font-semibold shadow-md transition-all duration-200 transform hover:scale-105"
-            onClick={clearSelectedItems}
-          >
+          <button className="bg-gray-600 text-white px-8 py-3 rounded-full" onClick={clearSelectedItems}>
             Clear Order
           </button>
-
         </div>
       </div>
+      <button
+        onClick={() => setIsMagnifierEnabled((prev) => !prev)}
+        className="fixed bottom-5 right-5 px-4 py-2 bg-blue-600 text-white rounded-lg z-50"
+      >
+        {isMagnifierEnabled ? "Disable Magnifier" : "Enable Magnifier"}
+      </button>
+      {isMagnifierEnabled && screenshot && (
+        <div
+          style={{
+            position: "fixed",
+            left: magnifierPosition.x - 150,
+            top: magnifierPosition.y - 150,
+            width: "300px",
+            height: "300px",
+            borderRadius: "50%",
+            overflow: "hidden",
+            zIndex: 1000,
+            pointerEvents: "none",
+          }}
+        >
+          <div
+            style={{
+              position: "absolute",
+              width: `${window.innerWidth * 2}px`,
+              height: `${window.innerHeight * 2}px`,
+              backgroundImage: `url(${screenshot})`,
+              backgroundPosition: `-${magnifierPosition.x * 2 - 150}px -${magnifierPosition.y * 2 - 150}px`,
+              backgroundSize: `${window.innerWidth * 2}px ${window.innerHeight * 2}px`,
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }
