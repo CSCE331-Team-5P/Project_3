@@ -58,6 +58,18 @@ export default function Home() {
         { pageLanguage: "en" },
         "google_translate_element"
       );
+
+
+      const observer = new MutationObserver(() => {
+        // Small delay to ensure translation completed
+        setTimeout(() => {
+          captureScreenshot(); // Re-capture screenshot after translation updates the page
+        }, 1000);
+      });
+
+      observer.observe(document.body, { childList: true, subtree: true });
+
+
     };
   }, []);
 
