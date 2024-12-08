@@ -87,7 +87,7 @@ export const GlobalStateProvider = ({ children }) => {
                         imageUrl: item.imageUrl, 
                         calories: item.calories || "220",
                     });
-                } else if (item.category === "Extra") {
+                } else if (item.category === "Extras") {
                     if (['Apple Pie Roll'].includes(item.name)) {
                         newDesserts.push({
                             id: item.id, 
@@ -172,7 +172,7 @@ export const GlobalStateProvider = ({ children }) => {
             //desserts and extras
             "Apple Pie Roll": "/apple-pie-roll.png",
             "Chicken Egg Roll": "/chicken-egg-roll.png",
-            "Vegetable Spring Roll": "/veggie-spring-roll.png",
+            "Veggie Spring Roll": "/veggie-spring-roll.png",
             "Cream Cheese Rangoon": "/cream-cheese-rangoon.png",
         };
 
@@ -233,7 +233,7 @@ export const GlobalStateProvider = ({ children }) => {
             // Desserts and Extras
             "Apple Pie Roll": "Apple Pie Roll",
             "Chicken Egg Roll": "Chicken Egg Roll",
-            "Vegetable Spring Roll": "Vegetable Spring Roll",
+            "Veggie Spring Roll": "Veggie Spring Roll",
             "Cream Cheese Rangoon": "Cream Cheese Rangoon",
         };
 

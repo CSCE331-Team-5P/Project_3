@@ -25,7 +25,7 @@ const Navbar = () => {
 
     //^ Function to handle category click and set active category
     const handleCategoryClick = (category) => {
-        if(category != "Drink"){ //Replace with "Checkout" this says drink only because that's where checkout is accessible
+        if(category === "A la carte" || category === "Bowl" || category === "Plate" || category === "Bigger Plate"){ //Replace with "Checkout" this says drink only because that's where checkout is accessible
             clearSelectedItems();
         }
         setActiveCategory(category);
