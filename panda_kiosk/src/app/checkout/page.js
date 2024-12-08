@@ -2,65 +2,18 @@
 import Navbar from "@/components/Navbar";
 import { useGlobalState } from "@/components/GlobalStateProvider"; // Import the global state
 import { useState, useEffect } from "react";
-import { usePathname, useRouter } from "next/navigation"; // Import useRouter to programmatically control routing (originally navigation)
+import { usePathname, useRouter } from "next/navigation"; // Import useRouter to programmatically control routing (originally navigation) // Initialize payment method state
 
 export default function Checkout() {
   const { selectedItemIds, clearSelectedItems, menuItems, updateMenuItems } = useGlobalState(); // Access selected item IDs from the global state
   const router = useRouter(); // Initialize the Next.js router to trigger a page refresh
   const pathname = usePathname(); // Gives the current path
   const [employeeId, setEmployeeId] = useState('');
-
-  // Sample data for item details (this would be more dynamic in a real application)
-  // const menuItems = [
-  //   { id: "orangeChicken", name: "Orange Chicken", price: 0 },
-  //   { id: "chowMein", name: "Chow Mein", price: 0 },
-  //   { id: "friedRice", name: "Fried Rice", price: 0 },
-  //   { id: "eggRoll", name: "Egg Roll", price: 0 },
-  //   { id: "applePieRoll", name: "Apple Pie Roll", price: 0 },
-  //   { id: "vegetableSpringRoll", name: "Vegetable Spring Roll", price: 0 },
-  //   { id: "creamCheeseRangoon", name: "Cream Cheese Rangoon", price: 0 },
-  //   { id: 'chowMein', name: 'Chow Mein', price: 0 },
-  //   { id: 'friedRice', name: 'Fried Rice', price: 0 },
-  //   { id: 'steamedRice', name: 'White Steamed Rice', price: 0 },
-  //   { id: 'superGreens', name: 'Super Greens', price: 0 },
-  //   { id: 'blazingBourbonChicken', name: 'Hot Ones Blazing Bourbon Chicken', price: 0 },
-  //   // { id: 'orangeChicken', name: 'The Original Orange Chicken', price: 6.77 },
-  //   { id: 'pepperSirloinSteak', name: 'Black Pepper Sirloin Steak', price: 0 },
-  //   { id: 'honeyWalnutShrimp', name: 'Honey Walnut Shrimp', price: 0 },
-  //   { id: 'grilledTeriyakiChicken', name: 'Grilled Teriyaki Chicken', price: 0 },
-  //   { id: 'broccoliBeef', name: 'Broccoli Beef', price: 0 },
-  //   { id: 'kungPaoChicken', name: 'Kung Pao Chicken', price: 0 },
-  //   { id: 'honeySesameChicken', name: 'Honey Sesame Chicken Breast', price: 0 },
-  //   { id: 'beijingBeef', name: 'Beijing Beef', price: 0},
-  //   { id: 'mushroomChicken', name: 'Mushroom Chicken', price: 0 },
-  //   { id: 'sweetfireChicken', name: 'SweetFire Chicken Breast', price: 0 },
-  //   { id: 'stringBeanChicken', name: 'String Bean Chicken Breast', price: 0 },
-  //   { id: 'blackPepperChicken', name: 'Black Pepper Chicken', price: 0 },
-  // ];
-
-  useEffect(() => {
-    async function fetchMenuItems() {
-      try {
-        const response = await fetch("/api/connectDB");
-        const data = await response.json();
-
-        if (data.success) {
-          updateMenuItems(data.menuItems); // Update menuItems in the global state
-        } else {
-          console.error("Failed to fetch menu items:", data.message);
-        }
-      } catch (error) {
-        console.error("Error fetching menu items:", error);
-      }
-    }
-
-    fetchMenuItems();
-  }, [updateMenuItems]);
-
+  const [paymentMethod, setPaymentMethod] = useState('');
 
   console.log("menuItems after fetch:", menuItems);
 
-
+  
   const itemQuantities = selectedItemIds.reduce((acc, id) => {
     acc[id] = (acc[id] || 0) + 1;
     return acc; 
@@ -101,11 +54,18 @@ export default function Checkout() {
         return;
       }
 
+      if (!paymentMethod) {
+        alert('Please select a payment method.');
+        return;
+      }
+
       // Step 3: Prepare the API request payload (selectedItemIds and itemQuantities)
       const selectedItemIdsForRequest = orderItems.map(item => item.name); // Item names for API
       const numSelectedItemIdsForRequest = selectedItemIds.length;
       const itemQuantitiesForRequest = orderItems.map(item => item.quantity); // Quantities for API
+      const totalAmount = total;
       const employeeIdForRequest = employeeId;
+      const paymentMethodForRequest = paymentMethod;
       console.log("Order Items:", orderItems); // Log the final list of items with quantities
 
       // Step 4: Send the data to the backend API
@@ -118,7 +78,9 @@ export default function Checkout() {
               selectedItemIds: selectedItemIdsForRequest, // Names for query
               numSelectedItemIds: numSelectedItemIdsForRequest, 
               itemQuantities: itemQuantitiesForRequest,   // Quantities for query
-              employeeId: employeeIdForRequest
+              total: totalAmount,
+              employeeId: employeeIdForRequest,
+              paymentMethod: paymentMethodForRequest
           }),
       });
 
@@ -140,7 +102,6 @@ export default function Checkout() {
   }
     
   };
-
 
   return (
     <div className="min-h-screen flex flex-col bg-white">
@@ -201,6 +162,25 @@ export default function Checkout() {
               placeholder="Enter Employee ID"
               className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
             />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="paymentMethod" className="block text-gray-700 font-medium mb-2">
+              Payment Method:
+            </label>
+            <select
+              id="paymentMethod"
+              value={paymentMethod}
+              onChange={(e) => {
+                console.log('Selected Payment Method:', e.target.value);
+                setPaymentMethod(e.target.value);}} // Update the state when an option is selected
+              className="border border-gray-300 rounded-md px-4 py-2 w-full focus:outline-none focus:ring-2 focus:ring-red-500"
+            >
+              <option value="" disabled>Select Payment Method</option>
+              <option value="Cash">Cash</option>
+              <option value="Card">Card</option>
+              <option value="Dining Dollars">Dining Dollars</option>
+              <option value="Meal Swipe">Meal Swipe</option>
+            </select>
           </div>
 
           {/* Checkout Button */}

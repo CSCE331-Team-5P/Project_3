@@ -7,15 +7,14 @@ import { useGlobalState } from "@/components/GlobalStateProvider";
 // Import components
 import Navbar from "@/components/Navbar";
 import Gallery from "@/components/Gallery";
-import KioskFooter from "@/components/KioskFooter";
 
 export default function Home() {
-  const { mealOptions, addItemToSelection, removeItemFromSelection } = useGlobalState();
+  const { mealOptions, addItemToSelection, removeItemFromSelection, sides, entrees } = useGlobalState();
   const { maxEntrees, maxSides, allowDrink, mealType } = mealOptions;
   console.log(mealOptions);
 
   console.log("check");
-
+//test comment commit
   // State for counting total selected entrees and sides
   const [selectedEntreesCount, setSelectedEntreesCount] = useState(0);
   const [selectedSidesCount, setSelectedSidesCount] = useState(0);
@@ -161,7 +160,7 @@ export default function Home() {
         />
 
         <h2 className="text-4xl font-bold mx-4 text-black"> Step 2 </h2>
-        <h3 className="text-xl font-medium text- mx-4 my-2 text-black"> Select your entrees </h3>
+        <h3 className="text-xl font-medium text- mx-4 my-2 text-black"> Select your entrees ({maxEntrees}) </h3>
         <Gallery
           items={entrees}
           sideQuantities={entreeQuantities}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 // Create the global state context
 const GlobalStateContext = createContext();
@@ -16,49 +16,132 @@ export const GlobalStateProvider = ({ children }) => {
 
     const [selectedItemIds, setSelectedItemIds] = useState([]);
 
-    // Add menuItems state to global provider
-    // Static menuItems array (global)
-    const [menuItems, setMenuItems] = useState([
-        { id: "orangeChicken", name: "Orange Chicken", price: 2222222 },
-        { id: "chowMein", name: "Chow Mein", price: 0 },
-        { id: "friedRice", name: "Fried Rice", price: 0 },
-        { id: "eggRoll", name: "Egg Roll", price: 0 },
-        { id: "applePieRoll", name: "Apple Pie Roll", price: 0 },
-        { id: "vegetableSpringRoll", name: "Vegetable Spring Roll", price: 0 },
-        { id: "creamCheeseRangoon", name: "Cream Cheese Rangoon", price: 0 },
-        { id: 'chowMein', name: 'Chow Mein', price: 0 },
-        { id: 'friedRice', name: 'Fried Rice', price: 0 },
-        { id: 'steamedRice', name: 'White Steamed Rice', price: 0 },
-        { id: 'superGreens', name: 'Super Greens', price: 0 },
-        { id: 'blazingBourbonChicken', name: 'Hot Ones Blazing Bourbon Chicken', price: 0 },
-        // { id: 'orangeChicken', name: 'The Original Orange Chicken', price: 6.77 },
-        { id: 'pepperSirloinSteak', name: 'Black Pepper Sirloin Steak', price: 0 },
-        { id: 'honeyWalnutShrimp', name: 'Honey Walnut Shrimp', price: 0 },
-        { id: 'grilledTeriyakiChicken', name: 'Grilled Teriyaki Chicken', price: 0 },
-        { id: 'broccoliBeef', name: 'Broccoli Beef', price: 0 },
-        { id: 'kungPaoChicken', name: 'Kung Pao Chicken', price: 0 },
-        { id: 'honeySesameChicken', name: 'Honey Sesame Chicken Breast', price: 0 },
-        { id: 'beijingBeef', name: 'Beijing Beef', price: 0},
-        { id: 'mushroomChicken', name: 'Mushroom Chicken', price: 0 },
-        { id: 'sweetfireChicken', name: 'SweetFire Chicken Breast', price: 0 },
-        { id: 'stringBeanChicken', name: 'String Bean Chicken Breast', price: 0 },
-        { id: 'blackPepperChicken', name: 'Black Pepper Chicken', price: 0 },
-    ]);
+    const [menuItems, setMenuItems] = useState([]);
+    const [sides, setSides] = useState([]);
+    const [entrees, setEntrees] = useState([]);
 
-    const updateMenuItems = (updatedMenuItems) => {
-        updatedMenuItems.forEach((updatedItem) => {
-            const item = menuItems.find((menuItem) => menuItem.name === updatedItem.name);
-            if (item) {
-                item.price = parseFloat(updatedItem.price); // Update price directly
+    // Fetch menu items from the database and format them
+    useEffect(() => {
+        const fetchMenuItems = async () => {
+            try {
+                const response = await fetch("/api/connectDB");
+                const data = await response.json();
+
+                if (data.success && data.menuItems) {
+                    const formattedMenuItems = data.menuItems.map(item => {
+                        const id = getIdForItem(item.name);
+                        const imageUrl = getImageForItem(item.name);
+
+                        return {
+                            id: id,
+                            name: item.name,
+                            price: item.price,
+                            category: item.category || "Unknown",
+                            imageUrl: imageUrl,
+                        };
+                    });
+
+                    setMenuItems(formattedMenuItems);
+                }
+            } catch (error) {
+                console.error("Error fetching menu items:", error);
             }
-        });
+        };
+
+        fetchMenuItems();
+    }, []);
+
+    // Logic to categorize sides and entrees from the menuItems
+    useEffect(() => {
+        const categorizeMenuItems = () => {
+            const newSides = [];
+            const newEntrees = [];
+
+            menuItems.forEach(item => {
+                if (item.category === "Side") {
+                    newSides.push({
+                        id: item.id,
+                        title: item.name,
+                        imageUrl: item.imageUrl,
+                        calories: item.calories || "220",
+                    });
+                } else if (item.category === "Entree") {
+                    newEntrees.push({
+                        id: item.id,
+                        title: item.name,
+                        imageUrl: item.imageUrl,
+                        calories: item.calories || "220",
+                    });
+                }
+            });
+
+            setSides(newSides);
+            setEntrees(newEntrees);
+        };
+
+        if (menuItems.length > 0) {
+            categorizeMenuItems();
+        }
+    }, [menuItems]);
+
+    // Function to get the image URL based on the item name
+    const getImageForItem = (name) => {
+        const imageMap = {
+            "Chow Mein": "/ChowMein.png",
+            "Fried Rice": "/FriedRice.png",
+            "White Steamed Rice": "/WhiteSteamedRice.png",
+            "Super Greens": "/SuperGreens.png",
+            "Hot Ones Blazing Burbon Chicken": "/BlazinBurbon.png",
+            "Orange Chicken": "/OrangeChicken.png",
+            "Black Pepper Sirloin Steak": "/BlackPepperSteak.png",
+            "Honey Walnut Shrimp": "/HoneyWalnutShrimp.png",
+            "Grilled Teriyaki Chicken": "/GrilledTeriyakiChicken.png",
+            "Broccoli Beef": "/BroccoliBeef.png",
+            "Kung Pao Chicken": "/KungPaoChicken.png",
+            "Honey Sesame Chicken": "/HoneySesameChicken.png",
+            "Beijing Beef": "/BeijingBeef.png",
+            "Mushroom Chicken": "/MushroomChicken.png",
+            "Sweet Fire Chicken Breast": "/SweetfireChicken.png",
+            "String Bean Chicken Breast": "/StringBeanChicken.png",
+            "Black Pepper Chicken": "/BlackPepperChicken.png",
+        };
+
+        // Return the matching image or default to PandaLogo
+        return imageMap[name] || "/panda.svg";
+    };
+
+    // Function to get the item ID based on the item name
+    const getIdForItem = (name) => {
+        const idMap = {
+            "Chow Mein": "Chow Mein",
+            "Fried Rice": "Fried Rice",
+            "White Steamed Rice": "White Steamed Rice",
+            "Super Greens": "Super Greens",
+            "Hot Ones Blazing Burbon Chicken": "Hot Ones Blazing Burbon Chicken",
+            "Orange Chicken": "Orange Chicken",
+            "Black Pepper Sirloin Steak": "Black Pepper Sirloin Steak",
+            "Honey Walnut Shrimp": "Honey Walnut Shrimp",
+            "Grilled Teriyaki Chicken": "Grilled Teriyaki Chicken",
+            "Broccoli Beef": "Broccoli Beef",
+            "Kung Pao Chicken": "Kung Pao Chicken",
+            "Honey Sesame Chicken": "Honey Sesame Chicken",
+            "Beijing Beef": "Beijing Beef",
+            "Mushroom Chicken": "Mushroom Chicken",
+            "Sweet Fire Chicken Breast": "Sweet Fire Chicken Breast",
+            "String Bean Chicken Breast": "String Bean Chicken Breast",
+            "Black Pepper Chicken": "Black Pepper Chicken",
+        };
+
+        // Generate a new ID if the item doesn't exist in the map
+        // return idMap[name] || `item_${Math.random().toString(36).substr(2, 9)}`;
+        return idMap[name] || name;
     };
 
     // Function to update meal options based on the selected category
     const updateMealOptions = (mealType) => {
         switch (mealType) {
             case "A la carte":
-                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType, allowOnlyOne: true , allowDrink: true});
+                setMealOptions({ maxEntrees: 1, maxSides: 1, mealType, allowOnlyOne: true, allowDrink: true });
                 break;
             case "Bowl":
                 setMealOptions({ maxEntrees: 1, maxSides: 1, mealType, allowOnlyOne: false, allowDrink: true });
@@ -74,15 +157,8 @@ export const GlobalStateProvider = ({ children }) => {
         }
     };
 
-    // Function to update selected item IDs
     const addItemToSelection = (item) => {
-        setSelectedItemIds((prevIds) => {
-            // if (!prevIds.includes(item)) {
-            //     return [...prevIds, item];
-            // }
-            // return prevIds;
-            return [...prevIds, item];
-        });
+        setSelectedItemIds((prevIds) => [...prevIds, item]);
     };
 
     const removeItemFromSelection = (item) => {
@@ -91,10 +167,10 @@ export const GlobalStateProvider = ({ children }) => {
 
     const clearSelectedItems = useCallback(() => {
         setSelectedItemIds([]);
-    }, []); // No dependencies mean this function won't change
+    }, []);
 
     return (
-        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, updateMenuItems }}>
+        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees }}>
             {children}
         </GlobalStateContext.Provider>
     );
