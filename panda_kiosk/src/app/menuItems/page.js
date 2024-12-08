@@ -6,6 +6,7 @@ import { useMagnifier } from "@/context/MagnifierContext";
 // Import components
 import Navbar from "@/components/Navbar";
 import Gallery from "@/components/Gallery";
+import Chatbot from "@/components/ChatBot";
 
 export default function Home() {
   const { mealOptions, addItemToSelection, removeItemFromSelection, sides, entrees } = useGlobalState();
@@ -208,9 +209,11 @@ export default function Home() {
         />
       </div>
 
+      <Chatbot />
+
       <button
         onClick={() => setIsMagnifierEnabled((prev) => !prev)}
-        className="fixed bottom-5 right-5 px-4 py-2 bg-blue-600 text-white rounded-lg z-50"
+        className="fixed bottom-5 left-5 px-4 py-2 bg-blue-600 text-white rounded-lg z-50"
       >
         {isMagnifierEnabled ? "Disable Magnifier" : "Enable Magnifier"}
       </button>
