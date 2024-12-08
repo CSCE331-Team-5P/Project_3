@@ -1,5 +1,6 @@
 "use client";
 
+import { deepEqual } from "assert";
 import React, { createContext, useContext, useEffect, useState, useCallback } from "react";
 
 // Create the global state context
@@ -21,6 +22,7 @@ export const GlobalStateProvider = ({ children }) => {
     const [entrees, setEntrees] = useState([]);
 
     const [extras, setExtras] = useState([]);
+    const [desserts, setDesserts] = useState([]);
     const [drinks, setDrinks] = useState([]);
 
     // Fetch menu items from the database and format them
@@ -59,6 +61,9 @@ export const GlobalStateProvider = ({ children }) => {
         const categorizeMenuItems = () => {
             const newSides = [];
             const newEntrees = [];
+            const newDrinks = [];
+            const newDesserts = [];
+            const newExtras = [];
 
             menuItems.forEach(item => {
                 if (item.category === "Side") {
@@ -75,11 +80,37 @@ export const GlobalStateProvider = ({ children }) => {
                         imageUrl: item.imageUrl,
                         calories: item.calories || "220",
                     });
+                } else if(item.category === "Drink") {
+                    newDrinks.push({
+                        id: item.id, 
+                        title: item.name, 
+                        imageUrl: item.imageUrl, 
+                        calories: item.calories || "220",
+                    });
+                } else if (item.category === "Extra") {
+                    if (['Apple Pie Roll'].includes(item.name)) {
+                        newDesserts.push({
+                            id: item.id, 
+                            title: item.name, 
+                            imageUrl: item.imageUrl,
+                            calories: item.calories || "220",
+                        });
+                    } else {
+                        newExtras.push({
+                            id: item.id, 
+                            title: item.name, 
+                            imageUrl: item.imageUrl,
+                            calories: item.calories || "220",
+                        });
+                    }
                 }
             });
 
             setSides(newSides);
             setEntrees(newEntrees);
+            setDrinks(newDrinks);
+            setDesserts(newDesserts);
+            setExtras(newExtras);
         };
 
         if (menuItems.length > 0) {
@@ -90,6 +121,7 @@ export const GlobalStateProvider = ({ children }) => {
     // Function to get the image URL based on the item name
     const getImageForItem = (name) => {
         const imageMap = {
+            // sides and entrees
             "Chow Mein": "/ChowMein.png",
             "Fried Rice": "/FriedRice.png",
             "White Steamed Rice": "/WhiteSteamedRice.png",
@@ -107,6 +139,41 @@ export const GlobalStateProvider = ({ children }) => {
             "Sweet Fire Chicken Breast": "/SweetfireChicken.png",
             "String Bean Chicken Breast": "/StringBeanChicken.png",
             "Black Pepper Chicken": "/BlackPepperChicken.png",
+
+            //drinks
+            "Dr Pepper": "/DrPepper.avif",
+            "Coca Cola": "/CocaCola.avif",
+            "Diet Coke": "/DietCoke.avif",
+            "Mango Guava Flavored Tea": "/MangaGuavaTea.avif",
+            "Peach Lychee Flavored Refresher": "/PeachLycheeRefresher.avif",
+            "Pomegranate Pineapple Flavored Lemonade": "/PomegranatePineappleLemonade.avif",
+            "Watermelon Mango Flavored Refresher": "/WatermelonMangoRefresher.avif",
+            "Barq's Root Beer": "/BarqsRootBeer.avif",
+            "Fanta Orange": "/FantaOrange.avif",
+            "Minute Maid Lemonade": "/MinuteMaidLemonade.avif",
+            "Powerade Mountain Berry Blast": "/PoweradeMountainBerryBlast.avif",
+            "Sprite": "/Sprite.avif",
+            "Coca Cola Cherry": "/CocaColaCherry.avif",
+            "Fuze Raspberry Iced Tea": "/FuzeRaspberryIcedTea.avif",
+            "Sweet Tea": "/SweetTea.avif",
+            "Powerade Fruit Punch": "/PoweradeFruitPunch.avif",
+            "Dasani": "/Dasani.avif",
+            "Powerade Berry Blast": "/PoweradeBerryBlast.avif",
+            "Minute Maid Orange": "/MinuteMaidOrange.avif",
+            "Minute Maid Apple Juice": "/MinuteMaidAppleJuice.avif",
+            "Coke Mexico": "/CokeMexico.avif",
+            "Coke Zero": "/CokeZero.avif",
+            "Smartwater": "/Smartwater.avif",
+            "Bai Coco Fusion": "/BaiCocoFusion.avif",
+            "Drink Small": "/DrinkSmall.avif",
+            "Drink Medium": "/DrinkMedium.avif",
+            "Drink Large": "/DrinkLarge.avif",
+
+            //desserts and extras
+            "Apple Pie Roll": "/apple-pie-roll.png",
+            "Chicken Egg Roll": "/chicken-egg-roll.png",
+            "Vegetable Spring Roll": "/veggie-spring-roll.png",
+            "Cream Cheese Rangoon": "/cream-cheese-rangoon.png",
         };
 
         // Return the matching image or default to PandaLogo
@@ -133,6 +200,41 @@ export const GlobalStateProvider = ({ children }) => {
             "Sweet Fire Chicken Breast": "Sweet Fire Chicken Breast",
             "String Bean Chicken Breast": "String Bean Chicken Breast",
             "Black Pepper Chicken": "Black Pepper Chicken",
+
+            // drinks
+            "Dr Pepper": "Dr Pepper",
+            "Coca Cola": "Coca Cola",
+            "Diet Coke": "Diet Coke",
+            "Mango Guava Flavored Tea": "Mango Guava Flavored Tea",
+            "Peach Lychee Flavored Refresher": "Peach Lychee Flavored Refresher",
+            "Pomegranate Pineapple Flavored Lemonade": "Pomegranate Pineapple Flavored Lemonade",
+            "Watermelon Mango Flavored Refresher": "Watermelon Mango Flavored Refresher",
+            "Barq's Root Beer": "Barq's Root Beer",
+            "Fanta Orange": "Fanta Orange",
+            "Minute Maid Lemonade": "Minute Maid Lemonade",
+            "Powerade Mountain Berry Blast": "Powerade Mountain Berry Blast",
+            "Sprite": "Sprite",
+            "Coca Cola Cherry": "Coca Cola Cherry",
+            "Fuze Raspberry Iced Tea": "Fuze Raspberry Iced Tea",
+            "Sweet Tea": "Sweet Tea",
+            "Powerade Fruit Punch": "Powerade Fruit Punch",
+            "Dasani": "Dasani",
+            "Powerade Berry Blast": "Powerade Berry Blast",
+            "Minute Maid Orange": "Minute Maid Orange",
+            "Minute Maid Apple Juice": "Minute Maid Apple Juice",
+            "Coke Mexico": "Coke Mexico",
+            "Coke Zero": "Coke Zero",
+            "Smartwater": "Smartwater",
+            "Bai Coco Fusion": "Bai Coco Fusion",
+            "Drink Small": "Drink Small",
+            "Drink Medium": "Drink Medium",
+            "Drink Large": "Drink Large",       
+
+            // Desserts and Extras
+            "Apple Pie Roll": "Apple Pie Roll",
+            "Chicken Egg Roll": "Chicken Egg Roll",
+            "Vegetable Spring Roll": "Vegetable Spring Roll",
+            "Cream Cheese Rangoon": "Cream Cheese Rangoon",
         };
 
         // Generate a new ID if the item doesn't exist in the map
@@ -172,26 +274,26 @@ export const GlobalStateProvider = ({ children }) => {
         setSelectedItemIds([]);
     }, []);
 
-    // Function to manage extras
-    const addExtra = (extra) => {
-        setExtras((prevExtras) => [...prevExtras, extra]);
-    };
+    // // Function to manage extras
+    // const addExtra = (extra) => {
+    //     setExtras((prevExtras) => [...prevExtras, extra]);
+    // };
 
-    const removeExtra = (extra) => {
-        setExtras((prevExtras) => prevExtras.filter((id) => id !== extra));
-    };
+    // const removeExtra = (extra) => {
+    //     setExtras((prevExtras) => prevExtras.filter((id) => id !== extra));
+    // };
 
-    // Function to manage drinks
-    const addDrink = (drink) => {
-        setDrinks((prevDrinks) => [...prevDrinks, drink]);
-    };
+    // // Function to manage drinks
+    // const addDrink = (drink) => {
+    //     setDrinks((prevDrinks) => [...prevDrinks, drink]);
+    // };
 
-    const removeDrink = (drink) => {
-        setDrinks((prevDrinks) => prevDrinks.filter((id) => id !== drink));
-    };
+    // const removeDrink = (drink) => {
+    //     setDrinks((prevDrinks) => prevDrinks.filter((id) => id !== drink));
+    // };
 
     return (
-        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees, addExtra, removeExtra, addDrink, removeDrink }}>
+        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees, drinks, desserts, extras }}>
             {children}
         </GlobalStateContext.Provider>
     );
