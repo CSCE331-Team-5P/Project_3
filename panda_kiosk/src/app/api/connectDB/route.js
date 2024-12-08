@@ -173,6 +173,7 @@ export async function GET() {
             WHERE status = 'ACTIVE'
         `;
         const result = await client.query(query);
+        //Test for a force push
         
         console.log("result", result);
 
