@@ -13,9 +13,11 @@ export default function Inventory() {
         <div className="p-12">
             <Navbar />
             <h1 className="text-4xl font-medium pb-6"> Franchise Reports </h1>
-            <XReport />
+            <div className="flex flex-row mb-10">
+                <XReport />
+                <ProductUsage />
+            </div>
             <ZReport />
-            <ProductUsage />
         </div>
     )
 }
