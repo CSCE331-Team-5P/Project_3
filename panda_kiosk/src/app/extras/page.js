@@ -83,9 +83,9 @@ export default function ExtrasPage() {
   };
 
   const decrementQuantity = (item, setQuantities) => {
+    removeItemFromSelection(item);
     setQuantities((prevState) => {
       if (prevState[item] > 0) {
-        removeItemFromSelection(item);
         return {
           ...prevState,
           [item]: prevState[item] - 1,

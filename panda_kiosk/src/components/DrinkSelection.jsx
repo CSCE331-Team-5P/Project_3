@@ -24,9 +24,9 @@ export default function DrinkSelection({ onButtonClick }) {
 
     // Decrement drink quantity
     const decrementQuantity = (drinkId) => {
+        removeItemFromSelection(drinkId); // Remove from selectedItemIds
         setDrinkQuantities((prevState) => {
             if (prevState[drinkId] > 0) {
-                removeItemFromSelection(drinkId); // Remove from selectedItemIds
                 onButtonClick(); // Trigger the screenshot update
                 return {
                     ...prevState,
