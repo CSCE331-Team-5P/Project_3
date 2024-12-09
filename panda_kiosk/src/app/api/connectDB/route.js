@@ -46,7 +46,6 @@ export async function POST(request) {
         let currentOrderId = newOrderId;
         // Loop through selectedItemIds and update the quantity for each
         //Insert into TRANSACTIONS TABLE
-        // let idEmp = employeeId;
         let amtTotal = total;
         const getTimestamp = () => {
             return new Date().toISOString().replace('T', ' ').slice(0, 19);
@@ -69,18 +68,13 @@ export async function POST(request) {
             const quantityToDecrement = itemQuantities[i];
 
             // Fetch the idInventory from the INVENTORY table using the item name
-            // const sanitizedItemId = itemId.replace(/'/g, "''");
-            // console.log(sanitizedItemId);
             // // Fetch the idInventory using string interpolation
-            // const inventoryQuery = `SELECT idInventory FROM INVENTORY WHERE nameItem = '$'`;
-            // console.log(`Executing query: ${inventoryQuery}`);
             
             const inventoryResult = await client.query(
                 'SELECT idInventory FROM INVENTORY WHERE nameItem = $1',
                 [itemId]
             );
             
-            //console.log(inventoryResult);
             if (!inventoryResult.rows.length) {
                 throw new Error(`idInventory not found for item name: ${itemId}`);
             }
@@ -98,7 +92,7 @@ export async function POST(request) {
             );
             
             let description;
-
+            // Determine the meal type based on the number of items selected
             switch (numSelectedItemIds) {
             case 1:
                 description = "A la carte";
@@ -133,17 +127,6 @@ export async function POST(request) {
                 currentOrderId++;
             }
 
-            // const orderInsert = await client.query(
-            //     "INSERT INTO ORDERS (idOrderItem, idInventory, idTransaction, typeMeal) VALUES ($1, $2, $3, $4)",
-            //     [currentOrderId, idInventory, newTransactionId, description]
-            // );
-
-            // console.log(
-            //     `Inserted into ORDERS. Order ID: ${currentOrderId}, Transaction ID: ${newTransactionId}, Item ID: ${itemId}, Meal Type: ${description}`
-            // );
-        
-            // // Increment newOrderId for the next item
-            // currentOrderId++;
         }
 
         console.log("All items updated successfully");

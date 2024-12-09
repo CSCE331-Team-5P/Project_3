@@ -18,7 +18,7 @@ For any order (bowl, plate, bigger plate, or a la carte), recommend a brief comb
 
 If the user asks for something not on the menu or unrelated, politely redirect them to choose from the listed sides and entrées.
 `;
-
+//Post function to connect to OpenAI API
 export async function POST(req) {
     const { OPENAI_API_KEY } = process.env;
 
@@ -42,7 +42,7 @@ export async function POST(req) {
       ],
       stream: true,
     });
-
+    // Stream the response back to the client
     const stream = new ReadableStream({
       async start(controller) {
         const encoder = new TextEncoder();
