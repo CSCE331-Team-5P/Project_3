@@ -6,15 +6,33 @@ import { usePathname, useRouter } from "next/navigation";
 import { useMagnifier } from "@/context/MagnifierContext";
 
 export default function Checkout() {
-  const { selectedItemIds, clearSelectedItems, menuItems } = useGlobalState();
-  const { isMagnifierEnabled, setIsMagnifierEnabled, magnifierPosition, setMagnifierPosition } = useMagnifier();
+  const { 
+    selectedItemIds, 
+    clearSelectedItems, 
+    menuItems,
+    isCashier // <-- Accessing isCashier from global state
+  } = useGlobalState();
 
+  const { isMagnifierEnabled, setIsMagnifierEnabled, magnifierPosition, setMagnifierPosition } = useMagnifier();
   const router = useRouter();
   const pathname = usePathname();
-  const [employeeId, setEmployeeId] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState('');
+  
+  // If not cashier, default employeeId is "0" and cannot be changed.
+  // If cashier, we can allow editing. We'll update this via useEffect based on isCashier.
+  const [employeeId, setEmployeeId] = useState("0");
+  const [paymentMethod, setPaymentMethod] = useState("");
   const [screenshot, setScreenshot] = useState(null);
   const [isCapturing, setIsCapturing] = useState(false);
+
+  useEffect(() => {
+    // If isCashier is true, allow editing and reset employeeId to empty.
+    // If false, set it to "0" and disable editing.
+    if (isCashier) {
+      setEmployeeId("");
+    } else {
+      setEmployeeId("0");
+    }
+  }, [isCashier]);
 
   const captureScreenshot = async () => {
     const html2canvas = (await import("html2canvas")).default;
@@ -76,7 +94,7 @@ export default function Checkout() {
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
     };
-  }, [isMagnifierEnabled]);
+  }, [isMagnifierEnabled, isCapturing]);
 
   useEffect(() => {
     if (isMagnifierEnabled) {
@@ -86,7 +104,8 @@ export default function Checkout() {
 
   const handleCheckout = async () => {
     try {
-      if (!employeeId) {
+      // If cashier is true, we check if Employee ID is entered; if false, employeeId will be "0"
+      if (isCashier && !employeeId) {
         alert('Please enter a valid Employee ID.');
         return;
       }
@@ -157,6 +176,8 @@ export default function Checkout() {
               <p className="font-bold text-black">Total: ${total.toFixed(2)}</p>
             </div>
           </div>
+
+          {/* Employee ID field, disabled if not cashier */}
           <div className="mb-4">
             <label htmlFor="employeeId" className="block text-gray-700 font-medium mb-2">
               Employee ID:
@@ -167,12 +188,17 @@ export default function Checkout() {
               value={employeeId}
               onChange={(e) => {
                 const value = e.target.value;
-                if (/^\d*$/.test(value)) setEmployeeId(value);
+                // Only allow editing if cashier is true and input is numeric
+                if (isCashier && /^\d*$/.test(value)) {
+                  setEmployeeId(value);
+                }
               }}
-              placeholder="Enter Employee ID"
-              className="border border-gray-300 rounded-md px-4 py-2 w-full"
+              placeholder={isCashier ? "Enter Employee ID" : "0"}
+              className={`border border-gray-300 rounded-md px-4 py-2 w-full ${!isCashier ? "bg-gray-200" : ""}`}
+              disabled={!isCashier}
             />
           </div>
+
           <div className="mb-4">
             <label htmlFor="paymentMethod" className="block text-gray-700 font-medium mb-2">
               Payment Method:
@@ -190,6 +216,7 @@ export default function Checkout() {
               <option value="Meal Swipe">Meal Swipe</option>
             </select>
           </div>
+
           <button className="bg-red-600 text-white px-8 py-3 rounded-full" onClick={handleCheckout}>
             Proceed to Checkout
           </button>
@@ -198,12 +225,14 @@ export default function Checkout() {
           </button>
         </div>
       </div>
+
       <button
         onClick={() => setIsMagnifierEnabled((prev) => !prev)}
         className="fixed bottom-5 right-5 px-4 py-2 bg-blue-600 text-white rounded-lg z-50"
       >
         {isMagnifierEnabled ? "Disable Magnifier" : "Enable Magnifier"}
       </button>
+      
       {isMagnifierEnabled && screenshot && (
         <div
           style={{

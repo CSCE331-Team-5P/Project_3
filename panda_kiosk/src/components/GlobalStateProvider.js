@@ -25,6 +25,9 @@ export const GlobalStateProvider = ({ children }) => {
     const [desserts, setDesserts] = useState([]);
     const [drinks, setDrinks] = useState([]);
 
+    // New state to track if user is cashier
+    const [isCashier, setIsCashier] = useState(false);
+
     // Fetch menu items from the database and format them
     useEffect(() => {
         const fetchMenuItems = async () => {
@@ -293,7 +296,7 @@ export const GlobalStateProvider = ({ children }) => {
     // };
 
     return (
-        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees, drinks, desserts, extras }}>
+        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees, drinks, desserts, extras, isCashier, setIsCashier }}>
             {children}
         </GlobalStateContext.Provider>
     );

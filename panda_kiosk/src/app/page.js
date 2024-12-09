@@ -1,6 +1,5 @@
 "use client";
 
-// Import dependencies
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useMagnifier } from "@/context/MagnifierContext";
@@ -59,17 +58,13 @@ export default function Home() {
         "google_translate_element"
       );
 
-
       const observer = new MutationObserver(() => {
-        // Small delay to ensure translation completed
         setTimeout(() => {
-          captureScreenshot(); // Re-capture screenshot after translation updates the page
+          captureScreenshot();
         }, 1000);
       });
 
       observer.observe(document.body, { childList: true, subtree: true });
-
-
     };
   }, []);
 
@@ -87,6 +82,8 @@ export default function Home() {
     if (event.target.closest("#google_translate_element")) {
       return;
     }
+
+    // Normal navigation to menuItems if not clicking on specific elements
     router.push("/menuItems");
   };
 
@@ -109,7 +106,6 @@ export default function Home() {
         <h2 className="text-5xl text-white font-extrabold my-8">
           Tap Anywhere To Start!
         </h2>
-
         <img src="Panda.jpg" alt="Panda" className="rounded-lg" />
       </div>
 
@@ -125,7 +121,9 @@ export default function Home() {
               Weather in College Station
             </h3>
             <p className="text-lg">Temperature: {weather.current.temp_f}°F</p>
-            <p className="text-lg">Conditions: {weather.current.condition.text}</p>
+            <p className="text-lg">
+              Conditions: {weather.current.condition.text}
+            </p>
           </div>
         </div>
       )}
@@ -152,12 +150,10 @@ export default function Home() {
               width: "100%",
               height: "100%",
               backgroundImage: `url(${screenshotRef.current})`,
-              backgroundSize: `${window.innerWidth * 2}px ${
-                window.innerHeight * 2
+              backgroundSize: `${window.innerWidth * 2}px ${window.innerHeight * 2}px`,
+              backgroundPosition: `-${magnifierPosition.x * 2 - 150}px -${
+                magnifierPosition.y * 2 - 150
               }px`,
-              backgroundPosition: `-${
-                magnifierPosition.x * 2 - 150
-              }px -${magnifierPosition.y * 2 - 150}px`,
               filter: "contrast(120%)",
             }}
           />
@@ -169,9 +165,20 @@ export default function Home() {
           e.stopPropagation();
           setIsMagnifierEnabled(!isMagnifierEnabled);
         }}
-        className="fixed bottom-5 right-5 px-4 py-2 rounded-lg bg-blue-600 text-white shadow-lg"
+        className="fixed bottom-20 right-5 px-4 py-2 rounded-lg bg-blue-600 text-white shadow-lg"
       >
         {isMagnifierEnabled ? "Disable Magnifier" : "Enable Magnifier"}
+      </button>
+
+      {/* New Button for Cashier Login */}
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          router.push("/employeeLogin"); // navigate to the employee login page
+        }}
+        className="fixed bottom-5 right-5 px-4 py-2 rounded-lg bg-yellow-600 text-white shadow-lg"
+      >
+        Cashier Login
       </button>
     </div>
   );
