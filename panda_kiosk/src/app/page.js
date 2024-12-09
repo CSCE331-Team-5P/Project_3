@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useMagnifier } from "@/context/MagnifierContext";
+import { useGlobalState } from "@/components/GlobalStateProvider"; // Adjust the import path as needed
 
 export default function Home() {
   const router = useRouter();
@@ -15,6 +16,13 @@ export default function Home() {
   } = useMagnifier();
   const screenshotRef = useRef(null);
   const [weather, setWeather] = useState(null);
+
+  // Use global states
+  const { isCashierMode, setIsCashierMode } = useGlobalState();
+
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pinInput, setPinInput] = useState("");
+  const [pinError, setPinError] = useState("");
 
   useEffect(() => {
     const fetchWeather = async () => {
@@ -32,12 +40,14 @@ export default function Home() {
     fetchWeather();
 
     const captureScreenshot = () => {
-      html2canvas(document.body, {
-        useCORS: true,
-        scale: window.devicePixelRatio,
-      }).then((canvas) => {
-        screenshotRef.current = canvas.toDataURL();
-      });
+      if (window.html2canvas) {
+        window.html2canvas(document.body, {
+          useCORS: true,
+          scale: window.devicePixelRatio,
+        }).then((canvas) => {
+          screenshotRef.current = canvas.toDataURL();
+        });
+      }
     };
 
     const timer = setTimeout(captureScreenshot, 1000);
@@ -45,31 +55,32 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // Add Google Translate script
     const googleTranslateScript = document.createElement("script");
     googleTranslateScript.src =
       "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
     googleTranslateScript.async = true;
     document.body.appendChild(googleTranslateScript);
 
-    // Add Google Translate initialization function
     window.googleTranslateElementInit = function () {
       new window.google.translate.TranslateElement(
         { pageLanguage: "en" },
         "google_translate_element"
       );
 
-
       const observer = new MutationObserver(() => {
-        // Small delay to ensure translation completed
         setTimeout(() => {
-          captureScreenshot(); // Re-capture screenshot after translation updates the page
+          if (window.html2canvas) {
+            window.html2canvas(document.body, {
+              useCORS: true,
+              scale: window.devicePixelRatio,
+            }).then((canvas) => {
+              screenshotRef.current = canvas.toDataURL();
+            });
+          }
         }, 1000);
       });
 
       observer.observe(document.body, { childList: true, subtree: true });
-
-
     };
   }, []);
 
@@ -83,11 +94,35 @@ export default function Home() {
   };
 
   const handleClick = (event) => {
-    // Prevent navigation if the click is on the Google Translate widget
     if (event.target.closest("#google_translate_element")) {
       return;
     }
+    // If cashier mode is on or off, after tapping we go to menuItems
     router.push("/menuItems");
+  };
+
+  const handleCashierModeClick = (e) => {
+    e.stopPropagation();
+    setShowPinModal(true);
+  };
+
+  const handlePinSubmit = () => {
+    if (pinInput === "1234") {
+      setIsCashierMode(true);
+      setShowPinModal(false);
+      setPinError("");
+      console.log("Cashier mode activated");
+      // Redirect to menuItems
+      router.push("/menuItems");
+    } else {
+      setPinError("Incorrect PIN. Please try again.");
+    }
+  };
+
+  const handlePinCancel = () => {
+    setShowPinModal(false);
+    setPinInput("");
+    setPinError("");
   };
 
   return (
@@ -96,7 +131,6 @@ export default function Home() {
       onMouseMove={handleMouseMove}
       className="relative flex bg-red-700 items-center justify-center min-h-screen cursor-pointer"
     >
-      {/* Google Translate Widget */}
       <div
         id="google_translate_element"
         className="absolute top-5 right-5 bg-white p-2 rounded-lg shadow-lg z-50"
@@ -169,15 +203,58 @@ export default function Home() {
           e.stopPropagation();
           setIsMagnifierEnabled(!isMagnifierEnabled);
         }}
-        className="fixed bottom-5 right-5 px-4 py-2 rounded-lg bg-blue-600 text-white shadow-lg"
+        className="fixed bottom-5 right-5 px-4 py-2 rounded-lg bg-blue-600 text-white shadow-lg z-50"
       >
         {isMagnifierEnabled ? "Disable Magnifier" : "Enable Magnifier"}
       </button>
+
+      {/* Cashier Mode Button */}
+      <button
+        onClick={handleCashierModeClick}
+        className="fixed bottom-5 left-1/2 transform -translate-x-1/2 px-4 py-2 rounded-lg bg-green-600 text-white shadow-lg z-50"
+      >
+        Cashier Mode
+      </button>
+
+      {/* PIN Modal */}
+      {showPinModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50" onClick={handlePinCancel}>
+          <div
+            className="bg-white p-4 rounded-lg shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h2 className="text-2xl font-bold mb-4">Enter PIN</h2>
+            <input
+              type="password"
+              value={pinInput}
+              onChange={(e) => setPinInput(e.target.value)}
+              className="border p-2 w-full mb-4"
+            />
+            {pinError && <p className="text-red-600 mb-4">{pinError}</p>}
+            <div className="flex space-x-2">
+              <button
+                onClick={handlePinSubmit}
+                className="px-4 py-2 bg-green-600 text-white rounded-lg"
+              >
+                Submit
+              </button>
+              <button
+                onClick={handlePinCancel}
+                className="px-4 py-2 bg-gray-300 rounded-lg"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 // Add this script tag in your _document.js or import it
-const script = document.createElement("script");
-script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
-document.head.appendChild(script);
+if (typeof window !== "undefined") {
+  const script = document.createElement("script");
+  script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
+  document.head.appendChild(script);
+}
