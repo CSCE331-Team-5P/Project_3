@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client"
 
 import { useState } from "react"
@@ -69,6 +70,7 @@ const [error, setError] = useState<string | null>(null)
       
       
       
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error fetching item usage:", error)
       setError(error.message || "Failed to fetch data")

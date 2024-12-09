@@ -53,6 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             try {
                 const updatedItem = await updateInventoryItem(idinventory, field, value);
                 res.status(200).json(updatedItem);
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             } catch (error) {
                 res.status(400).json({ error: "Failed to update" });
             }

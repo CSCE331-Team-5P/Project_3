@@ -31,7 +31,7 @@ export function EmployeeUpdateForm() {
         return;
     }
 
-    const payload: any = { id: employeeID };
+    const payload: { id: string; field?: string; value?: string | number; status?: string } = { id: employeeID };
 
     if (selectedField && newValue) {
         payload.field = selectedField;
@@ -56,13 +56,6 @@ export function EmployeeUpdateForm() {
         const updatedEmployee = await response.json();
         console.log("Employee updated successfully:", updatedEmployee);
         alert("Employee updated successfully!");
-
-        // Optionally update local state in EmployeeTable if needed
-        // setEmployees((prev) =>
-        //     prev.map((emp) =>
-        //         emp.idemployee === updatedEmployee.idemployee ? updatedEmployee : emp
-        //     )
-        // );
     } catch (err) {
         console.error("Error updating employee:", err);
         alert("An error occurred while updating the employee.");
