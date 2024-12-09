@@ -66,6 +66,11 @@ export default function Home() {
 
       observer.observe(document.body, { childList: true, subtree: true });
     };
+
+    // Add this script tag in your _document.js or import it
+    const script = document.createElement("script");
+    script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
+    document.head.appendChild(script);
   }, []);
 
   const handleMouseMove = (e) => {
@@ -183,8 +188,3 @@ export default function Home() {
     </div>
   );
 }
-
-// Add this script tag in your _document.js or import it
-const script = document.createElement("script");
-script.src = "https://html2canvas.hertzen.com/dist/html2canvas.min.js";
-document.head.appendChild(script);
