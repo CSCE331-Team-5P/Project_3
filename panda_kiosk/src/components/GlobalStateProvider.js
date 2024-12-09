@@ -270,7 +270,11 @@ export const GlobalStateProvider = ({ children }) => {
     };
 
     const removeItemFromSelection = (item) => {
-        setSelectedItemIds((prevIds) => prevIds.filter((id) => id !== item));
+        setSelectedItemIds((prevIds) => {
+          const index = prevIds.indexOf(item);
+          if (index === -1) return prevIds;
+          return [...prevIds.slice(0, index), ...prevIds.slice(index + 1)];
+        });
     };
 
     const clearSelectedItems = useCallback(() => {

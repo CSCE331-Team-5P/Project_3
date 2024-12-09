@@ -104,7 +104,8 @@ export default function OrderPopover() {
                   <span className="text-sm font-medium">{item.name}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button
+                  <span className="w-8 text-center">{item.quantity}</span>
+                  {/* <Button
                     variant="outline"
                     size="icon"
                     className="h-8 w-8 rounded-full"
@@ -122,7 +123,7 @@ export default function OrderPopover() {
                   >
                     <Plus className="h-4 w-4" />
                     <span className="sr-only">Increase quantity of {item.name}</span>
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             ))}
