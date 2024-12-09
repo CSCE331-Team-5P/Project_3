@@ -1,46 +1,28 @@
-# Project_3
-CSCE331 Project 3 Repository
+# Kiosk Application Documentation
 
-# Panda Express Enhanced POS System
+## Overview
+The Kiosk application is designed to provide a seamless ordering experience for customers at Panda Express. It features an intuitive interface for selecting sides, entrees, drinks, and extras, along with support for accessibility tools like a magnifier and chatbot integration.
 
-This project aims to recreate and enhance a traditional POS (Point of Sale) system for Panda Express. It includes two core applications:
+## Key Features
 
-1. **Managerial Screen:**  
-   A feature-rich interface for managers and administrators to monitor sales, manage inventory, and handle employee records.
+### Interactive Menu:
+- Customers can browse and select sides, entrees, drinks, and extras.
+- Quantity controls are provided for each item.
 
-2. **Kiosk App:**  
-   An intuitive, customer-facing interface that supports multiple functionalities, including:
-   - **Multilingual Support:** Translation features for customer base.
-   - **Weather Integration:** Real-time weather information
-   - **Chatbot:** A helpful virtual assistant to guide customers through their orders or answer frequently asked questions.
-   - **Magnification Features:** Accessibility-focused magnification options to ensure a seamless experience for all users.
+### Order Management:
+- Displays current order details in real-time.
+- Supports modifying order items directly from the interface.
 
-## Getting Started
+### Accessibility:
+- Includes a magnifier tool for zooming in on screen content.
+- Integrated chatbot for AI-powered assistance during the ordering process.
 
-### Repository
-Clone the repository from GitHub:
-```bash
-git clone https://github.com/CSCE331-Team-5P/Project_3.git
-cd Project_3
+### Employee Login:
+- Provides a secure PIN-based login for employees to access cashier functionality.
 
-Prerequisites
-# Check if Node.js & npm are installed:
-node -v
-npm -v
+### Checkout Integration:
+- Allows customers to review their orders and proceed to payment.
 
-If Next.js is not install you can follow these steps:
-# Next.js is typically installed as a dependency in each application.
-# If needed, you can install Next.js globally (optional):
-npm install -g next
-#otherwise
-npm install 
-
-Accessing files
-#from the home directory of this repository you can do the following commands:
-cd panda_manager #for the manager screen
-
-cd panda_kiosk #for the kiosk screen
-
-#To run the files in chrome you use
-npm run dev
-
+### Dynamic Content:
+- Weather updates for College Station.
+- Google Translate integration for multilingual support.
