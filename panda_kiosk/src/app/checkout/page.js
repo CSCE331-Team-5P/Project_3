@@ -34,6 +34,7 @@ export default function Checkout() {
     }
   }, [isCashier]);
 
+  //Screenshot for the magnifier
   const captureScreenshot = async () => {
     const html2canvas = (await import("html2canvas")).default;
     setIsCapturing(true);
