@@ -44,7 +44,7 @@ export const GlobalStateProvider = ({ children }) => {
                             id: id,
                             name: item.name,
                             price: item.price,
-                            category: item.category || "Unknown",
+                            category: item.category || "",
                             imageUrl: imageUrl,
                         };
                     });
@@ -74,21 +74,21 @@ export const GlobalStateProvider = ({ children }) => {
                         id: item.id,
                         title: item.name,
                         imageUrl: item.imageUrl,
-                        calories: item.calories || "220",
+                        calories: item.calories || "",
                     });
                 } else if (item.category === "Entree") {
                     newEntrees.push({
                         id: item.id,
                         title: item.name,
                         imageUrl: item.imageUrl,
-                        calories: item.calories || "220",
+                        calories: item.calories || "",
                     });
                 } else if(item.category === "Drink") {
                     newDrinks.push({
                         id: item.id, 
                         title: item.name, 
                         imageUrl: item.imageUrl, 
-                        calories: item.calories || "220",
+                        calories: item.calories || "",
                     });
                 } else if (item.category === "Extras") {
                     if (['Apple Pie Roll'].includes(item.name)) {
@@ -96,14 +96,14 @@ export const GlobalStateProvider = ({ children }) => {
                             id: item.id, 
                             title: item.name, 
                             imageUrl: item.imageUrl,
-                            calories: item.calories || "220",
+                            calories: item.calories || "",
                         });
                     } else {
                         newExtras.push({
                             id: item.id, 
                             title: item.name, 
                             imageUrl: item.imageUrl,
-                            calories: item.calories || "220",
+                            calories: item.calories || "",
                         });
                     }
                 }
@@ -277,6 +277,11 @@ export const GlobalStateProvider = ({ children }) => {
         setSelectedItemIds([]);
     }, []);
 
+    const clearSidesAndEntrees = useCallback(() => {
+        setSides([]);
+        setEntrees([]);
+    }, []);
+
     // // Function to manage extras
     // const addExtra = (extra) => {
     //     setExtras((prevExtras) => [...prevExtras, extra]);
@@ -296,7 +301,7 @@ export const GlobalStateProvider = ({ children }) => {
     // };
 
     return (
-        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees, drinks, desserts, extras, isCashier, setIsCashier }}>
+        <GlobalStateContext.Provider value={{ mealOptions, updateMealOptions, selectedItemIds, addItemToSelection, removeItemFromSelection, clearSelectedItems, menuItems, sides, entrees, drinks, desserts, extras, isCashier, setIsCashier, clearSidesAndEntrees }}>
             {children}
         </GlobalStateContext.Provider>
     );

@@ -33,7 +33,8 @@ export default function Home() {
 
     setSideQuantities(initQuantities(sides));
     setEntreeQuantities(initQuantities(entrees));
-  }, [sides, entrees]);
+  }, [sides, entrees]); // [] instead of sides, entrees
+
 
   // Capture a screenshot of the current view
   const captureScreenshot = async () => {
@@ -182,7 +183,7 @@ export default function Home() {
       <div className="flex flex-col my-auto">
         <h2 className="text-4xl font-bold mx-4 text-black">Step 1</h2>
         <h3 className="text-xl font-medium mx-4 my-2 text-black">
-          Select your sides
+          Select your side
         </h3>
         <Gallery
           items={sides}
