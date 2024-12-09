@@ -1,0 +1,11 @@
+## File: `src/app/layout.js`
+- **Purpose:** Defines the root layout for the application, wrapping all pages with global state and context providers.
+- **Key Features:**
+  - **Global CSS:**
+    - Imports `globals.css` to apply global styles across the application.
+  - **Metadata:**
+    - Sets page metadata, including the title, description, and favicon.
+  - **Context Providers:**
+    - Wraps the application in `GlobalStateProvider` and `MagnifierProvider` to manage global state and magnifier functionality.
+  - **Structure:**
+    - Renders the application within an HTML `<html>` and `<body>` structure with accessibility features like `lang="en"` and `antialiased` class.

@@ -1,0 +1,12 @@
+## File: `src/app/global.css`
+- **Purpose:** Defines global styles, base configurations, and theme variables for consistent appearance across the application.
+- **Key Styles:**
+  - **Typography:**
+    - Sets the default font family to 'Inter', sans-serif for the entire application.
+  - **Tailwind Integration:**
+    - Includes Tailwind CSS layers for base styles, components, and utilities.
+  - **Theme Variables:**
+    - Defines CSS variables under `:root` for light and dark themes, including colors for backgrounds, text, borders, and specific chart colors.
+    - Supports dynamic theming with `.dark` class for dark mode.
+  - **Global Element Styles:**
+    - Applies border, background, and text styles consistently using Tailwind utility classes.

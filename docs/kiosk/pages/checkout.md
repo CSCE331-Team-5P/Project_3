@@ -1,0 +1,11 @@
+## File: `src/app/checkout/page.js`
+- **Purpose:** Manages the checkout page functionality, including displaying the current order, handling user input for employee ID and payment method, and processing the checkout.
+- **Functions:**
+  - **Checkout Component:**
+    - **Purpose:** Core component for the checkout page. Handles state management for the order, employee ID, payment method, magnifier tool, and checkout logic.
+  - **captureScreenshot:**
+    - **Purpose:** Captures a screenshot of the current page for the magnifier tool.
+  - **handleCheckout:**
+    - **Purpose:** Validates inputs and sends the checkout data to the backend for processing.
+  - **Magnifier Feature:**
+    - **Purpose:** Toggles a zoom-in magnifier tool for the screen, enabling accessibility.

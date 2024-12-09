@@ -1,0 +1,14 @@
+## File: `src/components/OrderPopover.jsx`
+- **Purpose:** Displays a popover with the current order details, allowing users to view items and navigate to the checkout page.
+- **Functions:**
+  - **updateQuantity:**
+    - **Purpose:** Adjusts the quantity of a specific item in the order while ensuring it doesn’t drop below zero.
+  - **useEffect for Order Mapping:**
+    - **Purpose:** Maps selected item IDs to a structured list of items with names, IDs, and quantities.
+- **Features:**
+  - **Dynamic Order Summary:**
+    - Displays a list of items in the current order with their quantities.
+  - **Responsive Design:**
+    - Provides a scrollable order list and a fixed "Checkout" button for smaller screens.
+  - **Interactive Checkout Button:**
+    - Navigates to the `/checkout` page when clicked.

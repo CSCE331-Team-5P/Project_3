@@ -1,0 +1,19 @@
+## File: `src/app/menuItems/page.js`
+- **Purpose:** Provides functionality for selecting sides and entrees, managing selections, and including a magnifier tool and chatbot for enhanced user interaction.
+- **Functions:**
+  - **Home Component:**
+    - **Purpose:** Main component for the home page, managing user interaction and rendering sides and entrees selection.
+  - **captureScreenshot:**
+    - **Purpose:** Captures a screenshot of the current view for the magnifier tool.
+  - **incrementQuantity:**
+    - **Purpose:** Increases the quantity of a selected side or entree, updating the state and ensuring meal constraints are adhered to.
+  - **decrementQuantity:**
+    - **Purpose:** Decreases the quantity of a selected side or entree, updating the state and ensuring minimum limits are respected.
+  - **calculateTotalCount:**
+    - **Purpose:** Calculates the total selected quantity from item quantities.
+  - **handleMouseMove:**
+    - **Purpose:** Updates the magnifier’s position based on mouse movements.
+  - **handleScroll:**
+    - **Purpose:** Updates the magnifier view during scrolling through sides or entrees.
+  - **Magnifier Feature:**
+    - **Purpose:** Toggles and manages the magnifier tool for zooming in on the screen.

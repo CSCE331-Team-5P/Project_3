@@ -1,0 +1,17 @@
+## File: `src/app/extras/page.js`
+- **Purpose:** Provides functionality for selecting and managing extras and desserts, with a magnifier feature for accessibility.
+- **Functions:**
+  - **ExtrasPage Component:**
+    - **Purpose:** Main component for the extras page, handling state and rendering extras and desserts.
+  - **captureScreenshot:**
+    - **Purpose:** Captures a screenshot of the current view for the magnifier tool.
+  - **incrementQuantity:**
+    - **Purpose:** Increases the quantity of a selected extra or dessert and updates the state.
+  - **decrementQuantity:**
+    - **Purpose:** Decreases the quantity of a selected extra or dessert and updates the state.
+  - **handleMouseMove:**
+    - **Purpose:** Updates the magnifier's position based on mouse movements.
+  - **handleScroll:**
+    - **Purpose:** Updates the magnifier's view when scrolling through extras or desserts.
+  - **Magnifier Feature:**
+    - **Purpose:** Toggles and manages the magnifier tool for zooming in on the screen.

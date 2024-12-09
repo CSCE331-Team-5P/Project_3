@@ -1,0 +1,18 @@
+## File: `src/components/Chatbot.jsx`
+- **Purpose:** Provides a chat interface for users to interact with an AI assistant, designed for use in the Panda Kiosk application.
+- **Functions:**
+  - **Chatbot Component:**
+    - **Purpose:** Main component managing the chat interface, message handling, and UI interactions.
+  - **handleSubmit:**
+    - **Purpose:** Sends the user's message to the AI API and displays the AI's response in the chat.
+  - **handleRegenerate:**
+    - **Purpose:** Re-submits the last user message to the AI API for a new response.
+  - **toggleExpand:**
+    - **Purpose:** Toggles between expanded and minimized views of the chatbot.
+- **Features:**
+  - **Expandable UI:**
+    - Supports switching between a compact button and a fully expanded chat window.
+  - **Scroll Area:**
+    - Maintains scrollable chat history for better user experience.
+  - **Buttons:**
+    - Includes a submit button for sending messages and a regenerate button for retrying a query.

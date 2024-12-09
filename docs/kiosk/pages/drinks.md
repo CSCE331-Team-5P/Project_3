@@ -1,0 +1,13 @@
+## File: `src/app/drink/page.js`
+- **Purpose:** Displays available drinks, manages drink selection, and provides a magnifier feature for accessibility.
+- **Functions:**
+  - **Drink Component:**
+    - **Purpose:** Main component for the drink selection page, handling state and interactions.
+  - **captureScreenshot:**
+    - **Purpose:** Captures a screenshot of the current view for the magnifier tool.
+  - **handleMouseMove:**
+    - **Purpose:** Updates the magnifier’s position based on mouse movements.
+  - **handleCategoryClick:**
+    - **Purpose:** Redirects users to appropriate pages based on the selected category.
+  - **Magnifier Feature:**
+    - **Purpose:** Toggles and manages the magnifier tool for zooming in on the screen.

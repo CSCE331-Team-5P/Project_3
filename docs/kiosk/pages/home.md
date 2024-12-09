@@ -1,0 +1,19 @@
+## File: `src/app/page.js`
+- **Purpose:** Implements the landing page of the Panda Kiosk application, featuring navigation, weather information, Google Translate integration, and a magnifier tool.
+- **Functions:**
+  - **Home Component:**
+    - **Purpose:** Main component for the landing page, rendering the "Order & Pay Here" interface and handling user interactions.
+  - **fetchWeather:**
+    - **Purpose:** Fetches and displays the current weather for College Station.
+  - **captureScreenshot:**
+    - **Purpose:** Captures a screenshot of the page for use with the magnifier tool.
+  - **handleMouseMove:**
+    - **Purpose:** Updates the position of the magnifier tool based on mouse movement.
+  - **handleClick:**
+    - **Purpose:** Navigates to the menu items page unless the click is on the Google Translate widget.
+  - **Magnifier Feature:**
+    - **Purpose:** Toggles and displays a magnifier tool for accessibility.
+  - **Google Translate Integration:**
+    - **Purpose:** Adds language translation support using the Google Translate widget.
+  - **Cashier Login Button:**
+    - **Purpose:** Redirects to the employee login page for cashier access.

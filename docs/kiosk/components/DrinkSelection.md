@@ -1,0 +1,16 @@
+## File: `src/components/DrinkSelection.jsx`
+- **Purpose:** Displays a grid of drink options with quantity controls for each drink.
+- **Props:**
+  - **onButtonClick:** Callback function triggered when a drink's quantity is adjusted.
+- **Functions:**
+  - **incrementQuantity:**
+    - **Purpose:** Increases the quantity of a selected drink and updates the global state.
+  - **decrementQuantity:**
+    - **Purpose:** Decreases the quantity of a selected drink and updates the global state.
+- **Features:**
+  - **Dynamic Drink List:**
+    - Renders a grid of `DrinkCard` components based on available drinks from the global state.
+  - **Responsive Design:**
+    - Adapts the grid layout for various screen sizes (1–4 columns).
+  - **Interactive Controls:**
+    - Provides "+" and "-" buttons to modify drink quantities.

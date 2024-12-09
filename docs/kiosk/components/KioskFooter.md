@@ -1,0 +1,16 @@
+## File: `src/components/KioskFooter.jsx`
+- **Purpose:** Displays a footer with the current order summary and a button to navigate to the checkout page.
+- **Props:**
+  - **sideQuantities:** Object tracking quantities of selected sides.
+  - **entreeQuantities:** Object tracking quantities of selected entrees.
+  - **drinkQuantities:** Object tracking quantities of selected drinks.
+- **Functions:**
+  - **handleClick:**
+    - **Purpose:** Navigates to the `/checkout` page when the "Checkout" button is clicked.
+- **Features:**
+  - **Order Summary:**
+    - Dynamically lists selected items and their quantities in the order pane.
+  - **Responsive Design:**
+    - Provides a compact and functional layout for the footer.
+  - **Interactive Checkout Button:**
+    - Styled button with hover effects for navigation to the checkout page.

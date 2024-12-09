@@ -1,0 +1,16 @@
+## File: `src/components/MenuItemCard.jsx`
+- **Purpose:** Renders a card UI component for displaying menu item details and managing item quantities.
+- **Props:**
+  - **title:** The name of the menu item (e.g., "Chow Mein").
+  - **imageUrl:** The image URL of the menu item.
+  - **calories:** The calorie count of the menu item.
+  - **quantity:** The current quantity of the menu item selected.
+  - **incrementQuantity:** Callback function to increase the item's quantity.
+  - **decrementQuantity:** Callback function to decrease the item's quantity.
+- **Features:**
+  - **Interactive Controls:**
+    - Includes "+" and "-" buttons to adjust item quantities.
+  - **Dynamic Layout:**
+    - Displays item image, title, calorie information, and quantity in a visually consistent layout.
+  - **Responsive Styling:**
+    - Includes hover effects and maintains a fixed card size.
