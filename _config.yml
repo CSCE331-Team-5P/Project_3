@@ -1,12 +1,12 @@
-# Basic site settings
+
 title: Panda Express Docs
 description: Documentation for Kiosk and Manager apps
 theme: jekyll-theme-slate
 url: "https://csce331-team-5p.github.io/Project_3"
-baseurl: "/Project_3" # Base URL for the repository (use "/Project_3" for your repo)
-source: docs # Specifies that the site content is in the `docs` folder
+baseurl: "/Project_3" 
+source: docs
 
-# Options for navigation, layout, and more
+
 markdown: kramdown
 permalink: pretty
 plugins:
