@@ -1,12 +1,8 @@
-
 title: Panda Express Docs
 description: Documentation for Kiosk and Manager apps
 theme: jekyll-theme-slate
 url: "https://csce331-team-5p.github.io/Project_3"
-baseurl: "/Project_3" 
-source: docs
-
-
+baseurl: "/Project_3" # Base URL for the repository
 markdown: kramdown
 permalink: pretty
 plugins:
