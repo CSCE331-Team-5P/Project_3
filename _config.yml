@@ -1,8 +1,8 @@
 # Basic site settings
 title: Panda Express Docs
 description: Documentation for Kiosk and Manager apps
-theme: jekyll-theme-cayman # Change this to your desired theme
-url: "https://yourusername.github.io" # Update with your GitHub Pages URL
+theme: jekyll-theme-slate
+url: "https://csce331-team-5p.github.io/Project_3" # Update with your GitHub Pages URL
 
 # Options for navigation, layout, and more
 markdown: kramdown
