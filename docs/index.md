@@ -39,7 +39,7 @@ Welcome to the documentation for the Kiosk and Manager applications.
 
 ### Manager
 #### API
-- [OAuth API Documentation](./manager/api/oauth.md)
+- [OAuth API Documentation](./manager/api/0auth.md)
 
 #### Components
 - [Dashboard Card Component](./manager/components/dashboard-card.md)
