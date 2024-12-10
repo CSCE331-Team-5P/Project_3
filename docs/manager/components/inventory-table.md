@@ -1,0 +1,22 @@
+## File: `src/components/InventoryTable.jsx`
+- **Purpose:** Manages and displays the inventory table for the Panda Express Manager application, allowing users to view, filter, add, and deactivate inventory items.
+- **Functions:**
+  - **InventoryTable Component:**
+    - **Purpose:** Provides a complete interface for managing inventory, including fetching, filtering, and adding inventory items.
+    - **Features:**
+      - **Data Fetching:**
+        - Fetches inventory data from the `/api/inventory` endpoint using `useEffect`.
+      - **Filtering:**
+        - Supports filtering inventory items by name, status, and category.
+      - **Add Item:**
+        - Adds a new inventory item by making a POST request to the `/api/inventory` endpoint.
+      - **Remove Item:**
+        - Marks an item as inactive using a DELETE request to the `/api/inventory` endpoint.
+      - **Dynamic State Management:**
+        - Maintains state for inventory data, new items, and filters.
+      - **Table Rendering:**
+        - Displays inventory in a responsive table format with columns for ID, name, status, price, category, restock time, and quantity.
+      - **Reusable Components:**
+        - Utilizes shared components like `Table`, `Button`, and `Input` for consistent UI design.
+- **Props:**
+  - No explicit props; all data is managed locally in the component.

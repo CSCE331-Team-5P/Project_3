@@ -1,0 +1,11 @@
+## File: `src/app/lib/db/inventory_queries.ts`
+- **Purpose:** Manages inventory-related database operations.
+- **Functions:**
+  - **`fetchInventory`:**
+    - Retrieves all inventory items.
+  - **`addInventoryItem`:**
+    - Adds a new inventory item to the database.
+  - **`removeInventoryItem`:**
+    - Updates an inventory item's status to "INACTIVE."
+  - **`updateInventoryItem`:**
+    - Updates a specific field of an inventory item.

@@ -1,0 +1,16 @@
+## File: `src/components/Navbar.jsx`
+- **Purpose:** Displays the home page for the Panda Express Manager application, with navigation links and a user dropdown menu.
+- **Functions:**
+  - **Home Component:**
+    - **Purpose:** Serves as the entry point for the manager dashboard, providing navigation links and user account management options.
+    - **Features:**
+      - **Navigation:**
+        - Provides links to key sections (`/inventory`, `/employee`, `/reports`) with visual indicators for the active section.
+      - **User Dropdown:**
+        - Includes options for viewing the profile, accessing settings, and logging out.
+      - **Responsive Design:**
+        - Ensures navigation and dropdown menus are accessible across various screen sizes.
+      - **Reusable Components:**
+        - Leverages shared components like `DropdownMenu`, `Avatar`, and `Button` for a cohesive design.
+- **Props:**
+  - No explicit props; navigation and user data are managed within the component.

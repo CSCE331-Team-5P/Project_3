@@ -1,0 +1,26 @@
+## File: `src/components/HeroCard.jsx`
+- **Purpose:** Provides a visually engaging hero card for the Panda Express Manager application, introducing key features and encouraging user interaction with calls-to-action.
+- **Functions:**
+  - **HeroCard Component:**
+    - **Purpose:** Renders a gradient-styled card with a welcome message, a brief description, and two action buttons.
+    - **Features:**
+      - **Welcome Header:**
+        - Displays a prominent headline: `"Welcome to the Panda Express Manager"`.
+      - **Description:**
+        - Highlights the purpose of the dashboard with a concise message.
+      - **Call-to-Action Buttons:**
+        - Includes two buttons:
+          - **"Get Started"**
+          - **"Learn More"**
+        - Styled with hover effects and an outlined variant to match the theme.
+      - **Responsive Design:**
+        - Centers content and aligns elements for consistent display across devices.
+- **Features:**
+  - **Gradient Styling:**
+    - Uses a red gradient background (`from-red-500 to-red-700`) to align with the Panda Express brand.
+  - **Centralized Content:**
+    - Centers headline, description, and buttons within the card.
+  - **Dynamic Button Effects:**
+    - Buttons change background and text colors on hover for better user feedback.
+  - **Reusable Components:**
+    - Leverages `Card`, `CardContent`, and `Button` from the shared UI library.

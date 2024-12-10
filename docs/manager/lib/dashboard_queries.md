@@ -1,0 +1,21 @@
+## File: `src/app/lib/db/dashboard_queries.ts`
+- **Purpose:** Provides database queries related to dashboard metrics and analytics.
+- **Functions:**
+  - **`getUserById`:**
+    - Fetches a user's data by their ID.
+  - **`fetchMonthlyRevenue`:**
+    - Retrieves the total revenue for the current month.
+  - **`fetchMonthlyRevenueChange`:**
+    - Calculates the percentage change in monthly revenue compared to the previous month.
+  - **`fetchMonthlyOrderCount`:**
+    - Counts the number of orders for the current month.
+  - **`fetchMonthlyOrderCountChange`:**
+    - Calculates the percentage change in monthly order count compared to the previous month.
+  - **`fetchMostPopularOrderItem`:**
+    - Fetches the most popular order item based on the current month's data.
+  - **`fetchOrdersPerDay`:**
+    - Retrieves a breakdown of daily orders by desktop and mobile platforms.
+  - **`fetchActiveEmployeeCount`:**
+    - Counts the number of active employees.
+  - **`fetchRecentTransactions`:**
+    - Retrieves the 5 most recent transactions.

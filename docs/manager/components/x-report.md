@@ -1,0 +1,18 @@
+## File: `src/components/XReport.tsx`
+- **Purpose:** Displays a daily transaction summary, including counts for various payment methods and total sales.
+- **Functions:**
+  - **XReport Component:**
+    - **Purpose:** Fetches and displays daily transaction summaries based on a selected date.
+    - **Features:**
+      - **Date Selection:**
+        - Calendar-based date picker for choosing the date.
+      - **Daily Summary Fetching:**
+        - Retrieves data from `/api/reports?date={date}&summaryType=daily`.
+      - **Confirmation Dialog:**
+        - Prompts the user to confirm their date selection.
+      - **New Day Reset:**
+        - Clears current data to start a new day.
+      - **Summary Alert:**
+        - Displays a detailed summary of cash, card, dining dollars, meal swipes, and total sales.
+      - **Reusable Components:**
+        - Leverages `Dialog`, `Popover`, and `Alert` for user interactions and data display.

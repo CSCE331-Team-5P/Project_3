@@ -1,0 +1,12 @@
+## File: `src/components/SalesList.tsx`
+- **Purpose:** Displays a summary of recent sales transactions, including transaction number, date, and amount.
+- **Functions:**
+  - **SalesList Component:**
+    - **Purpose:** Renders a list of recent sales with transaction details.
+    - **Features:**
+      - **Sales Data:**
+        - Displays hardcoded sales data, including transaction numbers, dates, and amounts.
+      - **Responsive Design:**
+        - Provides a clean, responsive layout for displaying sales information.
+      - **Reusable Components:**
+        - Uses simple, reusable UI components for text and layout.

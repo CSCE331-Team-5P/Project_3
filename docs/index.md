@@ -35,8 +35,49 @@ Welcome to the documentation for the Kiosk and Manager applications.
 #### Styles
 - [Kiosk Global Styles](./kiosk/styles/kiosk-global-styles.md)
 
+---
+
 ### Manager
-- [Manager Documentation](./manager/README.md)
+#### API
+- [OAuth API Documentation](./manager/api/oauth.md)
+
+#### Components
+- [Dashboard Card Component](./manager/components/dashboard-card.md)
+- [Dashboard Chart Component](./manager/components/dashboard-chart.md)
+- [Employee Table Component](./manager/components/employee-table.md)
+- [Hero Card Component](./manager/components/hero-card.md)
+- [Inventory Table Component](./manager/components/inventory-table.md)
+- [Login Form Component](./manager/components/login-form.md)
+- [Navbar Component](./manager/components/navbar.md)
+- [Product Usage Component](./manager/components/product-usage.md)
+- [Sales List Component](./manager/components/sales-list.md)
+- [Staff Info Component](./manager/components/staff-info.md)
+- [Update Employee Component](./manager/components/update-employee.md)
+- [Update Inventory Component](./manager/components/update-inventory.md)
+- [X Report Component](./manager/components/x-report.md)
+- [Z Report Component](./manager/components/z-report.md)
+
+#### Lib
+- [Client Utility](./manager/lib/client.md)
+- [Dashboard Queries](./manager/lib/dashboard_queries.md)
+- [Inventory Queries](./manager/lib/inventory_queries.md)
+- [Reports Queries](./manager/lib/reports_queries.md)
+- [Staff Queries](./manager/lib/staff_queries.md)
+
+#### Other
+- [Layout Configuration](./manager/other/layout.md)
+
+#### Pages
+- [Employee Page](./manager/pages/employee.md)
+- [Home Page](./manager/pages/home.md)
+- [Inventory Page](./manager/pages/inventory.md)
+- [Landing Page](./manager/pages/landing.md)
+- [Reports Page](./manager/pages/reports.md)
+
+#### Styles
+- [Manager Global Styles](./manager/styles/manager-global-styles.md)
+
+---
 
 ### Shared Resources
 - [Shared Documentation](./shared/README.md)

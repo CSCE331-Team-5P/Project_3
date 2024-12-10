@@ -1,0 +1,20 @@
+## File: `src/components/LoginForm.jsx`
+- **Purpose:** Renders a login form for the Panda Express Manager application, supporting email/password login and Google authentication.
+- **Functions:**
+  - **LoginForm Component:**
+    - **Purpose:** Handles user login with email/password or Google authentication.
+    - **Features:**
+      - **Email/Password Login:**
+        - Sends credentials to the `next-auth` credentials provider for verification.
+      - **Google Login:**
+        - Supports Google authentication via the `signIn` method from `next-auth`.
+      - **Error Handling:**
+        - Displays error messages for failed login attempts.
+      - **Loading State:**
+        - Shows loading indicators while authentication requests are processed.
+      - **Form Validation:**
+        - Ensures email and password fields are filled before submission.
+      - **Links:**
+        - Provides links for password recovery and account sign-up.
+      - **Reusable Components:**
+        - Utilizes shared components like `Card`, `Button`, `Input`, and `Label` for consistent styling.

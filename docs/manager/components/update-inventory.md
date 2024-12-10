@@ -1,0 +1,16 @@
+## File: `src/components/update-inventory.tsx`
+- **Purpose:** Provides a form for updating inventory details, such as status, price, category, and quantity.
+- **Functions:**
+  - **InventoryUpdateForm Component:**
+    - **Purpose:** Allows users to input inventory details and submit changes.
+    - **Features:**
+      - **Field Selection:**
+        - Dropdown menu for selecting a field to update (e.g., status, price).
+      - **Input Validation:**
+        - Ensures all fields are filled before sending the update request.
+      - **API Integration:**
+        - Sends PATCH requests to `/api/inventory` to update inventory details.
+      - **Error Handling:**
+        - Displays alerts for failed updates.
+      - **Reusable Components:**
+        - Uses shared UI components like `Input`, `Label`, and `Select` for consistent design.

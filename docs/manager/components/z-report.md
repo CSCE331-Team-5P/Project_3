@@ -1,0 +1,16 @@
+## File: `src/components/ZReport.tsx`
+- **Purpose:** Provides an hourly transaction report for a selected date, showing detailed counts and sales data.
+- **Functions:**
+  - **ZReport Component:**
+    - **Purpose:** Fetches and displays hourly transaction data for a specific date.
+    - **Features:**
+      - **Date Selection:**
+        - Calendar-based picker for selecting a report date.
+      - **Hourly Report Fetching:**
+        - Retrieves data from `/api/reports?date={date}`.
+      - **Dynamic Table:**
+        - Displays hourly counts for cash, card, dining dollars, meal swipes, and total sales.
+      - **Error Handling:**
+        - Displays errors if data fetching fails.
+      - **Reusable Components:**
+        - Utilizes `Table`, `Popover`, and `Calendar` for structured data presentation.

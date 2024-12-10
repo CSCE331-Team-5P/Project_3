@@ -1,0 +1,40 @@
+## File: `src/components/EmployeeTable.jsx`
+- **Purpose:** Provides a table component for displaying, filtering, adding, and removing employees, with support for dynamic data and filtering options.
+- **Props:** None directly, but the component manages its own state for employee data and filters.
+- **Functions:**
+  - **EmployeeTable Component:**
+    - **Purpose:** Main component for managing employee data with features like filtering, adding, and soft-removing employees.
+    - **State Management:**
+      - Tracks employee data (`employees`), new employee details (`newEmployee`), and filter values (`filters`).
+    - **Effect Hook:**
+      - Fetches initial employee data from the backend on component mount using the `/api/employee` endpoint.
+  - **handleInputChange:**
+    - **Purpose:** Updates state values for new employee fields based on user input.
+  - **handleFilterChange:**
+    - **Purpose:** Updates state values for filter fields based on user input.
+  - **addEmployee:**
+    - **Purpose:** Sends a POST request to the backend to add a new employee, updates the state with the new employee, and resets the input fields.
+    - **Error Handling:** Alerts the user if any required field is missing or if the backend request fails.
+  - **removeEmployee:**
+    - **Purpose:** Sends a PATCH request to soft-remove an employee (updates status to "Inactive") and updates the UI accordingly.
+    - **Error Handling:** Alerts the user if the backend request fails.
+  - **filteredEmployees:**
+    - **Purpose:** A `useMemo` hook that dynamically filters employees based on the `name`, `job`, and `status` fields.
+
+- **Features:**
+  - **Dynamic Employee List:**
+    - Displays a list of employees with attributes like ID, name, job, wage, and status.
+    - Updates dynamically when employees are added or removed.
+  - **Filtering:**
+    - Provides filter fields for `name`, `job`, and `status`, allowing real-time search.
+  - **Form for Adding Employees:**
+    - Includes fields for first name, last name, birthdate, job, hourly wage, and status.
+    - Validates all required fields before allowing submission.
+  - **Soft Removal:**
+    - Allows employees to be marked as "Inactive" instead of being fully deleted.
+  - **Responsive Table:**
+    - Displays employee data in a structured table with headers, rows, and actions for each employee.
+  - **Reusable Components:**
+    - Utilizes shared UI components like `Table`, `Button`, `Input`, and `Label` for consistency.
+  - **Error Handling:**
+    - Alerts the user for missing fields during addition or backend errors during API calls.

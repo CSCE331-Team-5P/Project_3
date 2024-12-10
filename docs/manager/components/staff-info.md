@@ -1,0 +1,16 @@
+## File: `src/components/staff-info.tsx`
+- **Purpose:** Displays a bar chart and radial chart showing employee work hours over the past five weeks and the current week.
+- **Functions:**
+  - **EmployeeHoursChart Component:**
+    - **Purpose:** Allows users to select an employee and view their work hours data.
+    - **Features:**
+      - **Employee Selection:**
+        - Dropdown menu to select an employee and display their work hours.
+      - **Bar Chart:**
+        - Renders a bar chart showing hours worked over the past five weeks.
+      - **Radial Chart:**
+        - Displays hours worked in the current week using a radial bar chart.
+      - **Dynamic Data Generation:**
+        - Generates random work hour data for demonstration purposes.
+      - **Reusable Components:**
+        - Leverages components like `Card`, `Popover`, and `ChartContainer` for consistent UI.

@@ -1,0 +1,16 @@
+## File: `src/components/ProductUsage.tsx`
+- **Purpose:** Displays a report of item sales within a specified date range, including total counts for each item sold.
+- **Functions:**
+  - **ProductUsage Component:**
+    - **Purpose:** Allows users to generate a sales report by selecting start and end dates.
+    - **Features:**
+      - **Date Selection:**
+        - Uses a calendar-based date picker for selecting start and end dates.
+      - **Fetch Item Sales:**
+        - Fetches sales data from the `/api/item_usage` endpoint based on the selected date range.
+      - **Error Handling:**
+        - Displays an error message if the data fetch fails.
+      - **Dynamic Table:**
+        - Renders a table summarizing item sales data, including item name and total used count.
+      - **Reusable Components:**
+        - Utilizes shared components like `Card`, `Button`, `Table`, and `Calendar` for consistent UI design.

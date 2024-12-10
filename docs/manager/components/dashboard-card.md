@@ -1,0 +1,21 @@
+## File: `src/components/DashboardCard.jsx`
+- **Purpose:** Renders a customizable card component for displaying key metrics on the dashboard, such as numerical values or financial statistics.
+- **Props:**
+  - **`title`:** The title of the metric displayed on the card (default: `"Metric"`).
+  - **`value`:** The numeric value to be displayed. If undefined, displays `"N/A"`.
+  - **`percentageChange`:** The percentage change of the metric compared to a prior period.
+  - **`comparisonPeriod`:** A text string describing the comparison period (default: `"from last month"`).
+  - **`backgroundColor`:** Tailwind CSS class for the card background color (default: `"bg-red-700"`).
+  - **`textColor`:** Tailwind CSS class for the card text color (default: `"text-white"`).
+  - **`type`:** Specifies whether the value is `'currency'` or `'number'` (default: `'number'`).
+  - **`icon`:** Custom icon to display on the card. Defaults to `DollarSign` for currency or `Users` for numbers.
+- **Features:**
+  - **Formatted Values:** 
+    - Supports currency formatting using `Intl.NumberFormat` for USD.
+    - Automatically adds a `+` sign for positive numbers.
+  - **Dynamic Percentage Colors:** 
+    - Uses green for positive percentage changes and red for negative changes.
+  - **Default Icons:**
+    - Displays appropriate icons (`DollarSign` or `Users`) based on the type of metric.
+  - **Customizable Styles:** 
+    - Allows dynamic background and text colors using Tailwind CSS classes.

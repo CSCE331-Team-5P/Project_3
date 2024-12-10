@@ -1,0 +1,23 @@
+## File: `src/components/DashboardChart.tsx`
+- **Purpose:** Displays a daily sales chart as a bar chart, providing insights into desktop and mobile sales trends over the last three months.
+- **Functions:**
+  - **DashboardChart Component:**
+    - **Purpose:** Main component to render the sales data in a chart format with toggling between desktop and mobile views.
+    - **Logic:**
+      - Tracks the active chart (desktop or mobile) using state.
+      - Calculates total sales for desktop and mobile using `React.useMemo` for performance optimization.
+      - Handles button clicks to switch between desktop and mobile views.
+    - **Formatted Value Handling:**
+      - **Purpose:** Formats the sales data to enhance readability and display dates in user-friendly formats.
+    - **Chart Rendering:**
+      - **Purpose:** Utilizes `BarChart` from `recharts` to render the bar chart with gridlines, x-axis labels, and a tooltip for interactive data visualization.
+- **Features:**
+  - **Interactive Chart:**
+    - Allows toggling between desktop and mobile data views.
+    - Provides tooltips for detailed insights on hover.
+  - **Dynamic Data Display:**
+    - Displays total sales for the last three months for both desktop and mobile platforms.
+  - **Responsive Design:**
+    - Configured for seamless display across different screen sizes.
+  - **Reusable Components:**
+    - Leverages modular components such as `Card`, `ChartContainer`, and `ChartTooltip` for consistent design and functionality.
