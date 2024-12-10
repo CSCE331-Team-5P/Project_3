@@ -76,8 +76,3 @@ Welcome to the documentation for the Kiosk and Manager applications.
 
 #### Styles
 - [Manager Global Styles](./manager/styles/manager-global-styles.md)
-
----
-
-### Shared Resources
-- [Shared Documentation](./shared/README.md)
